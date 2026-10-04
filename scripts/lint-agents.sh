@@ -18,6 +18,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 AGENT_DIRS=(
   academic
   design
+  earth-science
   engineering
   finance
   game-development
