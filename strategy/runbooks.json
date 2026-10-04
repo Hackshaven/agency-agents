@@ -170,6 +170,54 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "terraviz",
+      "title": "TerraViz Maintainer Team",
+      "mode": "NEXUS-Micro",
+      "duration": "Standing team, per-change activations",
+      "summary": "Review gates and specialists for a single-maintainer science visualization platform, activated by the paths each change touches.",
+      "doc": "strategy/runbooks/scenario-terraviz.md",
+      "roster": [
+        {
+          "group": "Review Gates",
+          "activation": "per change, by path",
+          "agents": [
+            "engineering-code-reviewer",
+            "research-scientific-visualization-reviewer",
+            "research-science-communicator",
+            "engineering-section-508-specialist"
+          ]
+        },
+        {
+          "group": "Specialists",
+          "activation": "as needed",
+          "agents": [
+            "engineering-video-streaming-engineer",
+            "gis-web-gis-developer",
+            "engineering-i18n-engineer",
+            "security-appsec-engineer",
+            "engineering-desktop-app-engineer",
+            "engineering-privacy-engineer",
+            "engineering-technical-writer"
+          ]
+        },
+        {
+          "group": "Public & Federal",
+          "activation": "before publishing or a hosting change",
+          "agents": [
+            "specialized-communications-clearance-officer",
+            "specialized-fedramp-rmf-compliance"
+          ]
+        },
+        {
+          "group": "Maintainer Succession",
+          "activation": "quarterly",
+          "agents": [
+            "engineering-codebase-onboarding-engineer"
+          ]
+        }
+      ]
     }
   ]
 }
