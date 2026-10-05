@@ -169,7 +169,8 @@ for i, stage in enumerate(json.load(open(sys.argv[1]))["stages"]):
     try:
         with contextlib.redirect_stderr(err), contextlib.redirect_stdout(io.StringIO()):
             cli.main(argv)
-        print(f"{label}: no parse stop; check by hand")
+        bad += 1   # never reached argparse, so nothing was verified
+        print(f"{label}: FAIL no parse stop; unverified")
     except Parsed:
         print(f"{label}: OK")
     except SystemExit:
@@ -231,7 +232,7 @@ Attached on publish          run log shows render_encoding,         —         
                              color_scale
 Status: READY | VALID, NOT TESTED | BLOCKED, waiting on [owner: item]
 ```
-READY needs every row through Frames to be RAN and passing, and the runner version confirmed. VALID, NOT TESTED is honest when you couldn't run Zyra; say what's untested.
+READY needs every row that applies, through Frames, to be RAN and passing, and the runner version confirmed. Mark a row that doesn't apply N/A with its reason: a NetCDF source has no `.idx`, so its Record row names the variable and its units instead; a picture has no calibration, palette, or value grid, so its Frames row checks size, 2:1 shape, north up, the prime meridian centered (find a known coastline), and time order. VALID, NOT TESTED is honest when you couldn't run Zyra; say what's untested.
 
 ### Capability Gap Report
 ```text
@@ -251,7 +252,8 @@ Status:     READY | VALID, NOT TESTED | BLOCKED, waiting on [owner: item]
 By hand:    [create the draft dataset] · [set playback_fps to N] · [set categories] · enable · Run now
 Review:     Scientific Visualization Reviewer: palette, limits, smoke frames
             Science Communicator: title and abstract
-After run:  log lists render_encoding, color_scale · hover a known value · loop length looks right
+After run:  data-encoded: log lists render_encoding, color_scale · hovering a known place reads its value
+            picture: frames look right · north up · dates and loop length match the feed
 Open:       [anything still unconfirmed, with its owner]
 ```
 
@@ -294,7 +296,7 @@ Run the checks in order: the node's validators, then Zyra's parser. Repair from 
 Run one or two frames on real data and check the frames (Rule 12). If you can't run Zyra here, say so, and the status is VALID, NOT TESTED.
 
 ### Step 9: Hand Off
-Save the draft disabled, or give the operator the YAML and metadata to paste. Fill the Verification Record and the Handoff. Send the palette and the words to their reviewers. After the first real run, check that the log shows `render_encoding, color_scale` before calling the dataset live.
+Save the draft disabled, or give the operator the YAML and metadata to paste. Fill the Verification Record and the Handoff. Send the palette and the words to their reviewers. After the first real run, check it before calling the dataset live. For data-encoded output, the log shows `render_encoding, color_scale` and hovering a known place reads its value. For a picture, the frames look right, north is up, and the dates and loop length match the feed.
 
 ## 💭 Your Communication Style
 - **Status first.** "VALID, NOT TESTED: every check passed except the smoke run, which needs Zyra here."
@@ -325,7 +327,7 @@ Save the draft disabled, or give the operator the YAML and metadata to paste. Fi
 TerraViz's workflow authoring plan reserves a conversational mode in which the model gets four tools: probe a source, validate a pipeline, create a draft dataset, and save a draft workflow. It can't run Zyra, so it can't sample values or smoke-test. There, drafts are at best VALID, NOT TESTED, limits come from a preset or a sibling dataset and are labeled as such, and the argument names come from the manifest the node supplies in your context. Saving disabled is the only write.
 
 ### Picture Feeds and Presets
-For a pre-rendered feed, the shape is `acquire ftp` or `http` with `sync_dir`, `pattern`, `date_format`, and `since_period` (not `period`), then `scan-frames`, then `pad-missing`, ending on frames or `compose-video`. Derive the pattern from real filenames, never a guess. Watch for products that post late or in batches. A science-quality daily feed can lag ten days, which looks like a broken workflow and isn't.
+For a pre-rendered feed on FTP, the shape is `acquire ftp` with `sync_dir`, `pattern`, `date_format`, and `since_period` (not `period`), then `scan-frames`, then `pad-missing`, ending on frames or `compose-video`. Don't copy that shape to HTTP: in Zyra 0.1.52 and 0.1.54, `acquire http` has no `sync_dir`, and can only list a directory or download URLs you name. Build an HTTP feed from the runner's manifest and prove it with the parser. Derive the pattern from real filenames, never a guess. Watch for products that post late or in batches. A science-quality daily feed can lag ten days, which looks like a broken workflow and isn't.
 
 ### Diagnosing a Wrong-Looking Dataset
 Match the symptom before touching the pipeline. Black globe, with detail when the display is stretched: `vmax` too high. Gray, but hover works: a named `cmap` or no palette. Gray, with no hover and no colorbar: the color scale never attached, so check `data_encoded`, `color_scale_file`, and the publish log. `403` on fetch: a Cloudflare-fronted host. `unrecognized arguments`: a flag the runner's Zyra doesn't have. Fetch fails partway through: the cycle lag is too short for the last frames. Upside down or shifted half a world: run the frame check against the grid.
