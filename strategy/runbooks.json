@@ -176,7 +176,7 @@
       "title": "TerraViz Maintainer Team",
       "mode": "NEXUS-Micro",
       "duration": "Standing team, per-change activations",
-      "summary": "Review gates and specialists for a single-maintainer science visualization platform, activated by the paths each change touches.",
+      "summary": "Review gates and specialists for a single-maintainer science visualization platform and its WordPress plugin, activated by the paths each change touches.",
       "doc": "strategy/runbooks/scenario-terraviz.md",
       "roster": [
         {
@@ -197,8 +197,69 @@
             "gis-web-gis-developer",
             "engineering-i18n-engineer",
             "security-appsec-engineer",
+            "security-ai-generated-code-auditor",
             "engineering-desktop-app-engineer",
             "engineering-privacy-engineer",
+            "engineering-api-platform-engineer",
+            "engineering-technical-writer"
+          ]
+        },
+        {
+          "group": "WordPress Plugin",
+          "activation": "plugin changes, by path",
+          "agents": [
+            "engineering-wordpress-performance"
+          ]
+        },
+        {
+          "group": "Public & Federal",
+          "activation": "before publishing or a hosting change",
+          "agents": [
+            "specialized-communications-clearance-officer",
+            "earth-science-meteorologist",
+            "specialized-fedramp-rmf-compliance"
+          ]
+        },
+        {
+          "group": "Quarterly",
+          "activation": "quarterly",
+          "agents": [
+            "engineering-codebase-onboarding-engineer",
+            "specialized-codebase-archaeologist"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "zyra",
+      "title": "Zyra Maintainer Team",
+      "mode": "NEXUS-Micro",
+      "duration": "Standing team, per-change activations",
+      "summary": "Review gates and specialists for NOAA-GSL's Python data-workflow framework, worked through a downstream mirror and relay, activated by the paths each change touches.",
+      "doc": "strategy/runbooks/scenario-zyra.md",
+      "roster": [
+        {
+          "group": "Review Gates",
+          "activation": "per change, by path",
+          "agents": [
+            "engineering-code-reviewer",
+            "research-scientific-visualization-reviewer",
+            "security-appsec-engineer",
+            "research-science-communicator"
+          ]
+        },
+        {
+          "group": "Specialists",
+          "activation": "as needed",
+          "agents": [
+            "earth-science-meteorologist",
+            "engineering-developer-tooling-engineer",
+            "engineering-api-platform-engineer",
+            "specialized-mcp-builder",
+            "engineering-multi-agent-systems-architect",
+            "engineering-prompt-engineer",
+            "engineering-privacy-engineer",
+            "engineering-video-streaming-engineer",
             "engineering-technical-writer"
           ]
         },
@@ -207,13 +268,53 @@
           "activation": "before publishing or a hosting change",
           "agents": [
             "specialized-communications-clearance-officer",
+            "engineering-section-508-specialist",
             "specialized-fedramp-rmf-compliance"
           ]
         },
         {
-          "group": "Maintainer Succession",
+          "group": "Quarterly",
           "activation": "quarterly",
           "agents": [
+            "engineering-codebase-onboarding-engineer",
+            "specialized-codebase-archaeologist"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "sphere-sim",
+      "title": "sphere-sim Maintainer Team",
+      "mode": "NEXUS-Micro",
+      "duration": "Standing team, per-change activations",
+      "summary": "Scientific-integrity review gates for a projector simulator and alignment solver whose releases carry DOIs, activated by the paths each change touches.",
+      "doc": "strategy/runbooks/scenario-sphere-sim.md",
+      "roster": [
+        {
+          "group": "Review Gates",
+          "activation": "per change, by path",
+          "agents": [
+            "engineering-code-reviewer",
+            "academic-statistician",
+            "research-pre-submission-peer-reviewer",
+            "research-scientific-visualization-reviewer"
+          ]
+        },
+        {
+          "group": "Specialists",
+          "activation": "as needed",
+          "agents": [
+            "security-appsec-engineer",
+            "engineering-technical-writer",
+            "research-science-communicator"
+          ]
+        },
+        {
+          "group": "Periodic",
+          "activation": "when work stalls, quarterly, or for succession",
+          "agents": [
+            "research-mad-scientist",
+            "specialized-codebase-archaeologist",
             "engineering-codebase-onboarding-engineer"
           ]
         }
