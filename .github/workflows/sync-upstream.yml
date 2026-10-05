@@ -1,0 +1,53 @@
+name: Sync upstream
+
+# Keeps this fork current with msitarzewski/agency-agents, so new and updated
+# upstream agents arrive on their own: main is fast-forwarded to upstream, and
+# upstream is merged into hackshaven when the merge is clean and the checks the
+# fork's additions can break still pass. Anything else opens a PR from
+# sync/upstream into hackshaven and fails the run, which emails a notice.
+# The logic lives in scripts/sync-upstream.sh.
+#
+# Needs a SYNC_TOKEN repository secret: a fine-grained personal access token
+# for this repository only, with Contents, Pull requests, and Workflows set to
+# read and write. GITHUB_TOKEN can't push commits that touch .github/workflows/,
+# and upstream's commits do.
+
+on:
+  schedule:
+    - cron: "23 7 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sync-upstream
+
+jobs:
+  sync:
+    name: Merge upstream into hackshaven
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Require SYNC_TOKEN
+        env:
+          SYNC_TOKEN: ${{ secrets.SYNC_TOKEN }}
+        run: |
+          if [ -z "$SYNC_TOKEN" ]; then
+            echo "::error::Add a SYNC_TOKEN repository secret; see the comment at the top of sync-upstream.yml."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.SYNC_TOKEN }}
+
+      - name: Sync
+        env:
+          GH_TOKEN: ${{ secrets.SYNC_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          chmod +x scripts/sync-upstream.sh
+          ./scripts/sync-upstream.sh
