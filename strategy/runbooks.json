@@ -184,6 +184,7 @@
           "activation": "per change, by path",
           "agents": [
             "engineering-code-reviewer",
+            "engineering-terraviz-federation-reviewer",
             "research-scientific-visualization-reviewer",
             "research-science-communicator",
             "engineering-section-508-specialist"
