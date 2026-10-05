@@ -16,7 +16,7 @@ Claude Code already does most of the building. What a one-person project lacks i
 | Agent | Role on TerraViz |
 |-------|------------------|
 | Code Reviewer | The default for any code change no specialist covers: correctness, maintainability, security, performance. It runs on the same model family that writes most TerraViz commits, so it shares their blind spots. It doesn't replace a human or a different-model review |
-| TerraViz Federation Reviewer | The wire contract: `WireDataset`, the v1 JSON schemas, the catalog and well-known endpoints, the protocol docs, and federation identity and signing. A fork-only agent built for this project |
+| TerraViz Federation Reviewer | The published contracts `GOVERNANCE.md` names: the v1 wire schemas and the `WireDataset`, catalog, and well-known shapes behind them, node identity and signing, and the embed URL grammar. A fork-only agent built for this project |
 | Scientific Visualization Reviewer | Palettes, colorbars, data-encoded color scales, legends, multi-globe comparisons, the poster's figures |
 | Science Communicator | Dataset descriptions, tour narration, Orbit's prompt and replies, blog posts, the poster's text |
 | Section 508 Accessibility Specialist | UI panels, styles, and design tokens. TerraViz is headed to a NOAA-GSL deployment (`CANONICAL_TRANSITION.md` §9), so Section 508 is the legal floor |
@@ -31,7 +31,7 @@ Claude Code already does most of the building. What a one-person project lacks i
 | AI-Generated Code Security Auditor | Every LLM touchpoint (the chat proxy, Workers AI calls, AI blog and event drafting, Orbit's tools) and secrets behind a `VITE_` prefix. Its examples are Next.js and Supabase; its prompt-injection and client-bundle checks apply as written |
 | Desktop App Engineer | The Tauri app: windows and messaging between the control and output windows, capabilities, code signing, auto-update, the kiosk launch |
 | Privacy Engineer | Data flows outside telemetry: Orbit's cloud voice, chat sent to outside LLM providers, feedback and its exports, analytics exports, publisher accounts |
-| API Platform Engineer | Contracts other software reads that aren't the federation wire: the publish API the WordPress plugin calls, the embed URL grammar, the Orbit postMessage bridge, the STAC surface |
+| API Platform Engineer | Contracts other software reads that the Federation Reviewer doesn't own: the publish API the WordPress plugin calls, the Orbit postMessage bridge, the STAC surface |
 | Technical Writer | Operator-facing docs only: self-hosting, the multi-monitor operations runbook, the macOS install and translator guides, the plugin's `readme.txt`. Not the plan docs, which have their own house voice |
 
 ### WordPress Plugin (plugin changes)
@@ -72,7 +72,7 @@ TerraViz ships its own reviewers, skills, and hooks in `.claude/`. They encode r
 
 | If the change touches… | Run | Why |
 |------------------------|-----|-----|
-| `WireDataset` or any type it reaches in `src/types/index.ts`, `public/schema/v1/**`, `functions/api/v1/catalog.ts`, `functions/.well-known/**`, `docs/protocol/**`, `docs/CATALOG_FEDERATION_PROTOCOL.md`, `scripts/build-protocol-schemas.ts`, federation identity and signing code | TerraViz Federation Reviewer | Other nodes and the plugin's generated types read what ships. `check:protocol-schemas` catches type-to-schema drift, not a semantic break |
+| `functions/api/v1/_lib/dataset-serializer.ts` (`WireDataset`) and any type it reaches (`src/types/color-scale.ts`), the SPA's inbound copy in `src/services/dataService.ts`, `functions/api/v1/catalog.ts`, `functions/api/v1/_lib/catalog-store.ts`, `functions/.well-known/**`, `public/schema/v1/**`, `docs/protocol/**`, `docs/CATALOG_FEDERATION_PROTOCOL.md`, `scripts/build-protocol-schemas.ts`, node identity (`scripts/gen-node-key.ts`, `functions/api/v1/publish/node-identity.ts`, `cli/init-node.ts`), `docs/EMBED_URL_GRAMMAR.md` and its readers (`src/utils/{embedMode,catalogMode,posterDeepLinks}.ts`, `src/services/deepLinkService.ts`) | TerraViz Federation Reviewer | Other nodes, the plugin, and embedding pages read what ships. `check:protocol-schemas` passes on a rename once the schema is regenerated, and never sees a change of meaning |
 | `src/types/color-scale.ts`, `src/services/colorScaleDisplay.ts`, `src/ui/colorbarUI.ts`, `src/ui/analyzeCharts.ts`, palette handling in `cli/zyra-publish-from-dispatch.ts` and `src/ui/publisher/workflow-templates.ts`, `poster/**` figures | Scientific Visualization Reviewer | A wrong range or stop changes what every pixel claims |
 | Dataset text (`src/ui/publisher/components/dataset-form.ts`), tours (`src/ui/tourAuthoring/`), Orbit's prompt (`src/services/docentContext.ts`), English strings (`locales/en.json`), `poster/**` text | Science Communicator | The words visitors read beside the data |
 | `src/ui/**`, `src/styles/**`, `tokens/**`, `STYLE_GUIDE.md` | Section 508 Accessibility Specialist | Every new panel is a new barrier or not, and contrast starts in the tokens |
@@ -84,7 +84,7 @@ TerraViz ships its own reviewers, skills, and hooks in `.claude/`. They encode r
 | `src-tauri/**`, `src/services/multiOutput/**`, `src/services/windowChrome.ts`, `.github/workflows/{release,desktop}.yml` | Desktop App Engineer | Capabilities, messaging between windows, signing, and the updater are where a desktop app's security lives |
 | `src/output/projectorWarp.ts`, `src/services/multiOutput/{warpImport,storedZip,warpStorage}.ts`, `src/ui/outputWarpUI.ts` | Code Reviewer, and check sphere-sim | The warp math reads sphere-sim's bundle (`sphere-sim/projector-layout@1`). No catalog agent reviews projector optics |
 | `src/services/voiceCloudEngines.ts`, `src/services/voiceWsStreaming.ts`, `functions/api/voice/`, `src/services/llmProvider.ts`, `functions/api/feedback*.ts`, `functions/api/general-feedback*.ts`, `functions/api/_feedback-helpers.ts`, `functions/api/_standalone-feedback.ts`, `functions/api/v1/publish/{feedback,analytics,analytics-export}.ts`, `src/ui/publisher/pages/users.ts`, `docs/PRIVACY.md` | Privacy Engineer | Audio, chat, feedback, exports, and accounts leave the browser here. Telemetry ingest is the analytics reviewer's |
-| `functions/api/v1/publish/**` request or response shapes, `docs/EMBED_URL_GRAMMAR.md` and its readers (`src/utils/{embedMode,catalogMode,posterDeepLinks}.ts`, `src/services/deepLinkService.ts`), `src/ui/orbitPostMessageBridge.ts`, `functions/api/v1/stac/**`, `functions/schema/stac/**` | API Platform Engineer, and check the plugin | The plugin calls the publish API, which `docs/WORDPRESS_EVENTS_FEEDS_SYNC.md` §6 calls "internal / unversioned in practice". The embed grammar is marked stable |
+| `functions/api/v1/publish/**` request or response shapes, `src/ui/orbitPostMessageBridge.ts`, `functions/api/v1/stac/**`, `functions/schema/stac/**` | API Platform Engineer, and check the plugin | The plugin calls the publish API, which `docs/WORDPRESS_EVENTS_FEEDS_SYNC.md` §6 calls "internal / unversioned in practice". The STAC extension schema is served immutable, so a new `ColorScale` field can invalidate it |
 | `migrations/**`, `schema/catalog-schema.sql` | Code Reviewer, migration first | CI applies migrations to the remote D1 on every push to `main`. `check:migrations` only checks that they're additive |
 | `.github/workflows/zyra-run.yml` (the Zyra image digest), `src/types/zyra-workflow-constants.ts`, `src/types/zyra-pipeline-args.ts`, `functions/api/v1/_lib/workflow-validators.ts` | Code Reviewer, and check Zyra | The pinned image decides which flags and stages exist. See the [Zyra runbook](scenario-zyra.md) |
 | `docs/SELF_HOSTING.md`, `docs/MULTI_MONITOR_OPERATIONS.md`, `docs/MACOS_INSTALL.md`, `CONTRIBUTING-TRANSLATIONS.md` | Technical Writer | Read by operators and translators, not the maintainer |
@@ -112,7 +112,8 @@ Paths below are in the plugin repo.
 | `src/{Blog,Events}/Sync.php`, `blocks/admin/{Analytics,Feedback}.js` and their folders, the load modes in `assets/js/frontend.js`, the "External services" section of `readme.txt` | Privacy Engineer | WordPress posts, visitor feedback, and analytics cross to the node, and third-party thumbnails load in the visitor's browser |
 | Markup in `src/Embed/Renderer.php`, `assets/**`, `blocks/**`, markup in `src/Settings.php` | Section 508 Accessibility Specialist | NOAA-GSL's WordPress site is federal web content |
 | `src/Api/{Client,Catalog}.php`, image markup in `src/Embed/Renderer.php`, asset registration in `src/Plugin.php`, `assets/**` | WordPress Performance Engineer | On a cold cache, page render waits on a fetch with a five-second timeout, and the poster image is lazy-loaded even when it's the largest image on the page |
-| `src/Contract/**`, `bin/generate-contracts.php`, `src/Embed/UrlBuilder.php`, the endpoint list in `src/Api/PublishClient.php` | API Platform Engineer, or the Federation Reviewer for `src/Contract/**` | The consumer side of TerraViz's contracts. Regenerate, never hand-edit |
+| `src/Contract/**`, `bin/generate-contracts.php`, `src/Embed/UrlBuilder.php` | TerraViz Federation Reviewer | The consumer side of the wire schemas and the embed grammar. Regenerate, never hand-edit. As of October 2026 the generated contract lags three fields |
+| The endpoint list in `src/Api/PublishClient.php` | API Platform Engineer | The consumer side of the publish API |
 | `readme.txt`, `README.md`, `docs/RELEASING.md` | Technical Writer | `readme.txt`'s feature list and changelog are behind the code |
 | Any other code in `src/`, `blocks/`, `assets/`, `bin/`, `terraviz.php`, `uninstall.php` | Code Reviewer | No row above matches |
 
@@ -159,7 +160,7 @@ describes the code and the code disagrees, report the mismatch.
 |----------|---------------|------------|
 | Zyra runner and data-encoded video | `.github/workflows/zyra-run.yml` (image digest), `src/types/zyra-workflow-constants.ts`, `src/types/zyra-pipeline-args.ts`, `src/types/color-scale.ts`, `migrations/catalog/0042_render_encoding.sql` | Zyra's CLI and `visualization/luma_writer.py`. See the [Zyra runbook](scenario-zyra.md) |
 | Projector warp bundle | `src/services/multiOutput/{warpImport,storedZip,warpStorage}.ts`, `src/output/projectorWarp.ts`, fixtures in `src/output/fixtures/projectorWarp/` | sphere-sim's `packages/web/src/bundle.ts` (`sphere-sim/projector-layout@1`). See the [sphere-sim runbook](scenario-sphere-sim.md) |
-| Federation wire, embed grammar, publish API | `public/schema/v1/**`, `docs/EMBED_URL_GRAMMAR.md`, `functions/api/v1/publish/**` | Other nodes, and the WordPress plugin (above) |
+| Federation wire, embed grammar, publish API | `public/schema/v1/**`, `docs/EMBED_URL_GRAMMAR.md`, `functions/api/v1/publish/**` | Other nodes, embedding pages, and the WordPress plugin (above) |
 
 ## Maintainer Succession (quarterly)
 
