@@ -170,7 +170,7 @@ describes the code and the code disagrees, report the mismatch.
 The agents on this team check science claims; none of them owns one. Several already say where they stop:
 - The Science Communicator ships nothing the scientist hasn't signed off.
 - The Communications Clearance Officer advises, and a named person clears.
-- The Climatologist won't attribute an event to climate change without a published study, and no later draft may strengthen its calibrated wording.
+- The Climatologist won't attribute an event to climate change without a published study, and no later draft may upgrade or downgrade its calibrated wording.
 - The Meteorologist treats the official warning as the authority for life safety.
 - The Scientific Data Steward's HOLD is a decision only the owner can make.
 
@@ -184,6 +184,7 @@ This section says who those people are and when to go to them. `GOVERNANCE.md` c
 | Dataset producer | The organization in the dataset's `organization` and `attribution_text` fields | Already on every dataset record |
 | Clearance official | The person the Clearance Officer's policy register names | Before the first post on a NOAA node |
 | Official warning authority | The National Weather Service, the National Hurricane Center, or the national service for the region. Not consulted: linked and deferred to | — |
+| Claim owner | Whoever is publishing the content: a post's author, the publisher of the dataset record, or the maintainer for anything merged into the repo | Known from the publisher portal or the PR |
 
 ### When
 
@@ -196,7 +197,7 @@ This section says who those people are and when to go to them. `GOVERNANCE.md` c
 | A domain agent rates a claim as low confidence or as still at the research frontier | Science reviewer, or keep it out of public text | The claim and its rating |
 | The node derives a value its producer never published: an anomaly against a baseline the node chose, a unit change that alters values, or a diverging palette centred on a chosen reference | Dataset producer or science reviewer, before it is described as data | The derivation and what it changes |
 | A substantive change to the description of a dataset another organization produced | Dataset producer, or label the text as the node's own summary | The old and new text |
-| The third review of the same claim fails | Its owner. Both domain agents escalate here by their own rules | The open findings |
+| The third review of the same claim fails | The claim owner, who cuts the claim or takes it to the science reviewer. Both domain agents escalate here by their own rules | The open findings |
 
 Record each decision the way the Clearance Officer records one: who decided, on what exact text, when, and on what evidence. A relayed "the scientist said it's fine" is a claim, not a sign-off.
 
@@ -266,7 +267,7 @@ Run the Codebase Archaeologist in the same quarter. Its drift registry is the li
 | A catalog reviewer contradicts a repo doc | A rule in a repo doc wins. A description in a repo doc loses to the code. Record the disagreement if it's worth a doc change |
 | The viz reviewer gets code without pictures | Hand it screenshots from the visual report |
 | Clearance after a post is live | Clear before publishing |
-| A draft quietly strengthens a hedge ("likely" becomes "will") | The domain agent's calibrated wording stands unless the science reviewer approves the change |
+| A draft quietly drops a hedge, so a claim reads as more certain than the evidence ("likely" becomes "will") | The domain agent's calibrated wording stands unless the science reviewer approves the change |
 | A pairing implies attribution without saying it (a hurricane beside a sea-level projection) | The Climatologist reviews any pairing that includes a projection or anomaly dataset. The caption says what the pairing does and doesn't claim |
 | A publish-API change breaks the plugin silently | The plugin's smoke test doesn't cover the publish routes. Check the plugin in the same week |
 | Treating the team as the second maintainer | It reviews. It can't hold the project when the maintainer is away |

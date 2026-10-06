@@ -1,6 +1,6 @@
 # 🛰️ Runbook: Zyra Maintainer Team
 
-> **Mode**: NEXUS-Micro, per change | **Duration**: Standing team | **Agents**: 21 on the roster, 1–2 per change
+> **Mode**: NEXUS-Micro, per change | **Duration**: Standing team | **Agents**: 21 on the roster, 1–3 per change
 
 ---
 
@@ -83,7 +83,7 @@ Paths are under `src/zyra/` unless they start at the repo root.
 | `api/**`, `connectors/backends/**`, `connectors/credentials.py`, `utils/credential_manager.py`, `plugins.py`, `wizard/__init__.py` (command execution), root `Dockerfile`, `docker/**`, `ingress/**`, `pyproject.toml`, `poetry.lock`, `.github/codeql/**` | Application Security Engineer | `/cli/run` runs any stage, auth is off when `ZYRA_API_KEY` is unset, `plugins.py` imports code from the working directory, and the wizard runs LLM-suggested commands after one prompt (`--yes` skips it) |
 | `assets/llm/prompts/narrate/**`, narration presets, `assets/llm/rubrics/critic.yaml`, `poster/sections/**` | Science Communicator | The words a reader takes as Zyra's, or NOAA's, account of the data |
 | `processing/{grib_utils,grib_data_processor,netcdf_data_processor,pad_missing}.py`, `utils/{date_manager,iso8601}.py`, `connectors/backends/thredds.py` | Meteorologist | Init versus valid time, units, and fill values are where correct data becomes a wrong frame |
-| `assets/llm/prompts/narrate/**`, `assets/llm/presets/narrate/**`, `assets/llm/rubrics/critic.yaml`, the poster, the docs, or `llm/prompts/zyra_helper_bot_system.md`, where the text or what it generates makes a **weather** claim | Meteorologist | Official warnings come first, and times, units, and confidence are stated |
+| `assets/llm/prompts/narrate/**`, `assets/llm/presets/narrate/**`, `assets/llm/rubrics/critic.yaml`, the poster, the docs, or root `llm/prompts/zyra_helper_bot_system.md`, where the text or what it generates makes a **weather** claim | Meteorologist | Official warnings come first, and times, units, and confidence are stated |
 | The same files, where the text or what it generates makes a **climate** claim: a trend, an anomaly or its baseline, a record, a projection, or a link between an event and climate change | Climatologist | Baseline, period, scenario, and calibrated confidence are stated, and attribution needs a published study |
 | `cli.py`, `*/cli_register.py`, `pipeline_runner.py`, `workflow/**`, `utils/cli_helpers.py`, `wizard/zyra_capabilities*` | Developer Tooling Engineer, then the Zyra Workflow Author before the next release | A renamed flag or a changed exit code breaks TerraViz's runner, the editor, and every saved `pipeline.yaml`. The Workflow Author re-proves TerraViz's curated templates against the release |
 | `tests/snapshots/openapi_*`, `api/routers/{manifest,ws,jobs}.py` | API Platform Engineer | Outside callers read these: the ChatGPT Action, Open WebUI tools, the editor |
@@ -97,7 +97,7 @@ Paths are under `src/zyra/` unless they start at the repo root.
 | `docs/source/**`, module `README.md` files, `samples/README.md`, `docker/**/README.md` | Technical Writer | Read by users who install from PyPI |
 | `processing/raster_reproject.py`, `utils/geo_utils.py`, extent and orientation code | Code Reviewer, with an orientation checklist | No catalog agent reviews raster georeferencing well. Ask for a known-point check: north row first, longitude range, extent order. July 2026 brought a cluster of orientation bugs |
 | Any other code under `src/zyra/`, `scripts/`, or `tests/` | Code Reviewer | No row above matches, and every code change gets a second reviewer |
-| README, poster, `llm/prompts/zyra_helper_bot_system.md`, release notes, about to go public | Communications Clearance Officer | Zyra carries NOAA and GSL branding |
+| README, poster, root `llm/prompts/zyra_helper_bot_system.md`, release notes, about to go public | Communications Clearance Officer | Zyra carries NOAA and GSL branding |
 | Poster HTML, the Sphinx site, the API landing page (`api/server.py`) | Section 508 Specialist | Federal web content |
 | `ingress/**`, a hosting move | FedRAMP & RMF Compliance Engineer | Authorization paperwork, before the move |
 
@@ -146,11 +146,11 @@ describes the code differently from the code, the code wins.
 The agents on this team check science claims; none of them owns one. Several already say where they stop:
 - The Science Communicator ships nothing the scientist hasn't signed off.
 - The Communications Clearance Officer advises, and a named person clears.
-- The Climatologist won't attribute an event to climate change without a published study, and no later draft may strengthen its calibrated wording.
+- The Climatologist won't attribute an event to climate change without a published study, and no later draft may upgrade or downgrade its calibrated wording.
 - The Meteorologist treats the official warning as the authority for life safety.
 - The Scientific Data Steward's HOLD is a decision only the owner can make.
 
-Zyra's narration is written by an LLM at run time, long after any review. So review reaches it through what shapes it: the prompts, the presets, the critic rubric, and a sample of their output on representative inputs. One instruction already pulls against the domain agents. The summary prompt says "avoid uncertainty hedging unless it changes the conclusion" (`assets/llm/prompts/narrate/summary.md:7`), which is the strengthened-hedge failure built into the product. Whether it stays is the science reviewer's decision, not an edit.
+Zyra's narration is written by an LLM at run time, long after any review. So review reaches it through what shapes it: the prompts, the presets, the critic rubric, and a sample of their output on representative inputs. One instruction already pulls against the domain agents. The summary prompt says "avoid uncertainty hedging unless it changes the conclusion" (`assets/llm/prompts/narrate/summary.md:7`), which builds the dropped-hedge failure into the product: a claim stated more certainly than the evidence supports. Whether it stays is the science reviewer's decision, not an edit.
 
 ### Who
 
@@ -160,6 +160,7 @@ Zyra's narration is written by an LLM at run time, long after any review. So rev
 | Data producer | The agency or center that publishes a pipeline's input, such as the model center behind a forecast field | Named in the pipeline's source |
 | Clearance official | The person the Clearance Officer's policy register names for NOAA-GSL | Before the next public release of the poster, README, or Zyra Assistant GPT |
 | Official warning authority | The National Weather Service, the National Hurricane Center, or the national service for the region. Not consulted: linked and deferred to | — |
+| Claim owner | Whoever is changing the prompt, preset, pipeline, or text: the PR's author, and the maintainer who merges it | Known from the PR |
 
 ### When
 
@@ -171,7 +172,7 @@ Zyra's narration is written by an LLM at run time, long after any review. So rev
 | Two agents disagree on a science question: the Meteorologist and the Climatologist, or the Scientific Visualization Reviewer and the Zyra Workflow Author on limits or a baseline | Science reviewer, with both positions recorded | Each agent's finding |
 | A domain agent rates a claim as low confidence or as still at the research frontier | Science reviewer, or keep it out of presets and public text | The claim and its rating |
 | A processing change alters values the producer published: a regridding method, a unit conversion, fill handling, or a derived anomaly or baseline | Science reviewer, checked against the producer's documentation, with the Scientific Data Steward on the output metadata | The change and what it does to the values |
-| The third review of the same claim fails | Its owner. Both domain agents escalate here by their own rules | The open findings |
+| The third review of the same claim fails | The claim owner, who drops the change or takes it to the science reviewer. Both domain agents escalate here by their own rules | The open findings |
 
 Record each decision the way the Clearance Officer records one: who decided, on what exact text, when, and on what evidence. A relayed "the scientist said it's fine" is a claim, not a sign-off.
 
