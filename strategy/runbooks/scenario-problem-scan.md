@@ -56,6 +56,7 @@ A choice counts only if it's in `choices.md` in the asker's own words, or arrive
 ```
 Step 0: Load (Problem Forager)
 ├── Read reach-card.md, ground.md, choices.md, ledger.md
+├── Ground empty → no scan; the report asks the asker to fill it in
 ├── Reach card UNCONFIRMED or older than 6 months → the report leads with "confirm your card",
 │   and the scan stays inside ground the asker already approved
 └── Record what changed in choices.md since the last run
@@ -123,7 +124,20 @@ the one-page summary to [the asker's channel]. If you hit the run's limits, say 
 - **Notifications:** on, so the asker hears when a report is ready.
 - **Connectors:** give the routine only the ones its ledger and report need. A ledger in a private repository needs none. A ledger in a cloud-drive folder needs that drive's connector, and a report sent by email needs the mail connector.
 
-**A ledger in a cloud-drive folder** (for example Google Drive) works as well as a repository, and it's easier to edit `choices` from a phone. Keep one folder, shared with no one, holding the five ledger files as documents, with each run's report as a new document. The routine's notification links to it. One caution: a drive connector reaches the asker's whole drive, not just that folder, and an unattended run reads the open web. Before granting the connector to a routine, set the drive tools the scan never needs, such as sharing and deleting files, to off in the connector's tool permissions. Those settings apply to every session, not just this routine.
+**A ledger in a cloud-drive folder** (for example Google Drive) works as well as a repository, and it's easier to edit choices from a phone. Lay it out so the run only ever adds files:
+
+```
+Problem Scan/            shared with no one
+├── Reach card           the asker's; the run reads it
+├── Ground               the asker's; the run reads it
+├── Choices              the asker's; the run reads it
+├── Ledger/              the run adds "Ledger YYYY-MM" each run; the newest is current
+└── Reports/             the run adds "Report YYYY-MM" each run; the notification links to it
+```
+
+The run never edits or deletes an existing file, so the asker's three documents stay the asker's alone. A drive connector that can create files but not edit them, as Google Drive's can't, already enforces that.
+
+One caution: a drive connector reaches the asker's whole drive, not just that folder, and an unattended run reads the open web. The scan needs only search, read, file details, and create. Before granting the connector to a routine, set its other tools to off in the connector's tool permissions: sharing, moving or renaming, copying, and trashing. Those settings apply to every session, not just this routine.
 
 **Other ways to run it:**
 - **A scheduled GitHub Actions job** running Claude Code can do the same work, with a report filed as an issue in the private repository. The asker's comments there are authenticated, so they can carry choices. On a private repository it uses Actions minutes; a routine doesn't.
