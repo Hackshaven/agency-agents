@@ -1,6 +1,6 @@
 # 🛰️ Runbook: Zyra Maintainer Team
 
-> **Mode**: NEXUS-Micro, per change | **Duration**: Standing team | **Agents**: 18 on the roster, 1–2 per change
+> **Mode**: NEXUS-Micro, per change | **Duration**: Standing team | **Agents**: 20 on the roster, 1–2 per change
 
 ---
 
@@ -33,6 +33,8 @@ So, like the TerraViz team, this one is **review gates and specialists, activate
 | Prompt Engineer | Wizard and planner prompts and the LLM client: prompts that produce commands someone will run |
 | Privacy Engineer | The Limitless audio preset, wizard history, swarm memory, and anything sent to an outside LLM provider |
 | Video Streaming Engineer | Narrow: ffmpeg pixel format, color range, and CRF as they change luma values. It has no adaptive-bitrate role here |
+| Zyra Workflow Author | Proves pipelines run, with Zyra's own parser and a smoke run: the samples in `samples/pipelines/`, and, before TerraViz moves its runner pin to a new Zyra release, TerraViz's curated templates against that release. An author, not a reviewer |
+| Scientific Data Steward | CF and ACDD metadata, units, and fill values in the netCDF files Zyra writes; the SOS dataset metadata asset; and the citation a release carries (`CITATION.cff` and its Zenodo DOI). It never invents metadata or changes data |
 | Technical Writer | `docs/source/**`, module READMEs, `samples/README.md`, and the Docker READMEs. Not the wiki copy, which syncs from the GitHub Wiki |
 
 ### Public & Federal (before something goes public or hosting changes)
@@ -74,13 +76,15 @@ Paths are under `src/zyra/` unless they start at the repo root.
 | `api/**`, `connectors/backends/**`, `connectors/credentials.py`, `utils/credential_manager.py`, `plugins.py`, `wizard/__init__.py` (command execution), root `Dockerfile`, `docker/**`, `ingress/**`, `pyproject.toml`, `poetry.lock`, `.github/codeql/**` | Application Security Engineer | `/cli/run` runs any stage, auth is off when `ZYRA_API_KEY` is unset, `plugins.py` imports code from the working directory, and the wizard runs LLM-suggested commands after one prompt (`--yes` skips it) |
 | `assets/llm/prompts/narrate/**`, narration presets, `assets/llm/rubrics/critic.yaml`, `poster/sections/**` | Science Communicator | The words a reader takes as Zyra's, or NOAA's, account of the data |
 | `processing/{grib_utils,grib_data_processor,netcdf_data_processor,pad_missing}.py`, `utils/{date_manager,iso8601}.py`, `connectors/backends/thredds.py` | Meteorologist | Init versus valid time, units, and fill values are where correct data becomes a wrong frame |
-| `cli.py`, `*/cli_register.py`, `pipeline_runner.py`, `workflow/**`, `utils/cli_helpers.py`, `wizard/zyra_capabilities*` | Developer Tooling Engineer | A renamed flag or a changed exit code breaks TerraViz's runner, the editor, and every saved `pipeline.yaml` |
+| `cli.py`, `*/cli_register.py`, `pipeline_runner.py`, `workflow/**`, `utils/cli_helpers.py`, `wizard/zyra_capabilities*` | Developer Tooling Engineer, then the Zyra Workflow Author before the next release | A renamed flag or a changed exit code breaks TerraViz's runner, the editor, and every saved `pipeline.yaml`. The Workflow Author re-proves TerraViz's curated templates against the release |
 | `tests/snapshots/openapi_*`, `api/routers/{manifest,ws,jobs}.py` | API Platform Engineer | Outside callers read these: the ChatGPT Action, Open WebUI tools, the editor |
 | `api/routers/mcp.py`, `api/mcp_tools/**`, `api/services/manifest.py`, `llm/clients/**` | MCP Builder | A hand-written protocol server. Its tool list is what an LLM is allowed to call |
 | `swarm/**`, `narrate/swarm.py`, `samples/swarm/**` | Multi-Agent Systems Architect | Guardrails, memory, and planning for agents that act |
 | `assets/llm/prompts/**` (outside narrate), `wizard/{prompts,llm_client}.py`, root `llm/**` | Prompt Engineer | Prompts that produce commands, and where API keys are sent |
 | The Limitless preset in `api/routers/api_generic.py`, `api/mcp_tools/audio.py`, wizard history, `swarm/memory.py`, `api/utils/obs.py` | Privacy Engineer | Personal audio, saved prompts, and data sent to outside providers |
 | `processing/{video_processor,video_transcode}.py`, `visualization/{cli_compose_video,animate_manager}.py` | Video Streaming Engineer | Color range and compression decide whether a decoded luma value is still the data value |
+| Root `samples/pipelines/**`, `samples/swarm/**` pipeline files | Zyra Workflow Author | Users copy samples first. As of October 2026, `samples/pipelines/rtvideo_drought.yaml` doesn't parse as YAML |
+| The netCDF-writing paths in `processing/{netcdf_data_processor,grib_utils}.py`, `assets/metadata/**`, root `CITATION.cff` | Scientific Data Steward | Outputs and records other people cite: metadata a reader can't recover later, and a DOI that has to resolve |
 | `docs/source/**`, module `README.md` files, `samples/README.md`, `docker/**/README.md` | Technical Writer | Read by users who install from PyPI |
 | `processing/raster_reproject.py`, `utils/geo_utils.py`, extent and orientation code | Code Reviewer, with an orientation checklist | No catalog agent reviews raster georeferencing well. Ask for a known-point check: north row first, longitude range, extent order. July 2026 brought a cluster of orientation bugs |
 | Any other code under `src/zyra/`, `scripts/`, or `tests/` | Code Reviewer | No row above matches, and every code change gets a second reviewer |
@@ -165,7 +169,7 @@ Also fix its CLI fallback first: it calls `zyra commands --json`, and `manifest.
 | A breaking CLI flag, exit code, or pipeline-schema change | Maintainer, after the Developer Tooling Engineer, with a deprecation period |
 | A change to the data-encoded format | Maintainer, together with the matching TerraViz change |
 | Excluding a file from CodeQL | Maintainer, after the Application Security Engineer |
-| A release (PyPI and GHCR) | Maintainer |
+| A release (PyPI and GHCR) | Maintainer, after the Scientific Data Steward checks the citation |
 
 ## What This Team Leaves Out
 
@@ -184,15 +188,6 @@ Also fix its CLI fallback first: it calls `zyra commands --json`, and `manifest.
 | Git Workflow Master, Minimal Change Engineer | `AGENTS.md`, the DCO hook, and the relay already set the git rules |
 | Accessibility Auditor, USWDS Developer | Overlaps the 508 specialist; Zyra has no USWDS site |
 | Pre-Submission Peer Reviewer | No manuscript in the repo |
-
-## Agents Not Yet on `hackshaven`
-
-Two agents in progress on other branches would fit this team. They aren't in the roster because the roster check only accepts agents that exist on this branch.
-
-| Agent | Branch | Would cover |
-|-------|--------|-------------|
-| Scientific Data Steward | `noaa/scientific-data-steward` | CF and ACDD metadata, units and fill values in NetCDF outputs, release packaging |
-| Zyra Workflow Author | `claude/sleepy-darwin-rwfxj7` | Writing and proving `zyra run` pipelines for TerraViz nodes, flags checked against the runner's version |
 
 ## Success Criteria
 

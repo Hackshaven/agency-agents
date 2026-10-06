@@ -202,7 +202,9 @@
             "engineering-desktop-app-engineer",
             "engineering-privacy-engineer",
             "engineering-api-platform-engineer",
-            "engineering-technical-writer"
+            "engineering-technical-writer",
+            "earth-science-zyra-workflow-author",
+            "research-scientific-data-steward"
           ]
         },
         {
@@ -261,7 +263,9 @@
             "engineering-prompt-engineer",
             "engineering-privacy-engineer",
             "engineering-video-streaming-engineer",
-            "engineering-technical-writer"
+            "engineering-technical-writer",
+            "earth-science-zyra-workflow-author",
+            "research-scientific-data-steward"
           ]
         },
         {
@@ -307,7 +311,8 @@
           "agents": [
             "security-appsec-engineer",
             "engineering-technical-writer",
-            "research-science-communicator"
+            "research-science-communicator",
+            "research-scientific-data-steward"
           ]
         },
         {

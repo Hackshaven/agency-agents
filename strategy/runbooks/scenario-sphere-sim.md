@@ -1,6 +1,6 @@
 # 🔮 Runbook: sphere-sim Maintainer Team
 
-> **Mode**: NEXUS-Micro, per change | **Duration**: Standing team | **Agents**: 10 on the roster, 1–2 per change
+> **Mode**: NEXUS-Micro, per change | **Duration**: Standing team | **Agents**: 11 on the roster, 1–2 per change
 
 ---
 
@@ -25,6 +25,7 @@ The project already has the strictest review machinery in the Zyra family. CI ch
 |-------|--------------------|
 | Application Security Engineer | The `.glb` parser (untrusted input), the two local dev servers, and workflow permissions |
 | Technical Writer | Operator documents only: `docs/CALIBRATE.md`, `docs/VISIT.md`, and the limitations text that ships inside the bundle. Not the spec or the register, which have their own rules |
+| Scientific Data Steward | Release packaging and citation: each version bump mints a Zenodo DOI. It checks that the archive works on its own (license, version, citation, results files described) while the Pre-Submission Peer Reviewer checks that the claims follow from it. Also the provenance of validation photos |
 | Science Communicator | Public copy: the README's "Try it" section, `packages/web/index.html`, and the plain-language metric explanations in `packages/web/src/readout.ts` |
 
 ### Periodic
@@ -53,10 +54,11 @@ The CI chain in `.github/workflows/ci.yml` runs before any catalog agent. Its `g
 | If the change touches… | Run | Why |
 |------------------------|-----|-----|
 | `packages/bench/src/{gate,waivers,score,attribute,loop,run,scenarios}.ts`, `gate-waivers.json`, `bench-baseline.json`, `tools/assert-*.ts`, `experiments/paired/**`, the design of anything in `packages/experiments/src/` | Statistician | A wrong change here gives a false green. Raising a ceiling, widening a scenario list, or extending an expiry is the easiest way to hide a regression |
-| `docs/EXPERIMENT-*.md`, `docs/ARBITRARY-SHAPES.md`, `docs/PHASE-1.md`, `docs/OPERATOR-PATH.md`, `docs/USAGE-ACCOUNTING.md`, README numbers, `CITATION.cff`, a `package.json` version bump | Pre-Submission Peer Reviewer | Prose numbers aren't checked by CI, and each release archives them under a DOI. Audit each claim against `experiments/*.json` and `progress/` |
+| `docs/EXPERIMENT-*.md`, `docs/ARBITRARY-SHAPES.md`, `docs/PHASE-1.md`, `docs/OPERATOR-PATH.md`, `docs/USAGE-ACCOUNTING.md`, README numbers, `CITATION.cff`, a `package.json` version bump | Pre-Submission Peer Reviewer; on a version bump, then the Scientific Data Steward | Prose numbers aren't checked by CI, and each release archives them under a DOI. Audit each claim against `experiments/*.json` and `progress/` |
 | `packages/sim/src/png.ts`, `packages/experiments/src/**/plot.ts`, `packages/bench/src/{progress,views,validation}.ts`, any committed `*.svg` or figure | Scientific Visualization Reviewer | The progress page is the project's diagnostic instrument. A misleading map hides where the error is |
 | `packages/meshio/src/glb.ts`, `packages/harness/serve.ts`, `packages/web/serve.ts`, `.github/workflows/{pages,release}.yml` | Application Security Engineer | A parser for files people download, servers that expose `/repo/` when bound to `0.0.0.0`, and workflows that publish |
 | `docs/CALIBRATE.md`, `docs/VISIT.md`, the limitations text in `packages/web/src/bundle.ts` | Technical Writer | Read by an operator standing at a sphere |
+| `validation/sources.json`, any file added under `validation/` | Scientific Data Steward | Photos are never scraped, and their provenance is unknown until the owner confirms it (`validation/README.md`) |
 | README "Try it", `packages/web/index.html`, `packages/web/src/readout.ts` | Science Communicator | The words a museum visitor or operator reads next to a metric |
 | `packages/sim/src/{warp,sos,sosconfig}.ts`, `packages/web/src/{bundle,restore,adopt,zip,emit,patternfilm}.ts` | Code Reviewer, and check the TerraViz importer | These files reach a real sphere. `sosconfig.ts` has a trap (A-39): each setting's description holds the factory default, and only `value` is the site's |
 | `packages/web/src/glsl.ts`, `packages/harness/src/{glsl,reference,parity}.ts` | Code Reviewer, with `packages/sim` as the reference | CI's `smoke:app` checks that the shader compiles. The GPU parity chain (`packages/harness/src/parity.ts`) needs a real GPU, so CI never runs it. Run it by hand before merging |
@@ -120,7 +122,7 @@ sphere-sim's bundle (`packages/web/src/bundle.ts`, `LAYOUT_FORMAT = 'sphere-sim/
 | An amendment's status (OPEN, ACCEPTED, REJECTED) | Maintainer. Agents propose; only the owner edits `PARAMETERS.md` |
 | Adding, extending, or re-justifying a waiver | Maintainer, after the Statistician. Two A-18 waivers (`grid_displacement`, `h_center_recovery`) expire on **2026-11-01** |
 | Rebaselining `bench-baseline.json` | Maintainer, with one sentence in the commit message saying why the number moved |
-| A release (and its DOI) | Maintainer, after the Pre-Submission Peer Reviewer |
+| A release (and its DOI) | Maintainer, after the Pre-Submission Peer Reviewer and the Scientific Data Steward |
 | A new bundle format version | Maintainer, together with the matching TerraViz change |
 
 ## What This Team Leaves Out
@@ -143,7 +145,7 @@ sphere-sim's bundle (`packages/web/src/bundle.ts`, `LAYOUT_FORMAT = 'sphere-sim/
 | Metric | Target |
 |--------|--------|
 | Gate-machinery changes reviewed | Every change to `packages/bench/src/` or `gate-waivers.json` names the Statistician's verdict |
-| Release claims audited | Every version bump has a Pre-Submission Peer Reviewer pass on its headline numbers |
+| Releases audited | Every version bump has a Pre-Submission Peer Reviewer pass on its headline numbers and a Scientific Data Steward pass on its package and citation |
 | Review cost | 1 catalog agent on a typical change |
 
 ## Common Pitfalls & Mitigations

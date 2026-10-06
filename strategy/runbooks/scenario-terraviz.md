@@ -1,6 +1,6 @@
 # 🌍 Runbook: TerraViz Maintainer Team
 
-> **Mode**: NEXUS-Micro, per change | **Duration**: Standing team | **Agents**: 20 on the roster, 1–3 per code change | **Covers**: TerraViz and its WordPress plugin
+> **Mode**: NEXUS-Micro, per change | **Duration**: Standing team | **Agents**: 22 on the roster, 1–3 per code change | **Covers**: TerraViz and its WordPress plugin
 
 ---
 
@@ -32,6 +32,8 @@ Claude Code already does most of the building. What a one-person project lacks i
 | Desktop App Engineer | The Tauri app: windows and messaging between the control and output windows, capabilities, code signing, auto-update, the kiosk launch |
 | Privacy Engineer | Data flows outside telemetry: Orbit's cloud voice, chat sent to outside LLM providers, feedback and its exports, analytics exports, publisher accounts |
 | API Platform Engineer | Contracts other software reads that the Federation Reviewer doesn't own: the publish API the WordPress plugin calls, the Orbit postMessage bridge, the STAC surface |
+| Zyra Workflow Author | Writes Zyra pipelines for a node's workflow dashboard and proves they run: every flag checked against the runner's Zyra version, limits sampled from real data, a smoke run, a disabled draft for a person to enable. On this team it also re-proves the curated templates whenever the runner's Zyra image changes. An author, not a reviewer: its drafts go to the Scientific Visualization Reviewer and the Science Communicator |
+| Scientific Data Steward | Dataset metadata and citation: the metadata policy and readiness checks, STAC lineage and reports, and the citation a release carries (`CITATION.cff` and its Zenodo concept DOI). It never invents metadata or changes data |
 | Technical Writer | Operator-facing docs only: self-hosting, the multi-monitor operations runbook, the macOS install and translator guides, the plugin's `readme.txt`. Not the plan docs, which have their own house voice |
 
 ### WordPress Plugin (plugin changes)
@@ -86,7 +88,8 @@ TerraViz ships its own reviewers, skills, and hooks in `.claude/`. They encode r
 | `src/services/voiceCloudEngines.ts`, `src/services/voiceWsStreaming.ts`, `functions/api/voice/`, `src/services/llmProvider.ts`, `functions/api/feedback*.ts`, `functions/api/general-feedback*.ts`, `functions/api/_feedback-helpers.ts`, `functions/api/_standalone-feedback.ts`, `functions/api/v1/publish/{feedback,analytics,analytics-export}.ts`, `src/ui/publisher/pages/users.ts`, `docs/PRIVACY.md` | Privacy Engineer | Audio, chat, feedback, exports, and accounts leave the browser here. Telemetry ingest is the analytics reviewer's |
 | `functions/api/v1/publish/**` request or response shapes, `src/ui/orbitPostMessageBridge.ts`, `functions/api/v1/stac/**`, `functions/schema/stac/**` | API Platform Engineer, and check the plugin | The plugin calls the publish API, which `docs/WORDPRESS_EVENTS_FEEDS_SYNC.md` §6 calls "internal / unversioned in practice". The STAC extension schema is served immutable, so a new `ColorScale` field can invalidate it |
 | `migrations/**`, `schema/catalog-schema.sql` | Code Reviewer, migration first | CI applies migrations to the remote D1 on every push to `main`. `check:migrations` only checks that they're additive |
-| `.github/workflows/zyra-run.yml` (the Zyra image digest), `src/types/zyra-workflow-constants.ts`, `src/types/zyra-pipeline-args.ts`, `functions/api/v1/_lib/workflow-validators.ts` | Code Reviewer, and check Zyra | The pinned image decides which flags and stages exist. See the [Zyra runbook](scenario-zyra.md) |
+| `.github/workflows/zyra-run.yml` (the Zyra image digest), `src/types/zyra-workflow-constants.ts`, `src/types/zyra-pipeline-args.ts`, `functions/api/v1/_lib/workflow-validators.ts`, the curated templates (`src/ui/publisher/workflow-templates.ts`, `docs/DATASET_SOURCE_PRESETS_DRAFT.md`, `.claude/skills/terraviz-data-video/assets/**`) | Zyra Workflow Author, then the Code Reviewer for code | The pinned image decides which flags and stages exist, and `/validate` doesn't check argument names, so a template can pass every TerraViz test and fail Zyra's parser on the runner. Re-prove every template against the new version before the pin moves. See the [Zyra runbook](scenario-zyra.md) |
+| `docs/metadata/**`, `functions/api/v1/_lib/metadata-{policy,readiness}.ts`, `functions/api/v1/publish/stac-{lineage,report}.ts`, `cli/metadata-audit.ts`, `scripts/audit-stac.ts`, `CITATION.cff` | Scientific Data Steward | What a dataset record says about its source, license, version, and lineage, and whether its citation resolves |
 | `docs/SELF_HOSTING.md`, `docs/MULTI_MONITOR_OPERATIONS.md`, `docs/MACOS_INSTALL.md`, `CONTRIBUTING-TRANSLATIONS.md` | Technical Writer | Read by operators and translators, not the maintainer |
 | Any other code or config under `src/`, `functions/`, `cli/`, `src-tauri/`, `scripts/`, `public/`, `tokens/`, or `schema/` | Code Reviewer | No row above matches, and every code change gets a second reviewer |
 | A blog post or event pairing about to go live, or a change to Orbit's system prompt | Communications Clearance Officer | A NOAA node, and the assistant on it, speak for the agency |
@@ -197,13 +200,6 @@ Run the Codebase Archaeologist in the same quarter. Its drift registry is the li
 | Accessibility Auditor | Overlaps the 508 specialist |
 | Persona Walkthrough | Built for conversion-rate audits, the wrong lens for a museum operator |
 | Marketing and growth | Not this team's job. Public text still goes through the Science Communicator and the Clearance Officer |
-
-## Agents Not Yet on `hackshaven`
-
-| Agent | Branch | Would cover |
-|-------|--------|-------------|
-| Zyra Workflow Author | `claude/sleepy-darwin-rwfxj7` | Writing and proving Zyra pipelines for a node's workflow dashboard |
-| Scientific Data Steward | `noaa/scientific-data-steward` | Dataset metadata, citation, and release packaging, alongside the STAC row |
 
 ## Success Criteria
 
