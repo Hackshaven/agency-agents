@@ -1,6 +1,6 @@
 # 🌍 Runbook: TerraViz Maintainer Team
 
-> **Mode**: NEXUS-Micro, per change | **Duration**: Standing team | **Agents**: 22 on the roster, 1–3 per code change | **Covers**: TerraViz and its WordPress plugin
+> **Mode**: NEXUS-Micro, per change | **Duration**: Standing team | **Agents**: 23 on the roster, 1–3 per code change | **Covers**: TerraViz and its WordPress plugin
 
 ---
 
@@ -43,11 +43,18 @@ Claude Code already does most of the building. What a one-person project lacks i
 
 The plugin's other routes reuse agents above. See [Companion Repo: the WordPress plugin](#companion-repo-the-wordpress-plugin).
 
+### Domain Science (when content makes a weather or climate claim)
+| Agent | Role on TerraViz |
+|-------|------------------|
+| Meteorologist | Weather claims: an active hazard, a forecast field, init versus valid time, what a weather dataset shows on a given day. It defers to official forecasts and warnings for life safety, and sends climate questions to the Climatologist (its Rule 10) |
+| Climatologist | Climate claims: trends, anomalies and their baselines, records ("warmest", "lowest"), projections tied to a scenario (SSP, RCP) or a warming level, and any statement that climate change caused or worsened an event. Event pairings already put SSP and RCP projection datasets beside current events (`scenarioFamily` in `src/ui/publisher/components/events/events-model.ts`), and AI-drafted posts describe them |
+
+These two check claims; they don't own them. Their findings go to a person when the evidence runs out (see [When a Person Decides](#when-a-person-decides)). The Zyra Workflow Author asks them which variable, baseline, or model field answers a request.
+
 ### Public & Federal (before something goes public or hosting changes)
 | Agent | Role on TerraViz |
 |-------|------------------|
 | Communications Clearance Officer | AI-drafted blog posts (including posts synced in from WordPress), current-events pairings, and Orbit's system prompt: on a NOAA node, each one speaks for the agency |
-| Meteorologist | A post or event pairing about an active weather hazard. It defers to official forecasts and warnings, and checks times, units, and uncertainty |
 | FedRAMP & RMF Compliance Engineer | Hosting on federal infrastructure that needs an authorization (ATO) |
 
 ### Quarterly
@@ -93,7 +100,8 @@ TerraViz ships its own reviewers, skills, and hooks in `.claude/`. They encode r
 | `docs/SELF_HOSTING.md`, `docs/MULTI_MONITOR_OPERATIONS.md`, `docs/MACOS_INSTALL.md`, `CONTRIBUTING-TRANSLATIONS.md` | Technical Writer | Read by operators and translators, not the maintainer |
 | Any other code or config under `src/`, `functions/`, `cli/`, `src-tauri/`, `scripts/`, `public/`, `tokens/`, or `schema/` | Code Reviewer | No row above matches, and every code change gets a second reviewer |
 | A blog post or event pairing about to go live, or a change to Orbit's system prompt | Communications Clearance Officer | A NOAA node, and the assistant on it, speak for the agency |
-| A post or pairing about an active hurricane, flood, fire-weather, or other hazard | Meteorologist, then the Clearance Officer | Official warnings come first; a globe post must not contradict them |
+| A post, event pairing, dataset description, or tour narration that makes a **weather** claim: an active hazard, a forecast, what happened on a date | Meteorologist, then the Clearance Officer for anything public | Official warnings come first, and a globe post must not contradict them. Times, units, and confidence are stated |
+| The same surfaces making a **climate** claim: a trend, an anomaly or its baseline, a record, a projection, or a link between an event and climate change. Also the description or palette of an anomaly or projection dataset, and any pairing that puts one beside an event | Climatologist, then the Clearance Officer for anything public | A pairing implies a connection whether or not the text states one. Baseline, period, scenario, and calibrated confidence are stated, and attribution needs a published study |
 | A hosting move onto federal infrastructure | FedRAMP & RMF Compliance Engineer | Authorization paperwork, before the move, not after |
 | Telemetry | `analytics-reviewer` (repo) | Privacy invariants |
 
@@ -157,6 +165,44 @@ docs/ANALYTICS_CONTRIBUTING.md, docs/protocol/), the repo doc wins. Where a doc
 describes the code and the code disagrees, report the mismatch.
 ```
 
+## When a Person Decides
+
+The agents on this team check science claims; none of them owns one. Several already say where they stop:
+- The Science Communicator ships nothing the scientist hasn't signed off.
+- The Communications Clearance Officer advises, and a named person clears.
+- The Climatologist won't attribute an event to climate change without a published study, and no later draft may upgrade or downgrade its calibrated wording.
+- The Meteorologist treats the official warning as the authority for life safety.
+- The Scientific Data Steward's HOLD is a decision only the owner can make.
+
+This section says who those people are and when to go to them. `GOVERNANCE.md` calls AI review a partial measure. For science content, these are the points where someone outside the authoring loop actually reads it.
+
+### Who
+
+| Role | Who | When to name them |
+|------|-----|-------------------|
+| Science reviewer | A scientist the node operator names, outside the authoring loop. On a NOAA node, someone in the line office whose science the content describes | Before the first AI-drafted post goes live |
+| Dataset producer | The organization in the dataset's `organization` and `attribution_text` fields | Already on every dataset record |
+| Clearance official | The person the Clearance Officer's policy register names | Before the first post on a NOAA node |
+| Official warning authority | The National Weather Service, the National Hurricane Center, or the national service for the region. Not consulted: linked and deferred to | — |
+| Claim owner | Whoever is publishing the content: a post's author, the publisher of the dataset record, or the maintainer for anything merged into the repo | Known from the publisher portal or the PR |
+
+### When
+
+| Go to a person when… | Who decides | What the agents hand over |
+|----------------------|-------------|---------------------------|
+| A draft links a specific event to climate change (caused it, made it worse, made it more likely) and no published attribution study covers it | Science reviewer, or cut the claim | The Climatologist's rewrite to what the evidence supports |
+| A post concerns an active hazard | No one writes a forecast. The text points to the official warning, and the clearance official decides the timing | The Meteorologist's official-source line |
+| A draft states something more certainly than a domain agent rated it (the IPCC likelihood scale, or high, medium, and low confidence) | Science reviewer. The agent's wording stands until they approve a change | Both wordings and the evidence |
+| Two agents disagree on a science question: the Meteorologist and the Climatologist on an event, or the Scientific Visualization Reviewer and the Zyra Workflow Author on limits or a baseline | Science reviewer, with both positions recorded | Each agent's finding |
+| A domain agent rates a claim as low confidence or as still at the research frontier | Science reviewer, or keep it out of public text | The claim and its rating |
+| The node derives a value its producer never published: an anomaly against a baseline the node chose, a unit change that alters values, or a diverging palette centred on a chosen reference | Dataset producer or science reviewer, before it is described as data | The derivation and what it changes |
+| A substantive change to the description of a dataset another organization produced | Dataset producer, or label the text as the node's own summary | The old and new text |
+| The third review of the same claim fails | The claim owner, who cuts the claim or takes it to the science reviewer. Both domain agents escalate here by their own rules | The open findings |
+
+Record each decision the way the Clearance Officer records one: who decided, on what exact text, when, and on what evidence. A relayed "the scientist said it's fine" is a claim, not a sign-off.
+
+A hazard post can't wait for a scientist, so it makes no claim that needs one. It points to the official warning and shows the dataset, and anything more comes later, through the steps above.
+
 ## Cross-Repo Contracts
 
 | Contract | TerraViz side | Other side |
@@ -181,6 +227,7 @@ Run the Codebase Archaeologist in the same quarter. Its drift registry is the li
 | A breaking wire change or `schema_version` bump | Maintainer, after the TerraViz Federation Reviewer escalates |
 | A change to the publish API's shape | Maintainer, together with the matching plugin change |
 | Publishing a blog post or event pairing | Maintainer, after clearance |
+| A weather or climate claim the domain agents can't settle | The science reviewer the node names (see [When a Person Decides](#when-a-person-decides)) |
 | Adding a maintainer | Maintainer. `GOVERNANCE.md` is still a draft, not yet adopted |
 
 ## What This Team Leaves Out
@@ -207,6 +254,7 @@ Run the Codebase Archaeologist in the same quarter. Its drift registry is the li
 |--------|--------|
 | Routed changes reviewed | Every PR that touches a routed path names the reviewer that ran |
 | High-scrutiny changes | Every one names two reviewers |
+| Published weather and climate claims | Each one names its dataset, period, and baseline, or links its official source. Each attribution cites a study |
 | Review cost | 1–2 catalog agents on a typical code change |
 | Onboarding guides | One per candidate area, refreshed each quarter the area changed |
 
@@ -219,6 +267,8 @@ Run the Codebase Archaeologist in the same quarter. Its drift registry is the li
 | A catalog reviewer contradicts a repo doc | A rule in a repo doc wins. A description in a repo doc loses to the code. Record the disagreement if it's worth a doc change |
 | The viz reviewer gets code without pictures | Hand it screenshots from the visual report |
 | Clearance after a post is live | Clear before publishing |
+| A draft quietly drops a hedge, so a claim reads as more certain than the evidence ("likely" becomes "will") | The domain agent's calibrated wording stands unless the science reviewer approves the change |
+| A pairing implies attribution without saying it (a hurricane beside a sea-level projection) | The Climatologist reviews any pairing that includes a projection or anomaly dataset. The caption says what the pairing does and doesn't claim |
 | A publish-API change breaks the plugin silently | The plugin's smoke test doesn't cover the publish routes. Check the plugin in the same week |
 | Treating the team as the second maintainer | It reviews. It can't hold the project when the maintainer is away |
 
