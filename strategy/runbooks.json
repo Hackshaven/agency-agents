@@ -215,11 +215,18 @@
           ]
         },
         {
+          "group": "Domain Science",
+          "activation": "when content makes a weather or climate claim",
+          "agents": [
+            "earth-science-meteorologist",
+            "earth-science-climatologist"
+          ]
+        },
+        {
           "group": "Public & Federal",
           "activation": "before publishing or a hosting change",
           "agents": [
             "specialized-communications-clearance-officer",
-            "earth-science-meteorologist",
             "specialized-fedramp-rmf-compliance"
           ]
         },
