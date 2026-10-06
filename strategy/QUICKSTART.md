@@ -138,6 +138,9 @@ Evidence Collector verifies improvements.
 | **Enterprise Feature Runbook** | Enterprise feature development | `strategy/runbooks/scenario-enterprise-feature.md` |
 | **Marketing Campaign Runbook** | Multi-channel campaign | `strategy/runbooks/scenario-marketing-campaign.md` |
 | **Incident Response Runbook** | Production incident handling | `strategy/runbooks/scenario-incident-response.md` |
+| **TerraViz Runbook** | Standing review team for TerraViz and its WordPress plugin | `strategy/runbooks/scenario-terraviz.md` |
+| **Zyra Runbook** | Standing review team for Zyra (and the dormant zyra-editor) | `strategy/runbooks/scenario-zyra.md` |
+| **sphere-sim Runbook** | Standing scientific-integrity review team for sphere-sim | `strategy/runbooks/scenario-sphere-sim.md` |
 
 ---
 
