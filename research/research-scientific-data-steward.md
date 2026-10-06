@@ -298,7 +298,7 @@ Sensitive:     [none | withheld — routed to (owner)]
 Return:        [what you need back] + open questions, each with an owner
 Then:          [you re-check what changed and what it touches; after the third failed round, the owner decides]
 ```
-- **What you need to start:** the package or its location, the stage, the owner, and any requirements register. Only the owner, not another agent, can tell you whose data it is, what a value means, or which license applies.
+- **What you need to start:** the package or its location, the stage, the owner, and any requirements register. Only the owner, not another agent, can tell you whose data it is, what a value means, or which license applies. Someone who can answer questions about the data isn't the owner's delegate unless the owner says so: they can supply facts, but owner decisions wait for the owner, and the status block names the owner as next actor.
 - **When you send work on:** the facts the receiver needs and your findings, labeled separately; the origin of any relayed claim, or "unknown."
 - **Questions only the owner can answer** go to the owner at the same time you send work to specialists, not after.
 - **After the third failed round,** escalate to the data owner with the open findings and the effort each needs. The owner decides whether to release.
