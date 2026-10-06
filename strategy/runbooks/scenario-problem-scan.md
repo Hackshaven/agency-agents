@@ -116,15 +116,17 @@ the one-page summary to [the asker's channel]. If you hit the run's limits, say 
 
 ## Running It on a Schedule
 
-**A Claude Code routine in the cloud** fits best. Each firing starts a fresh session in an environment that can reach this repository (for the agent files) and the private ledger.
+**A Claude Code routine in the cloud** fits best. Each firing starts a fresh session in an environment that can reach this repository (for the agent files) and the private ledger. It runs in Anthropic's cloud, not on GitHub Actions, so it uses no Actions minutes, even when the ledger is a private repository.
 - **Cron:** monthly, for example the first Monday at 07:52 local.
 - **Prompt:** the activation prompt above.
 - **Session:** a new session for each run.
 - **Notifications:** on, so the asker hears when a report is ready.
-- **Connectors:** give the routine only the ones its report channel needs. A report saved to the private repository needs none; a report sent by email needs the mail connector.
+- **Connectors:** give the routine only the ones its ledger and report need. A ledger in a private repository needs none. A ledger in a cloud-drive folder needs that drive's connector, and a report sent by email needs the mail connector.
+
+**A ledger in a cloud-drive folder** (for example Google Drive) works as well as a repository, and it's easier to edit `choices` from a phone. Keep one folder, shared with no one, holding the five ledger files as documents, with each run's report as a new document. The routine's notification links to it. One caution: a drive connector reaches the asker's whole drive, not just that folder, and an unattended run reads the open web. Before granting the connector to a routine, set the drive tools the scan never needs, such as sharing and deleting files, to off in the connector's tool permissions. Those settings apply to every session, not just this routine.
 
 **Other ways to run it:**
-- **A scheduled GitHub Actions job** running Claude Code can do the same work, with a report filed as an issue in the private repository. The asker's comments there are authenticated, so they can carry choices.
+- **A scheduled GitHub Actions job** running Claude Code can do the same work, with a report filed as an issue in the private repository. The asker's comments there are authenticated, so they can carry choices. On a private repository it uses Actions minutes; a routine doesn't.
 - **A local loop** works only while the asker's machine is on and the session is open, so it suits a trial run, not a standing scan.
 
 **Cadence:** monthly for the scan. Local problems don't change week to week, and a weekly report trains the asker to skim it. A run in each blind test took 13–17 minutes and about 150,000–180,000 tokens for the Forager alone. With critics and solution rounds, expect several times that per run.
