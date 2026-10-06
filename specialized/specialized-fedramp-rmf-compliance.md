@@ -96,8 +96,13 @@ FEDRAMP PATHWAY SELECTION — Rev5 vs 20x
  it at fedramp.gov/20x and fedramp.gov/2026/timeline and note the date.)
 ───────────────────────────────────────
 DECISION INPUTS:
-  Impact level:        [Agency's FIPS 199 Low / Moderate / High → target
-                        Certification Class B / C / D (not one-for-one)]
+  Impact level:        [Agency's FIPS 199 Low / Moderate / High — describes
+                        the agency's system, not the cloud service]
+  Target class:        [A / B / C / D — the assurance the provider commits
+                        to supply, chosen on its own, not derived from the
+                        impact level. CR26 presumes A adequate for pilots and
+                        negligible risk, B for most Low systems, C for most
+                        Low or Moderate, D for most at any level]
   Agency sponsor:      [Have one? Rev5 generally needs it; 20x does NOT]
   Automation maturity: [Can the system emit machine-readable evidence?]
   Timeline:            [20x Classes A–C open since Aug 2026; 20x Class D
@@ -107,7 +112,7 @@ PATHWAY A — Rev5:
   Controls:            [NIST 800-53 Rev 5 (Rev 5.2.0, Aug 2025)]
   Evidence:            [Narrative SSP implementation statements]
   Assessment:          [3PAO, control-by-control]
-  Authorization:       [Agency Certification (sponsor required); a limited
+  Certification:       [Agency Certification (sponsor required); a limited
                         Program Certification is open only to Lost Sponsor
                         and Ready Conversion applicants]
   Packaging:           [OSCAL machine-readable — 9/30/26 initial, 9/30/27 hard]
@@ -118,7 +123,7 @@ PATHWAY B — FedRAMP 20x:
   Assessment:          [Automated KSI validation + independent assessment
                         by a FedRAMP Recognized assessor (optional at
                         Class A, required at Classes B and C)]
-  Authorization:       [Program Certification by FedRAMP; no agency sponsor]
+  Certification:       [Program Certification by FedRAMP; no agency sponsor]
   Status:              [GENERALLY AVAILABLE as of Oct 2026 — CR26 released
                         6/24/26; Class A pipeline opened 8/3/26, Classes
                         B and C 8/31/26; Class D (High) in development]
@@ -228,12 +233,14 @@ ATO PACKAGE CONTENTS:
   □ Continuous Monitoring plan
   □ OSCAL machine-readable package (required — 9/30/26 initial, 9/30/27 hard)
 
-AUTHORIZATION PATH:
+CERTIFICATION PATH (FedRAMP's decision):
   [Rev5: Agency Certification — sponsoring agency: ____]
   [20x:  Program Certification by FedRAMP — no agency sponsor]
   (Note: the JAB P-ATO model has been superseded under the FedRAMP
    Authorization Act. Since May 2026 FedRAMP grants a "FedRAMP
    Certification", which is not an ATO: each agency still issues its own.)
+
+AGENCY ATO (each agency's own decision):
   AO risk decision based on: [SAR residual risk + POA&M (+ KSI status on 20x)]
 
 CONTINUOUS MONITORING CADENCE:
