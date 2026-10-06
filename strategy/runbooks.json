@@ -262,7 +262,6 @@
           "group": "Specialists",
           "activation": "as needed",
           "agents": [
-            "earth-science-meteorologist",
             "engineering-developer-tooling-engineer",
             "engineering-api-platform-engineer",
             "specialized-mcp-builder",
@@ -273,6 +272,14 @@
             "engineering-technical-writer",
             "earth-science-zyra-workflow-author",
             "research-scientific-data-steward"
+          ]
+        },
+        {
+          "group": "Domain Science",
+          "activation": "when data handling or text makes a weather or climate claim",
+          "agents": [
+            "earth-science-meteorologist",
+            "earth-science-climatologist"
           ]
         },
         {

@@ -1,6 +1,6 @@
 # 🛰️ Runbook: Zyra Maintainer Team
 
-> **Mode**: NEXUS-Micro, per change | **Duration**: Standing team | **Agents**: 20 on the roster, 1–2 per change
+> **Mode**: NEXUS-Micro, per change | **Duration**: Standing team | **Agents**: 21 on the roster, 1–2 per change
 
 ---
 
@@ -25,7 +25,6 @@ So, like the TerraViz team, this one is **review gates and specialists, activate
 ### Specialists (as needed)
 | Agent | Role on Zyra |
 |-------|--------------|
-| Meteorologist | GRIB and NetCDF processing, init versus valid time, units, and missing data shown as missing. A domain check on the data, not a numerical-methods review |
 | Developer Tooling Engineer | The CLI as a contract: flags, exit codes, the pipeline schema, and the capabilities manifest. TerraViz and every saved pipeline depend on them |
 | API Platform Engineer | The HTTP API as a contract: any change to the OpenAPI snapshot, the manifest routes, WebSocket job streams |
 | MCP Builder | The hand-written JSON-RPC MCP server and its tools |
@@ -36,6 +35,14 @@ So, like the TerraViz team, this one is **review gates and specialists, activate
 | Zyra Workflow Author | Proves pipelines run, with Zyra's own parser and a smoke run: the samples in `samples/pipelines/`, and, before TerraViz moves its runner pin to a new Zyra release, TerraViz's curated templates against that release. An author, not a reviewer |
 | Scientific Data Steward | CF and ACDD metadata, units, and fill values in the netCDF files Zyra writes; the SOS dataset metadata asset; and the citation a release carries (`CITATION.cff` and its Zenodo DOI). It never invents metadata or changes data |
 | Technical Writer | `docs/source/**`, module READMEs, `samples/README.md`, and the Docker READMEs. Not the wiki copy, which syncs from the GitHub Wiki |
+
+### Domain Science (when data handling or text makes a weather or climate claim)
+| Agent | Role on Zyra |
+|-------|--------------|
+| Meteorologist | GRIB and NetCDF processing: init versus valid time, units, and missing data shown as missing. A domain check on the data, not a numerical-methods review. Also weather claims in narration output, the poster, and the docs |
+| Climatologist | Climate claims in the narration presets and what they produce (`policy_brief`, the `scientific_*`, `kids_*` and `multi_audience_report` presets), the poster, the Zyra Assistant GPT instructions, and the docs. Also a processing change that would derive a climate quantity the source never published: an anomaly, a baseline, a trend |
+
+These two check claims; they don't own them. Their findings go to a person when the evidence runs out (see [When a Person Decides](#when-a-person-decides)).
 
 ### Public & Federal (before something goes public or hosting changes)
 | Agent | Role on Zyra |
@@ -76,6 +83,8 @@ Paths are under `src/zyra/` unless they start at the repo root.
 | `api/**`, `connectors/backends/**`, `connectors/credentials.py`, `utils/credential_manager.py`, `plugins.py`, `wizard/__init__.py` (command execution), root `Dockerfile`, `docker/**`, `ingress/**`, `pyproject.toml`, `poetry.lock`, `.github/codeql/**` | Application Security Engineer | `/cli/run` runs any stage, auth is off when `ZYRA_API_KEY` is unset, `plugins.py` imports code from the working directory, and the wizard runs LLM-suggested commands after one prompt (`--yes` skips it) |
 | `assets/llm/prompts/narrate/**`, narration presets, `assets/llm/rubrics/critic.yaml`, `poster/sections/**` | Science Communicator | The words a reader takes as Zyra's, or NOAA's, account of the data |
 | `processing/{grib_utils,grib_data_processor,netcdf_data_processor,pad_missing}.py`, `utils/{date_manager,iso8601}.py`, `connectors/backends/thredds.py` | Meteorologist | Init versus valid time, units, and fill values are where correct data becomes a wrong frame |
+| `assets/llm/prompts/narrate/**`, `assets/llm/presets/narrate/**`, `assets/llm/rubrics/critic.yaml`, the poster, the docs, or `llm/prompts/zyra_helper_bot_system.md`, where the text or what it generates makes a **weather** claim | Meteorologist | Official warnings come first, and times, units, and confidence are stated |
+| The same files, where the text or what it generates makes a **climate** claim: a trend, an anomaly or its baseline, a record, a projection, or a link between an event and climate change | Climatologist | Baseline, period, scenario, and calibrated confidence are stated, and attribution needs a published study |
 | `cli.py`, `*/cli_register.py`, `pipeline_runner.py`, `workflow/**`, `utils/cli_helpers.py`, `wizard/zyra_capabilities*` | Developer Tooling Engineer, then the Zyra Workflow Author before the next release | A renamed flag or a changed exit code breaks TerraViz's runner, the editor, and every saved `pipeline.yaml`. The Workflow Author re-proves TerraViz's curated templates against the release |
 | `tests/snapshots/openapi_*`, `api/routers/{manifest,ws,jobs}.py` | API Platform Engineer | Outside callers read these: the ChatGPT Action, Open WebUI tools, the editor |
 | `api/routers/mcp.py`, `api/mcp_tools/**`, `api/services/manifest.py`, `llm/clients/**` | MCP Builder | A hand-written protocol server. Its tool list is what an LLM is allowed to call |
@@ -132,6 +141,40 @@ Do not edit files. Where AGENTS.md or a module README sets a rule, it wins; wher
 describes the code differently from the code, the code wins.
 ```
 
+## When a Person Decides
+
+The agents on this team check science claims; none of them owns one. Several already say where they stop:
+- The Science Communicator ships nothing the scientist hasn't signed off.
+- The Communications Clearance Officer advises, and a named person clears.
+- The Climatologist won't attribute an event to climate change without a published study, and no later draft may strengthen its calibrated wording.
+- The Meteorologist treats the official warning as the authority for life safety.
+- The Scientific Data Steward's HOLD is a decision only the owner can make.
+
+Zyra's narration is written by an LLM at run time, long after any review. So review reaches it through what shapes it: the prompts, the presets, the critic rubric, and a sample of their output on representative inputs. One instruction already pulls against the domain agents. The summary prompt says "avoid uncertainty hedging unless it changes the conclusion" (`assets/llm/prompts/narrate/summary.md:7`), which is the strengthened-hedge failure built into the product. Whether it stays is the science reviewer's decision, not an edit.
+
+### Who
+
+| Role | Who | When to name them |
+|------|-----|-------------------|
+| Science reviewer | A scientist the NOAA-GSL maintainer names, outside the authoring loop | Before the next change to a narration preset or prompt |
+| Data producer | The agency or center that publishes a pipeline's input, such as the model center behind a forecast field | Named in the pipeline's source |
+| Clearance official | The person the Clearance Officer's policy register names for NOAA-GSL | Before the next public release of the poster, README, or Zyra Assistant GPT |
+| Official warning authority | The National Weather Service, the National Hurricane Center, or the national service for the region. Not consulted: linked and deferred to | — |
+
+### When
+
+| Go to a person when… | Who decides | What the agents hand over |
+|----------------------|-------------|---------------------------|
+| A prompt, preset, or sampled narration links a specific event to climate change and no published attribution study covers it | Science reviewer, or the prompt is changed so the output can't make the claim | The Climatologist's finding and a sample output |
+| A prompt, preset, or rubric changes how narration states certainty: a hedge instruction added or removed, or the critic's standard for it | Science reviewer | The old and new wording, and samples from both |
+| Narration or public text concerns an active hazard | No one writes a forecast. The text points to the official warning | The Meteorologist's official-source line |
+| Two agents disagree on a science question: the Meteorologist and the Climatologist, or the Scientific Visualization Reviewer and the Zyra Workflow Author on limits or a baseline | Science reviewer, with both positions recorded | Each agent's finding |
+| A domain agent rates a claim as low confidence or as still at the research frontier | Science reviewer, or keep it out of presets and public text | The claim and its rating |
+| A processing change alters values the producer published: a regridding method, a unit conversion, fill handling, or a derived anomaly or baseline | Science reviewer, checked against the producer's documentation, with the Scientific Data Steward on the output metadata | The change and what it does to the values |
+| The third review of the same claim fails | Its owner. Both domain agents escalate here by their own rules | The open findings |
+
+Record each decision the way the Clearance Officer records one: who decided, on what exact text, when, and on what evidence. A relayed "the scientist said it's fine" is a claim, not a sign-off.
+
 ## Cross-Repo Contracts
 
 | Contract | Zyra side | Consumer side |
@@ -170,6 +213,7 @@ Also fix its CLI fallback first: it calls `zyra commands --json`, and `manifest.
 | A change to the data-encoded format | Maintainer, together with the matching TerraViz change |
 | Excluding a file from CodeQL | Maintainer, after the Application Security Engineer |
 | A release (PyPI and GHCR) | Maintainer, after the Scientific Data Steward checks the citation |
+| A weather or climate claim the domain agents can't settle, or a change to how narration states certainty | The science reviewer the maintainer names (see [When a Person Decides](#when-a-person-decides)) |
 
 ## What This Team Leaves Out
 
@@ -178,7 +222,6 @@ Also fix its CLI fallback first: it calls `zyra commands --json`, and `manifest.
 | Agents Orchestrator, project managers | One maintainer |
 | Data Engineer, Spatial Data Engineer, Geoprocessing Specialist | Builders for warehouses, vector ETL, and ArcPy. Zyra moves gridded files through a CLI |
 | GIS QA Engineer | Its checks are vector and ArcGIS-oriented. Raster orientation stays with the Code Reviewer and a known-point check |
-| Climatologist | Zyra has no climate statistics code. Call it ad hoc for climate claims in narration output |
 | AI Engineer, LLM Post-Training Engineer, Model QA, RAG Pipeline Engineer | Zyra trains no models and has no vector store |
 | Statistician | `verify/` is a stub. Revisit when it computes skill scores |
 | API Tester | About 60 API test files and the OpenAPI snapshot already exist |
@@ -197,6 +240,7 @@ Also fix its CLI fallback first: it calls `zyra commands --json`, and `manifest.
 | CodeQL-excluded files | Every change to one gets an AppSec pass |
 | Cross-repo breaks | No Zyra release breaks the TerraViz runner pin silently |
 | Review cost | 1–2 catalog agents on a typical change |
+| Narration presets and prompts | Every change names a domain agent's review, and every change to how narration states certainty has a science reviewer's decision |
 
 ## Common Pitfalls & Mitigations
 
@@ -208,6 +252,8 @@ Also fix its CLI fallback first: it calls `zyra commands --json`, and `manifest.
 | A catalog reviewer follows the stale `CLAUDE.md` | The code wins over a doc's description of it. Fix the doc |
 | Treating the Code Reviewer's pass as independent | It shares the authoring model's blind spots |
 | A flag renamed without a TerraViz check | The Developer Tooling Engineer and the cross-repo table above |
+| Narration drops a hedge because its prompt says to | The domain agent's calibrated wording stands, and the hedge instruction is the science reviewer's call |
+| Reviewing a narration prompt without running it | Sample its output on representative inputs, including a hazard and a climate projection |
 
 ## Install
 
