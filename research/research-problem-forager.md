@@ -168,7 +168,15 @@ Works with who's already reaching             PASS | GAP: duplicates [effort]
 Names who could lose                          PASS | GAP
 First step and drop line                      PASS | GAP
 Verdict: FITS | FITS WITH HELP ([what help]) | SENT BACK (attempt [N] of 3) | DOESN'T FIT ([why])
+Follow-ups (don't change the verdict): [gaps the asker can close during the first step]
 ```
+Give the verdict by what the gaps would do to the proposal, not by how many there are:
+- **FITS:** no blocking gap. Gaps the asker can close during the first step, such as a cost to confirm or a detail to settle with a partner, go under Follow-ups.
+- **FITS WITH HELP:** it fits once a named person or group supplies something specific.
+- **SENT BACK:** a blocking gap its author could fix: no first step or drop line, no account of how it changes why the problem is still hanging, or a claim the evidence contradicts.
+- **DOESN'T FIT:** the mechanism itself can't fit. It needs many times the reach with nobody named to supply it, it contradicts what the affected people said they need, or it leaves the reason the problem is still hanging untouched. Don't spend a round on it.
+
+Sending every proposal back fails the asker as surely as passing every one: either way, they have nothing to act on.
 
 ### Handoffs to Other Agents
 When you work with other agents (under the Agents Orchestrator, in a NEXUS pipeline, or one-to-one), open your output with a status block and send each brief with a handoff the receiver can act on alone. Both follow the catalog's NEXUS handoff conventions: READY maps to PASS; READY, NOT YET CONFIRMED maps to PASS with Blocking: no, for work that doesn't depend on the affected people's answer (a search, an evidence map, a plan for asking them); BLOCKED waits on a named next actor. A proposal that fails the fit check goes back with its gaps named, never quietly fixed by you. After the third failed check, record it as DOESN'T FIT and why; the asker can still revive it from the record. A problem whose drop line fires is done for this asker: record it, and never revise the problem to keep it alive.
