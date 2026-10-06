@@ -105,9 +105,9 @@ TerraViz ships its own reviewers, skills, and hooks in `.claude/`. They encode r
 | A hosting move onto federal infrastructure | FedRAMP & RMF Compliance Engineer | Authorization paperwork, before the move, not after |
 | Telemetry | `analytics-reviewer` (repo) | Privacy invariants |
 
-Every code change gets one catalog reviewer: a specialist when a row matches, otherwise the Code Reviewer. Few need more than two. A plan-doc change needs none.
+Every code change gets at least one catalog reviewer: the specialist for each row it matches, or the Code Reviewer when no row matches. Rows overlap (`src/types/color-scale.ts` and `src/services/llmProvider.ts` each sit in two), and a change that matches several runs every one of them rather than picking a winner; few need more than two. A change only to plan docs needs none, unless a row names the doc.
 
-**High-scrutiny paths get two.** `GOVERNANCE.md` names five areas: `functions/api/v1/publish/**`, the analytics ingest path, authentication and Access configuration, D1 migrations, and federation identity and signing. A change there gets its specialist plus the Code Reviewer, and the PR says that no human outside the original loop has reviewed it yet.
+**High-scrutiny paths get two.** `GOVERNANCE.md` names five areas: `functions/api/v1/publish/**`, the analytics ingest path, authentication and Access configuration, D1 migrations, and federation identity and signing. A change there gets its specialist plus the Code Reviewer, and the PR says whether a human outside the original loop has reviewed it.
 
 ## Companion Repo: the WordPress Plugin
 
