@@ -339,6 +339,47 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "problem-scan",
+      "title": "Standing Problem Scan",
+      "mode": "NEXUS-Micro",
+      "duration": "Standing, monthly scheduled runs",
+      "summary": "A scheduled scan for fixable problems matched to one person's reach: the Problem Forager scans, critics who see only the evidence pare the list down, solution rounds run for the problems the asker picked, and a one-page report goes to the asker.",
+      "doc": "strategy/runbooks/scenario-problem-scan.md",
+      "roster": [
+        {
+          "group": "Every run",
+          "activation": "each scheduled run",
+          "agents": [
+            "research-problem-forager",
+            "testing-reality-checker",
+            "research-synthesist",
+            "support-executive-summary-generator"
+          ]
+        },
+        {
+          "group": "Solution round",
+          "activation": "for problems the asker picked",
+          "agents": [
+            "specialized-workflow-architect",
+            "engineering-rapid-prototyper",
+            "research-mad-scientist",
+            "grant-writer",
+            "design-ux-researcher",
+            "academic-statistician"
+          ]
+        },
+        {
+          "group": "When flagged",
+          "activation": "personal data, rules, or a vague reach card",
+          "agents": [
+            "data-privacy-officer",
+            "support-legal-compliance-checker",
+            "product-requirements-interviewer"
+          ]
+        }
+      ]
     }
   ]
 }

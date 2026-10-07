@@ -141,6 +141,7 @@ Evidence Collector verifies improvements.
 | **TerraViz Runbook** | Standing review team for TerraViz and its WordPress plugin | `strategy/runbooks/scenario-terraviz.md` |
 | **Zyra Runbook** | Standing review team for Zyra (and the dormant zyra-editor) | `strategy/runbooks/scenario-zyra.md` |
 | **sphere-sim Runbook** | Standing scientific-integrity review team for sphere-sim | `strategy/runbooks/scenario-sphere-sim.md` |
+| **Standing Problem Scan** | Monthly scan for fixable problems matched to one person, pared down by critics, with a one-page report | `strategy/runbooks/scenario-problem-scan.md` |
 
 ---
 
