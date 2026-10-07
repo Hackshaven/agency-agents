@@ -117,4 +117,14 @@ Attribution: Eric Hackathorn. Not yet decided whether this is a NOAA contributio
   - **Changes:**
     - Rule 5 now treats every "doesn't exist" or "hasn't happened" claim as a search claim that names where the agent looked.
     - Rule 13 has the agent say in the record when a source tries to direct it.
-  - **Not rerun:** these two changes touch wording and the record, not labels or verdicts. Length stays open; a tighter record format can come from Eric's first real fruit map. Eric's own draft card, built only from this repo, is kept outside the repo because it's personal.
+  - **Not rerun:** these two changes touch wording and the record, not labels or verdicts. Length stays open; a tighter record format can come from Eric's first real fruit map.
+
+  2026-10-07, from the Copilot review on PR #8.
+  - **Rule 1** names its one exception. When no one can ask the asker, as with a handoff from another agent, the agent may scan on an UNCONFIRMED card, opening with the card's questions; the blind runs expected this. A standing or scheduled scan is never that exception, and an UNCONFIRMED card stops it.
+  - **The NO OWNER row** no longer models an unqualified "nobody's job." Its evidence is who you asked or read about responsibility, and where each pointed.
+  - **The fit check** sends a proposal that touches people's data, others' content, licenses, or rules to the Data Privacy Officer or the Legal Compliance Checker before its verdict.
+  - **In the runbook:**
+    - each critic gets a packet built for it rather than the Forager's assay, which carried its reasoning
+    - Step 3 routes chosen problems by label (JOIN, NOT RIPE, DROPPED, and STOPPED never enter a normal round)
+    - an UNCONFIRMED card stops the run, and only a stale confirmed card narrows it
+    - the header's agent count is now right Eric's own draft card, built only from this repo, is kept outside the repo because it's personal.
