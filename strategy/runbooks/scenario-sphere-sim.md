@@ -85,7 +85,7 @@ Step 3: Catalog reviewers, in parallel
 │   (the repo's own critic rule)
 └── Each reports findings with file:line. None edits files.
 
-Step 4: Maintainer decides
+Step 4: Maintainer decides (see When a Person Decides)
 └── Fix, accept, or record why not. A waiver change records the amendment it cites.
 ```
 
@@ -110,6 +110,42 @@ required; never recommend sharing code across that boundary.
 
 **Codebase Onboarding Engineer, for succession.** One guide for the forward model and one for the solver, written separately, so a newcomer learns why they can't share code.
 
+## When a Person Decides
+
+The agents on this team check claims about a physical system they can't observe; none of them owns a claim. Several already say where they stop:
+- The Pre-Submission Peer Reviewer names any section that needs a specialist referee: a particular instrument, physical parameterization, or statistical method (its Rule 9).
+- The Mad Scientist shortlists bets, and a person decides what gets tested (its Rule 7).
+- The Scientific Data Steward invents no metadata. Anything it can't verify becomes a question for the owner, and its HOLD is a decision only the owner can make.
+- The repo's own documents already reserve decisions for the owner: amendment status (`docs/AMENDMENTS.md`) and photo provenance (`validation/README.md`).
+
+No catalog agent knows projector optics or a real installation. So the facts this project rests on, beyond what its own measurements show, come from people, and this section says which people and when.
+
+### Who
+
+| Role | Who | When to name them |
+|------|-----|-------------------|
+| Owner | The project's author (`CITATION.cff` lists one). Rules on `docs/PARAMETERS.md`, amendment status, waivers, rebaselines, releases, and validation provenance, and owns every claim the repo makes | Already named |
+| Science reviewer | Someone outside the authoring loop who reads the headline claims before a release mints a DOI, ideally someone who has aligned or measured a physical sphere | Before the next version bump |
+| Site contact | The operator of a real installation, or the people behind NOAA's alignment manual, who can supply a site's configuration files, hardware details, and photographs with their rights | Per site, when its data is used |
+| Visit lead | Whoever runs the ground-truth visit in `docs/VISIT.md` | Before any photometric metric drops PROVISIONAL |
+
+### When
+
+| Go to a person when… | Who decides | What the agents hand over |
+|----------------------|-------------|---------------------------|
+| A claim depends on a constant `docs/PARAMETERS.md` classes as ASSUME, such as anything photometric | No one, yet. The metric stays PROVISIONAL until the visit lead measures it | The claim and the constant it rests on |
+| A site's hardware or configuration disagrees with the spec (A-39 is the precedent: a site's own config file refuted §4.4's central claim) | Owner, through a new amendment, with the site contact as the source | The amendment draft and the evidence |
+| The Statistician says the evidence can't support a ranking or a stated improvement | Owner: the claim waits for more seeds, or is reworded to what the evidence supports | The Statistician's finding |
+| The Pre-Submission Peer Reviewer names a section that needs a specialist referee | Science reviewer, or a referee the owner names for that section | The section and the reason |
+| A version bump will mint a DOI | Science reviewer reads the headline claims, then the owner releases. The archive is permanent, so the read comes first | The Peer Reviewer's and the Steward's reports |
+| A validation photo's provenance or licence is unknown | Owner, with the site contact. Never inferred from where the file came from | The `sources.json` entry |
+| A Mad Scientist bet is ready to test | Owner, after the Statistician | The bet, its cheapest test, and its kill criterion |
+| The third review of the same claim fails | Owner, who drops the claim or takes it to the science reviewer | The open findings |
+
+Record each decision where the repo already records them. An amendment's decision goes in `docs/AMENDMENTS.md`, a waiver's in `gate-waivers.json` with the amendment it cites, a rebaseline's in its commit message, and a release's in its notes, naming who read the headline claims. A relayed "the site said so" is a claim, not a source: ask for the file.
+
+If a release, talk, or poster is to carry NOAA's name, the Communications Clearance Officer and a named clearance official come in first (see What This Team Leaves Out).
+
 ## Cross-Repo Contract
 
 sphere-sim's bundle (`packages/web/src/bundle.ts`, `LAYOUT_FORMAT = 'sphere-sim/projector-layout@1'`) is read by TerraViz's warp importer (`src/services/multiOutput/warpImport.ts`, `storedZip.ts`, `warpStorage.ts`, and `src/ui/outputWarpUI.ts`). TerraViz treats any other format string as unknown. A change to the bundle layout, the warp mesh format, or the SOS alignment files needs a matching TerraViz change and its fixtures (`src/output/fixtures/projectorWarp/`, regenerated by `scripts/generate-warp-parity-fixtures.ts`). See the [TerraViz runbook](scenario-terraviz.md). sphere-sim has no contract with Zyra.
@@ -122,7 +158,8 @@ sphere-sim's bundle (`packages/web/src/bundle.ts`, `LAYOUT_FORMAT = 'sphere-sim/
 | An amendment's status (OPEN, ACCEPTED, REJECTED) | Maintainer. Agents propose; only the owner edits `PARAMETERS.md` |
 | Adding, extending, or re-justifying a waiver | Maintainer, after the Statistician. Two A-18 waivers (`grid_displacement`, `h_center_recovery`) expire on **2026-11-01** |
 | Rebaselining `bench-baseline.json` | Maintainer, with one sentence in the commit message saying why the number moved |
-| A release (and its DOI) | Maintainer, after the Pre-Submission Peer Reviewer and the Scientific Data Steward |
+| A release (and its DOI) | Maintainer, after the Pre-Submission Peer Reviewer and the Scientific Data Steward, and after the science reviewer has read the headline claims |
+| A claim that rests on an unmeasured constant or a site fact the repo can't verify | Owner, with the visit lead or the site contact (see [When a Person Decides](#when-a-person-decides)) |
 | A new bundle format version | Maintainer, together with the matching TerraViz change |
 
 ## What This Team Leaves Out
@@ -147,6 +184,7 @@ sphere-sim's bundle (`packages/web/src/bundle.ts`, `LAYOUT_FORMAT = 'sphere-sim/
 | Gate-machinery changes reviewed | Every change to `packages/bench/src/` or `gate-waivers.json` names the Statistician's verdict |
 | Releases audited | Every version bump has a Pre-Submission Peer Reviewer pass on its headline numbers and a Scientific Data Steward pass on its package and citation |
 | Review cost | 1 catalog agent on a typical change |
+| Releases read by a person | Every release's notes name who read the headline claims before the DOI was minted |
 
 ## Common Pitfalls & Mitigations
 
@@ -157,6 +195,8 @@ sphere-sim's bundle (`packages/web/src/bundle.ts`, `LAYOUT_FORMAT = 'sphere-sim/
 | A reviewer reads the builder's reasoning and agrees with it | Give reviewers the evidence, not the explanation |
 | A few seeds' improvement presented as real | The loop's stopping rule needs an across-seed dispersion that nobody has measured yet (`docs/ARCHITECTURE.md`). Ask the Statistician before ranking |
 | A photometric number treated as measured | Every photometric metric is PROVISIONAL until its constants are measured on a real sphere |
+| An agent's referee report presented as outside review | The Peer Reviewer and the Statistician share the authoring model's blind spots. The science reviewer's read is the outside one |
+| A site fact taken from memory or a forum post | Ask the site contact for the file. A-39 corrected the spec from a site's actual config, not its documented defaults |
 | A bundle change ships without the TerraViz side | Check the importer and its fixtures in the same week |
 
 ## Install
