@@ -135,7 +135,7 @@ Problem Scan/            shared with no one
 └── Reports/             the run adds "Report YYYY-MM" each run; the notification links to it
 ```
 
-The run never edits or deletes an existing file, so the asker's three documents stay the asker's alone. A drive connector that can create files but not edit them, as Google Drive's can't, already enforces that.
+The run never edits or deletes an existing file, so the asker's three documents stay the asker's alone. A drive connector that can create files but not edit them, as Google Drive's can't, already enforces that, as long as the routine isn't also given a document-editing connector such as Google Docs. Don't grant one.
 
 One caution: a drive connector reaches the asker's whole drive, not just that folder, and an unattended run reads the open web. The scan needs only search, read, file details, and create. Before granting the connector to a routine, set its other tools to off in the connector's tool permissions: sharing, moving or renaming, copying, and trashing. Those settings apply to every session, not just this routine.
 
