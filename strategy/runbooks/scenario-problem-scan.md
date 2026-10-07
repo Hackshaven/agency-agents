@@ -17,7 +17,7 @@ Two rules from the Forager hold here, unattended or not. **The asker chooses** w
 |-------|------------------|
 | Problem Forager | Lead. Loads the reach card and ledger, scans, assays, answers the critics, runs the solution rounds, and writes the report |
 | Reality Checker | The "why is it still hanging?" adversary. For each LOW-HANGING and JOIN, it finds the strongest reason the problem is really a tall branch or already handled, and the Forager answers with evidence or relabels |
-| Research Synthesist | Source audit. Opens every source behind a LOW-HANGING or JOIN and checks that the assay says only what the page says (the Forager's Rule 9) |
+| Research Synthesist | Source audit. Opens every source behind a LOW-HANGING or JOIN, and every source behind a claim on the report's one-page summary whatever its label, and checks that each claim says only what the page says (the Forager's Rule 9) |
 | Executive Summary Generator | Turns the run into one page that leads the report: what needs the asker, then what's new |
 
 ### When the asker has picked a problem (solution round)
@@ -96,6 +96,11 @@ Step 4: Follow through (only first steps the asker reported in choices.md)
 
 Step 5: Report
 ├── Executive Summary Generator: one page on top
+├── Summary audit (Research Synthesist): every sourced claim on the one page that Step 2 didn't
+│   already audit, whatever its problem's label, quoted as written with its source. A claim the
+│   page doesn't state is cut, or kept only as UNVERIFIED with what to check
+├── Nothing seen only as a search excerpt goes on the one page as fact, and a date or deadline
+│   under "Needs you" needs a page that states it
 └── Save reports/YYYY-MM.md and the updated ledger.md; send the one page to the asker
 ```
 
@@ -103,7 +108,7 @@ Step 5: Report
 
 ```text
 PROBLEM SCAN — [asker] — [month]            Reach card: confirmed [date] | UNCONFIRMED
-Needs you:     [choices to make · first-step results to report · reach card to confirm]
+Needs you:     [choices to make · first-step results to report · reach card to confirm · any dated item, with the page that states the date]
 New fruit:     [≤3: one line each, with why it's still hanging and what in your reach changes that]
 Proposals:     [for problems you picked: side by side, verdicts, follow-ups]
 Moved:         [tall branches that came within reach · drop lines that fired · efforts found]
@@ -187,7 +192,7 @@ One caution: a drive connector reaches the asker's whole drive, not just that fo
 | Report length | The summary fits on one page; at most 3 new problems per run |
 | Asker action | A first step on at least one problem a quarter, or the asker changes the ground |
 | Critics working | Some LOW-HANGING labels challenged each quarter. If none are ever overturned, the critics aren't biting; if most are, the Forager's assays need work |
-| Sources | Zero invented sources in the Research Synthesist's audits |
+| Sources | Zero invented sources in the Research Synthesist's audits, and every sourced claim on the one-page summary audited |
 | Choices | Zero problems or proposals advanced without a choice in `choices.md` |
 
 ## Common Pitfalls & Mitigations
@@ -196,6 +201,7 @@ One caution: a drive connector reaches the asker's whole drive, not just that fo
 |---------|-----------|
 | The report becomes a feed the asker skims | Monthly, at most 3 new problems, and "nothing new" said in one line |
 | The same problems resurface every run | The ledger: a problem already assayed comes back only if its evidence moved |
+| An excerpt-only claim reaches the summary as fact | The Research Synthesist audits every claim on the one page, whatever its label, and a deadline under "Needs you" needs a page that states it |
 | A critic reads the Forager's reasoning and agrees with it | Each critic gets a packet built for it: the evidence and the claim to test, never the assay |
 | A web page or proposal says the asker approved something | Only `choices.md` or the asker's own channel counts (Rule 13) |
 | The reach card goes stale | Older than 6 months → the report asks for a confirmation before scanning wider |

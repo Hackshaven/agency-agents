@@ -127,4 +127,16 @@ Attribution: Eric Hackathorn. Not yet decided whether this is a NOAA contributio
     - each critic gets a packet built for it rather than the Forager's assay, which carried its reasoning
     - Step 3 routes chosen problems by label (JOIN, NOT RIPE, DROPPED, and STOPPED never enter a normal round)
     - an UNCONFIRMED card stops the run, and only a stale confirmed card narrows it
-    - the header's agent count is now right Eric's own draft card, built only from this repo, is kept outside the repo because it's personal.
+    - the header's agent count is now right
+
+  2026-10-07, after the first routine run (an on-demand test of the monthly schedule, with a Google Drive ledger and the routine's default model).
+  - **Held:**
+    - It ran unattended, read the asker's documents, and created only its dated ledger and report; the asker's documents were unchanged.
+    - It respected the card, the ground, and the limits, put the one-page summary first, and listed what it skipped.
+    - Both critics changed labels. The Reality Checker found an existing program the Forager's searches had missed.
+  - **Found:**
+    - The one-page summary's only "Needs you" item was a dated deadline, with figures, that rested on search excerpts. Neither cited article stated the deadline, and both gave different figures.
+    - That problem was a TALL BRANCH. The runbook sent only LOW-HANGING and JOIN problems to the source audit, so nothing checked it before it reached the top of the report.
+    - Two agent-rule drifts, not yet addressed: a JOIN label on a problem diagnosed UNKNOWN with outside voices only (Rules 4 and 6 make that NOT RIPE), and one unqualified "nobody" (Rule 5).
+    - The run was short: 8 searches in about five minutes.
+  - **Change (runbook):** Step 5 adds a summary audit. The Research Synthesist checks every sourced claim on the one page that Step 2 didn't already audit, whatever its label. A claim the page doesn't state is cut or kept only as UNVERIFIED. Nothing seen only as an excerpt goes on the one page as fact, and a date under "Needs you" needs a page that states it. Eric's own draft card, built only from this repo, is kept outside the repo because it's personal.
