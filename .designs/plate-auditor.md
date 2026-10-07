@@ -26,7 +26,7 @@ Attribution: Eric Hackathorn. Probably a personal contribution rather than a NOA
   - Health gets the likely value. The range, sources, and confidence go in metadata and in the agent's own log, because Health has nowhere to show a range.
   - It's one agent with a blind second-opinion pass, not a team. One conversation, one record.
   - Not medical advice, and no dosing (Rule 9).
-  - Services: USDA FoodData Central (free API key) and Open Food Facts (open barcode database).
+  - Services: USDA FoodData Central (free API key), including its Branded Foods data for barcodes, and Open Food Facts (an open barcode database; no key, but a custom User-Agent and 15 product reads a minute).
   - The name, the division, color `#9A3412` (unused on `hackshaven`; a terracotta plate), and emoji 🍽️ (unused).
 
 ---
@@ -52,7 +52,7 @@ Most of the work goes where most of the error is.
 
 1. **The model looks; code counts.** The model identifies foods, estimates portions, picks database matches, and runs the conversation. Every nutrient number comes from a database value times grams, computed in code. A number the model "knows" from memory is a last resort, labeled `model estimate, unverified`.
 2. **Every number has a range and a source.** Each item carries low, likely, and high grams, and a source ID (an FDC ID, a barcode, a restaurant item, a user recipe, or the model). Totals carry ranges too. Never show false precision: "about 820 kcal (680–970)," never "823 kcal."
-3. **Best evidence wins.** In order: a weight from the user → a package label or barcode → a restaurant's published nutrition → the user's saved recipe or usual meal → a generic USDA entry → a model estimate. Better evidence for an item replaces the estimate for that item; it isn't averaged with it.
+3. **Best evidence wins.** In order: a weight from the user → the package's own nutrition label → a barcode database record → a restaurant's published nutrition → the user's saved recipe or usual meal → a generic USDA entry → a model estimate. Better evidence for an item replaces the estimate for that item; it isn't averaged with it.
 4. **A question earns its place by the calories it can move.** Rank every unknown by its swing (the high value minus the low). Ask about the biggest swing first, one question per turn, as a choice that can be answered in a word, with "not sure" always allowed. Recompute after every answer, because one answer can make the next question unnecessary. Don't ask what the photo or the user's words already settle, and don't ask about swings under about 50 kcal or 10% of the meal. Stop at three questions, when the range is inside the target, or when the user says "just log it." Whatever is left unasked shows up as range width, not as a guess.
 5. **Two independent estimates before one log.** A blind second pass estimates the meal without seeing the first pass's answer (Check V7). When the two disagree, the agent finds the item behind the disagreement and either asks about it or widens the range. It never quietly averages the two.
 6. **Checks are a gate.** A record with a failed check isn't offered for logging until the failure is fixed or explained to the user in a line.
@@ -72,12 +72,13 @@ Most of the work goes where most of the error is.
  2 LOOK         vision pass A ─► items[]: name, visible prep, grams {low, likely, high},
      │          how much is hidden, top-3 database candidates, confidence, "can't see" flags
  3 RESOLVE      lookup tool ─► best source per item (Rule 3); raw/cooked state matched
+     │          barcodes decoded in code and looked up by GTIN (see Barcodes below)
  4 COMPUTE      code ─► nutrients per item and totals, each low/likely/high; swing per unknown
  5 TRIAGE       rank unknowns by swing ─► at most 3 questions, biggest first   (Rule 4)
  6 INTERVIEW    one question per turn ─► recompute ─► re-rank ─► stop rule
      │                    ▲                                 │
      │                    └──────── loop ───────────────────┘
- 7 CHECK        V1–V11 (below) ─► fix, ask, or widen; a failure blocks step 8
+ 7 CHECK        V1–V12 (below) ─► fix, ask, or widen; a failure blocks step 8
  8 CONFIRM      summary card: items, grams, kcal, macros, range, sources, assumptions
      │          "Log it / Edit / Cancel"; edits by voice ("the rice was more like a cup")
  9 LOG          canonical log first (meal_id) ─► Apple Health / Health Connect / sheet
@@ -99,6 +100,32 @@ Photo: spaghetti with red sauce, a side salad with dressing, and a glass of dark
 
 The total goes from about 370–1,090 kcal before the questions to about 680–970 after (likely about 820). The card says the oil in the sauce was assumed, not asked.
 
+## Barcodes and nutrition labels
+
+For packaged food, a barcode is the best evidence short of a weight, and it's the fastest path through the workflow. But a barcode tells the agent what the product is, not how much was eaten, and the database record behind it can be wrong.
+
+**The fast path.** Scan → decode → look up → one question about amount → card → log. There's no portion to guess, so the blind second estimate (V7) is skipped, but V2–V5, V8, V10, and V12 still run. The amount question uses the package's own terms: "How much: the whole package, one serving (2 cookies, 28 g), or something else?" Labels give values per serving, and a package can hold several, so the agent converts using the label's serving weight.
+
+**Decode with code, not the model.**
+- In an app, VisionKit's live scanner or the Vision framework decodes the barcode on the phone.
+- Shortcuts has a Scan QR/Barcode action, but whether it returns retail UPC and EAN codes needs checking on a device. If it doesn't, the Shortcut sends a photo and the backend decodes it with an open-source decoder such as ZBar or ZXing.
+- Normalize every code to a 14-digit GTIN by padding it with leading zeros, and validate the check digit. Depending on the scanner and the database, the same product can come back as a 12-digit UPC-A or a 13-digit EAN-13, so on a miss, try the padded and unpadded forms.
+- Having the vision model read the digits printed under the bars is a last resort, for damaged barcodes. When it's used, the check digit has to validate and the agent reads the number back to the user.
+
+**Look it up in two places, then compare.**
+- **Open Food Facts** is open, crowd-sourced, and worldwide. Reads need no API key but do need a custom User-Agent (`AppName/Version (contact)`), and product reads are limited to 15 a minute per IP address. The data is under the Open Database License ([API docs](https://openfoodfacts.github.io/openfoodfacts-server/api/)).
+- **USDA FoodData Central's Branded Foods** holds label data for US packaged products, with the barcode in a `gtinUpc` field. It uses the same free key as the rest of FDC.
+- When both return a record, V8 compares energy and macros per 100 g. If they agree within label tolerance, the agent uses them. If they disagree, it asks for a photo of the nutrition panel.
+- **The label in hand beats both databases.** Products get reformulated, and crowd-sourced records carry typos. When a label photo is available, the model reads the panel into fields (serving size, servings per container, energy, macros, fiber, sugar, sodium), V2 and V3 check that reading, and the panel becomes the item's source.
+- **When no database has the product,** the agent asks for photos of the nutrition panel and the front of the package, and logs from the panel.
+
+**Barcode traps** (V12 catches most of them):
+- **In-store codes:** deli, meat-counter, and bakery labels often carry a store's own code (a UPC-A starting with 2, or an EAN-13 starting with 20–29) that encodes price or weight rather than a product. No database knows these codes. The agent says so, and asks what the item is or reads the printed label.
+- **Per serving vs. per 100 g:** databases store one or both, and mixing them up is a multiple-servings error. V3 and V12 catch it.
+- **Kilojoules in the calorie field:** a crowd-sourced record with energy in the wrong unit is off by 4.184×. V2 catches it.
+- **Stale or foreign records:** a record that hasn't been edited in years, or one for another country's version of the product, can carry an old formula. When the package in hand doesn't match the record, the agent asks for the panel.
+- **Mixed meals:** barcode items join photo items in the same record. A yogurt can come from its barcode and the homemade granola on it from the photo.
+
 ## The checks
 
 | # | Check | Catches | Passes when | On failure |
@@ -114,6 +141,7 @@ The total goes from about 370–1,090 kcal before the questions to about 680–9
 | V9 | **History**: vs. this user's past logs of the same meal and their usual daily pattern | Unit errors that pass every other check | Within the user's normal range | Confirm: "This is about twice your usual breakfast. Right?" |
 | V10 | **Duplicate**: same photo hash, or a similar meal within 30 minutes; other apps writing the same meal to Health | Double logging | No match | Ask before writing |
 | V11 | **Range honesty**, measured over time: how often the truth (weighed meals) lands inside the stated range | Ranges that are too narrow or too wide to be useful | 75–85% for an 80% range | Recalibrate how ranges are built |
+| V12 | **Barcode integrity**: the GTIN check digit; a record with energy and macros; per-serving values that match per-100 g values at the stated serving weight | Misreads, in-store codes, unit and serving mix-ups in database records | All hold | Rescan, try the other database, or ask for the nutrition panel |
 
 V7 has limits. A second pass that uses the same model shares that model's blind spots, including the systematic underestimation of big portions. A different model family lowers the overlap. Either way, the second opinion catches anchoring and careless matches; it doesn't replace a weight or a good question.
 
@@ -197,10 +225,10 @@ The agent's real output is the record. Logging is a projection of it.
 
 ## Test plan
 
-1. **Kit:** 25 home meals with every component weighed before plating and leftovers weighed after, each photographed top-down and at 45° with a fork in frame; 5 packaged items with their labels; 5 restaurant items with published nutrition. A script computes ground truth from FDC entries, so the agent never grades itself. A Nutrition5k subset serves as an outside benchmark.
-2. **Traps:** diet vs. regular soda in the same glass; fried rice (oil you can't see); "100 grams of rice" said by someone who weighed it dry; a half-eaten plate; a shared plate with two forks; a packaged item whose label disagrees with the generic database entry; a menu photo whose posted calories are for a smaller size than the one served; "fifteen" vs. "fifty" grams of almonds by voice; the same photo sent twice; a photo that isn't food; a photo with GPS metadata and a stranger's face in the background; a user who says they'll dose insulin from the carb count.
+1. **Kit:** 25 home meals with every component weighed before plating and leftovers weighed after, each photographed top-down and at 45° with a fork in frame; 10 packaged items with their labels and barcodes, including one that no database has; 5 restaurant items with published nutrition. A script computes ground truth from FDC entries, so the agent never grades itself. A Nutrition5k subset serves as an outside benchmark.
+2. **Traps:** diet vs. regular soda in the same glass; fried rice (oil you can't see); "100 grams of rice" said by someone who weighed it dry; a half-eaten plate; a shared plate with two forks; a packaged item whose label disagrees with its barcode record; a package holding three servings when the user ate one; a deli label with an in-store code; a barcode with a damaged bar; a menu photo whose posted calories are for a smaller size than the one served; "fifteen" vs. "fifty" grams of almonds by voice; the same photo sent twice; a photo that isn't food; a photo with GPS metadata and a stranger's face in the background; a user who says they'll dose insulin from the carb count.
 3. **Baseline:** a plain model with the same photos and words, asked "How many calories and macros?" The agent has to beat it on MAPE and on range honesty while averaging three or fewer questions a meal.
-4. **Score:** meal energy MAPE (proposed target: median under 20%, against about 36% for photo-only in Fridolfsson); how often the truth lands in the stated range (75–85%), plus average range width; macro MAPE; questions per meal and calories moved per question; arithmetic errors (target 0); logs without confirmation (target 0); duplicate writes (target 0); traps handled.
+4. **Score:** meal energy MAPE (proposed target: median under 20%, against about 36% for photo-only in Fridolfsson); how often the truth lands in the stated range (75–85%), plus average range width; macro MAPE; questions per meal and calories moved per question; arithmetic errors (target 0); misread barcodes that reach the card (target 0); logs without confirmation (target 0); duplicate writes (target 0); traps handled.
 
 ## Decisions for Eric
 
@@ -213,11 +241,11 @@ The agent's real output is the record. Logging is a projection of it.
 
 ## At build time
 
-Recheck open upstream PRs for overlap. Write the agent file from the rules above (persona, interview, checks, record format, handoffs) with `services` frontmatter for FoodData Central and Open Food Facts. Run lint, the originality check, the converter, and the skill build. Then run the test loop. Before writing the Shortcut, confirm on a device which nutrient types Log Health Sample offers and whether iOS 27's label scanning writes to Health.
+Recheck open upstream PRs for overlap. Write the agent file from the rules above (persona, interview, checks, record format, handoffs) with `services` frontmatter for FoodData Central and Open Food Facts. Run lint, the originality check, the converter, and the skill build. Then run the test loop. Before writing the Shortcut, confirm on a device which nutrient types Log Health Sample offers, whether Scan QR/Barcode returns retail UPC and EAN codes, and whether iOS 27's label scanning writes to Health.
 
 - **Proposed frontmatter:**
   - color `#9A3412`
   - emoji 🍽️
   - vibe "Asks what the camera can't see, and logs only numbers it can defend."
-  - description "Meal nutrition auditor that turns a photo and a few spoken or typed answers into a checked log entry: identifies each food, estimates portions with ranges, asks only the questions that move the numbers, takes nutrient values from food databases rather than memory, runs arithmetic and plausibility checks plus a blind second estimate, and logs to Apple Health or another store only after the user confirms."
-- **Revisions:** none yet.
+  - description "Meal nutrition auditor that turns a meal photo or a barcode, plus a few spoken or typed answers, into a checked log entry: identifies each food or looks the package up by barcode, estimates portions with ranges, asks only the questions that move the numbers, takes nutrient values from food databases rather than memory, runs arithmetic and plausibility checks plus a blind second estimate, and logs to Apple Health or another store only after the user confirms."
+- **Revisions:** 2026-10-07, at Eric's request: a barcode and nutrition-label path, with a fast path for packaged food, decoding in code with check digits, two databases with the label in hand as the tiebreaker, Check V12, and barcode traps in the test plan.
