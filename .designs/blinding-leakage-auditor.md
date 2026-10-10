@@ -41,6 +41,7 @@ Attribution: Eric Hackathorn, built for districting-bench, an independent projec
      - `importlib.import_module("evaluate.elections")` inside `src/generate` prints clean.
      - `"evaluate.partisan"` is caught only because its text contains the denied word "partisan".
      - The class isn't in FEASIBILITY §1's probe table. Whether to add it is your call.
+  7. **The real run (step 8) added six more.** See that section below: the critic artifact carries the builder's rationale; a partisan series reaches `generate.convergence`; the Experiment 1 and 2 ensembles skip the schema guard; the FPR gate subset was chosen after results were seen; plants share their anchor with the reference; and five more static-check blind spots.
 - **Assumptions made without asking:**
   - Attribution as a personal contribution, because districting-bench says it's unconnected to the author's employment. If it should carry NOAA attribution like the fork's other agents, change the line above.
   - Tools: Read, Grep, Glob, Bash. Bash runs the reach scan, the separability script, and probes in a temporary copy. The tools line can't make Bash read-only, so Rule 1 carries that, and the test checks it.
@@ -169,3 +170,34 @@ Attribution: Eric Hackathorn, built for districting-bench, an independent projec
     - The auditor's additions are probe evidence (spy probes, perturbation probes, a tolerance sweep), a 13-channel account on every run, and pre-existing findings kept out of the change's verdict.
     - In Round 1 it also found real problems nobody planted, and in Round 2 a new dynamic-import gap.
     - The evidence doesn't support a gate slot over the Code Reviewer. It supports periodic full-tree audits (step 8), which is where its unplanted findings came from.
+- **Real run (step 8), 2026-10-10: full-tree audit of districting-bench `main` at 24c9d05.**
+  - **Setup.** A fresh clone, the current agent file, and the same full-tree prompt as S6 and S9, with no hint of what to look for.
+  - **Integrity.** The checkout was byte-identical afterwards, the agent's temp directory was removed, and the transcript has no read outside the checkout, the agent file and that directory.
+  - **Verdict: BREACH, escalated.**
+  - **Against the two expectations this plan set:**
+    - **FEASIBILITY §1's gaps rediscovered without being pointed at them: yes.** 18 static probes found:
+      - VEST names
+      - the `precinct` allowlist short-circuit
+      - a read that names no column
+      - a module at `src/shim.py`
+      - non-`.py` files
+      - DRA-style names
+      - runtime-built strings
+
+      It found six classes beyond §1: `importlib.import_module`, `__import__`, `from src import evaluate`, a `tools/` module reached through `sys.path`, keyword-argument names, and import aliases. It also re-found the silent CI detector (Finding 4).
+    - **D-010's confound: reported as the finding this plan anticipated.** No separability number can be computed from committed files, because the per-case table, the plans and `data/` are absent or gitignored.
+      - It cited the project's own AUC of 0.667–0.746 and `still_confounded = true`.
+      - It noted that the code that measured them isn't committed.
+      - It said how to settle it: commit the per-case table and run `separability.py --groups` on the anchor.
+  - **New findings, the first three verified in the source by me:**
+    1. **The critic artifact carries the builder's rationale.** `bench.py` writes prose arguing for its own disputed choices into `bench-results.json`, which `prompt.md:208-210` says critics read instead of "the builder's reasoning". Examples are the reason the seat_outcome stratum is out of the FPR gate (`:2618-2625`) and round history (`:2529-2541`). `progress.md:515-517` says this was done on purpose. Whether design rationale counts as "reasoning" is the owner's call.
+    2. **A partisan series reaches `src/generate`.** `tools/experiment_2_tradeoffs.py:459-466` and `tools/convergence_rectangle.py:89-95` pass `fairness_eg` series into `generate.convergence.split_rhat` and `ess`. It can't change a draw, since convergence.py does no I/O and the sampler doesn't import it, so its effect runs through selection (Finding 2). It is a question of where the wall is.
+    3. **The Experiment 1 and 2 ensembles never passed the schema guard.** `experiment_2_tradeoffs.py:268-271, 378-383` loads populations through `evaluate.plan.populations`, whose loader "keeps whatever columns the file carries" (`plan.py:117-133`), and hands them to `generate.ensemble.sample`. Only the `pop` column is read, so nothing protected crossed; the protection on that path is a column name, not the guard.
+    4. **The FPR headline uses a gate sample chosen after results were seen.** The seat_outcome stratum was excluded after round 2 saw its rate rise and round 3 found its only false positive there. Reported by the agent from `progress.md`; not re-derived by me.
+    5. **Plants are scored against a reference that contains their anchor draw.** That is non-independence, not membership, and it pushes TPR down. Reported; not re-derived by me.
+    6. **Smaller items:**
+       - the bench hashes `firewall.yaml` but not `check_firewall.py`
+       - `tests/test_adversarial.py:1248` globs a path relative to the working directory
+       - no test asserts that the schema guard fires
+       - "not a member" wording at `bench.py:177-178` is literally false at the plan level
+  - **Scoring is Eric's.** This record checks the run only against the two expectations above. Both are met.
