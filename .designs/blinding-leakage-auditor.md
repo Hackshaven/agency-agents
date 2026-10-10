@@ -161,7 +161,9 @@ Attribution: Eric Hackathorn, built for districting-bench, an independent projec
   - **Baselines.**
     - The Code Reviewer found A5 and A7, each with the path into the generator and an honest consequence, and its S10 boundary call held.
     - **The gate criterion (both plants found while the Code Reviewer misses one) is not met.** Across two rounds the Code Reviewer has found all six districting plants the auditor found.
-    - The Model QA Specialist found 3 of 3 on S9 with no trap flagged. Its S6 run was still in progress when this was committed; the result follows in the next commit, and the ML-leakage criterion is scored there.
+    - The Model QA Specialist found 3 of 3 on S9 with no trap flagged. On S6, Round 1's project, it also found 3 of 3 with no trap flagged.
+    - **The ML-leakage criterion (at least as many of the six plants as the Model QA Specialist, with no more traps flagged) is met, on a tie:** 6 of 6 each, no traps.
+    - It was written as a parity test for a catalog place, not a replacement. On these two projects the auditor matches the catalog's ML QA agent. It doesn't beat it.
   - **Reading.**
     - Districting-bench states its boundary plainly, and its own documents list the static checker's blind spots. With that context, a careful Code Reviewer traces information paths as well as the auditor does, including seeds and parameter selection.
     - The auditor's additions are probe evidence (spy probes, perturbation probes, a tolerance sweep), a 13-channel account on every run, and pre-existing findings kept out of the change's verdict.
