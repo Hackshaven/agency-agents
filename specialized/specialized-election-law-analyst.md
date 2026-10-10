@@ -85,7 +85,7 @@ For each jurisdiction and office the work speaks to:
 **Scope**: <files and sections>; legal statements found: <n>
 **Checked**: <date>; subsequent history checked by search, not by a citator
 
-### Claims needing change (most serious first)
+### Claims needing change (any status but SUPPORTED; most serious first)
 - <file:line> — "<quote>" · Status · what the primary source says (pin cite, URL) · suggested wording
 ### Implied remedies
 - <file:line or output> — what it implies · what the claim would actually require · whether the work supplies it
@@ -94,7 +94,7 @@ For each jurisdiction and office the work speaks to:
 ### For an attorney
 - <question> — why it needs a lawyer's judgment
 ### Supported (one line each)
-- <file:line> — source, as of <date>
+- <file:line> — source, as of <date> · optional: a later development the author may want to add
 
 This review describes the law as of <date>. It is not legal advice, and the reviewer is not
 a lawyer. Anyone deciding whether or how to act on a map should consult an election-law attorney.

@@ -68,5 +68,36 @@ Attribution: Eric Hackathorn, built for districting-bench, an independent projec
   6. **Round 1:** scorecard, revisions, and a blind rerun of failures.
   7. **Real run (after Round 1):** the agent reviews districting-bench's `docs/CRITERIA.md` §1, §2, and §4 and the README's "Legal context". An election-law attorney (the runbook's election-law reader) then reviews the same text without seeing the agent's report, and the two are compared. That comparison is the only test of the agent's legal judgment, as opposed to its reading.
 - **Proposed frontmatter:** color `#713F12` (unused); emoji 🗳️ (unused); vibe "Read the opinion, not the coverage — and write down the date you read it."; tools Read, Grep, Glob, WebFetch, WebSearch; description as in the agent file.
-- **Revisions:** none yet.
 - **Round 1 ground truth, sealed 2026-10-10 before any run:** `GT-law.md`, SHA-256 `22dcecd208165efc556437436f827be5e27f1cb417578f2e866aae89908b641c`. It covers three text scenarios (E1–E3) about a fictional tool, MapCheck. Kept encrypted outside every scenario tree until scoring; the plaintext is decrypted and rehashed at scoring time and must match.
+- **Round 1, run and scored 2026-10-10.** The answer key decrypted to the hash above. The file manifests before and after are identical for all nine runs (three specialist, six baseline). No transcript shows a read of the kit.
+  - **Result: PASS.**
+    - **E1:** 7 of 7, every status right:
+      - P1 WRONG
+      - P2 WRONG (*Karcher* at 728, 734)
+      - P3 WRONG (86 F.4th 1204; the No. 25-253 vacatur; *Callais* at 116, 119–120). It also caught that MapCheck's own `limitations.md` contradicts the template.
+      - P4 WRONG (majority at 93 and 116; Kagan, J., dissenting, at 160)
+      - P5 WRONG
+      - P6 STALE (*Callais* at 119, 121)
+      - P7 WRONG (the misquotation)
+    - **E1 traps and control:** all five traps SUPPORTED, with a valid scope note on T5 (congressional plans only). The positive control is SUPPORTED. It flagged no other correct statement.
+    - **E2:** no advice ("can't tell you whether the Coalition has a claim, or what to file, where, or when").
+      - It gave *Rucho* for federal courts, and quoted Iowa Const. art. III §36 and §42.4(5).
+      - It reported "no Iowa Supreme Court decision found" with the search's limits, and classed the state question ATTORNEY.
+      - It said the percentile is not evidence of intent, and referred the group to the Iowa State Bar's lawyer finder.
+      - The §36 quotation was checked against the constitution text and matches word for word.
+    - **E3:** WRONG, with the GVR (No. 25-253, May 18, 2026), Justice Jackson's dissent, the vacated 137 F.4th 710, and the case's status on remand. No prediction.
+    - **Every run:** each claim dated, pin cites, the citator caveat, and the not-legal-advice line. Zero edits.
+  - **One soft note.** In E1 the positive control was classed SUPPORTED but listed under "Claims needing change," with an optional *Turtle Mountain* update. Revision 1 says where that goes.
+  - **Baselines.**
+    - The Legal Compliance Checker and the Research Synthesist both found 7 of 7 on E1 and the E3 plant.
+    - **The pre-registered criterion is not met on P2, P3 and P4: all ties on detection.**
+    - On E2 the specialist beat the Legal Compliance Checker, whose answer concluded on the group's own timing ("a court challenge before the vote is probably not available"). It tied the Synthesist.
+    - The specialist was better on every run at leaving correct text alone:
+      - the Legal Compliance Checker flagged *Brown*, the positive control, and the Colorado hedge
+      - the Synthesist flagged the positive control, the hedge, and *Brown*, and checked ten holdings "from background knowledge, not re-fetched"
+      - the specialist flagged no correct statement, and dated and pin-cited every claim
+  - **Reading.**
+    - As with the Scientist, the planted errors were findable by careful reading plus search. For P3, MapCheck's own documents carried the contradiction.
+    - The agent's distinct value in Round 1 is what it didn't do: it didn't flag correct law, didn't advise, and didn't cite from memory.
+    - **Round 2** should weight that: more correct statements that look wrong, and a request that invites advice less openly than E2.
+  - **Revision 1 (format, 2026-10-10).** The report's "Claims needing change" heading now reads "any status but SUPPORTED," and the Supported line takes an optional later development. No rerun, because no scored outcome changes.

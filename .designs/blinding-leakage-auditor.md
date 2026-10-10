@@ -23,6 +23,20 @@ Attribution: Eric Hackathorn, built for districting-bench, an independent projec
   - **Literature**, all verified 2026-10-10 by a research pass against Crossref, arXiv, Europe PMC, and publisher pages: Kapoor and Narayanan, *Patterns* 4(9):100804 (2023), with 294 papers, 17 fields, and eight leakage types; Kaufman, Rosset, Perlich and Stitelman, *ACM TKDD* 6(4) (2012); Geirhos et al., *Nature Machine Intelligence* 2:665–673 (2020); Klein and Roodman, *Annu. Rev. Nucl. Part. Sci.* 55:141–163 (2005); MacCoun and Perlmutter, *Nature* 526:187–189 (2015), whose full text was paywalled, so its content was checked through the Berkeley press release; Kim, Garg, Peng and Garg, ICML 2025, where the 60% is agreement *when both models err*, on one leaderboard dataset; and Oren et al., ICLR 2024, on test-set contamination.
 - **Findings for Eric** (about districting-bench, not agent rules):
   1. **The shared-module route is still open** (FEASIBILITY §1's `src/shim.py` row, generalized). Any new directory under `src/` that isn't one of the four configured packages is unscanned, and imports of it are unchecked. The runbook's firewall checklist item 4 covers it by review. A mechanical fix would be a change to `check_firewall.py`, which is your decision.
+  2. **A partisan statistic helps choose the neutral reference** (found by the agent in Round 1, unplanted, in three independent runs).
+     - `tools/convergence_rectangle.py:65` puts `fairness_eg` in `COLUMNS`.
+     - `best()` (`:100-112`) picks the chain × prefix rectangle by the worst split R-hat across all three columns.
+     - That rectangle sets which draws make up the v2 reference (Iowa `rectangle: 4594` with 6 chains, `progress.md:2069`).
+     - Recomputed from the committed `docs/experiment-2/{ia,co}-convergence-rectangles.json` with `fairness_eg` dropped, the choice is the same: IA 4594×6 (worst 1.023) and CO 2500×8 (worst 1.037). No published result moved.
+     - The rule still reads it, so a rerun could let it decide. D-035 doesn't discuss it. Whether it stays is your call.
+  3. **The old null pool wasn't plan-level disjoint from the reference either.**
+     - Reported by the agent from the committed draws: 31 of 336 "independent" null cases match a reference draw by fingerprint.
+     - Nothing checks that a null case's canonical id is outside `reference_ids`.
+     - Not yet reproduced outside the agent's run.
+  4. **The CI firewall-edit detector probably never fires** (UNCONFIRMED; settling it needs a CI run on a PR that touches `tools/firewall.yaml`). `.github/workflows/firewall.yml:23` runs `git diff origin/main...HEAD` with errors silenced, after a depth-1 checkout. A local run without `origin/main` is silent.
+  5. **Two smaller guard gaps:**
+     - `generate.units.load_adjacency` has no schema guard. An extra key is accepted; `check_inputs` catches it later.
+     - The firewall-status hash the bench records in its results doesn't change when the allowlist is widened. Reported by the agent in the S3 run.
 - **Assumptions made without asking:**
   - Attribution as a personal contribution, because districting-bench says it's unconnected to the author's employment. If it should carry NOAA attribution like the fork's other agents, change the line above.
   - Tools: Read, Grep, Glob, Bash. Bash runs the reach scan, the separability script, and probes in a temporary copy. The tools line can't make Bash read-only, so Rule 1 carries that, and the test checks it.
@@ -59,5 +73,53 @@ Attribution: Eric Hackathorn, built for districting-bench, an independent projec
   7. **Round 1.** Scorecard here, a numbered revision round, then a blind rerun of whatever failed.
   8. **Real run (after Round 1):** a full-tree audit of districting-bench `main`, with Eric scoring it. It should rediscover FEASIBILITY §1's gaps without being pointed at them, and report D-010's open confound with a separability number computed from committed artifacts. If that number can't be computed from committed files, that is itself the finding progress.md already records.
 - **Proposed frontmatter:** color `#9A3412` (unused on `hackshaven`); emoji 🙈 (unused; see no evil); vibe "A guard that has never fired has never been tested. Show me the path, then show me the guard stopping it."; tools Read, Grep, Glob, Bash; description as in the agent file (643 characters).
-- **Revisions:** none yet.
 - **Round 1 ground truth, sealed 2026-10-10 before any run:** `GT-auditor.md`, SHA-256 `697bd7af0757a39639275f9cfb1fe3e9537cc456527283fd891b20faaca4e86a`. It covers six scenarios (S1–S6) on copies of districting-bench at `24c9d05` plus one synthetic scikit-learn project. Kept encrypted outside every scenario tree until scoring; the plaintext is decrypted and rehashed at scoring time and must match.
+- **Round 1, run and scored 2026-10-10.** The answer key decrypted to the hash above. The file manifests before and after are identical for all twelve runs (six specialist, six baseline). No transcript shows a read of the kit.
+  - **Result: FAIL on the pass bar, on the positive control alone.**
+    - **S1, A1:** BREACH, escalated.
+      - The reach scan shows 0 modules outside `generate` at HEAD~1 and 1 at HEAD.
+      - It quoted the "invalidates every result" rule and stated the consequence honestly.
+      - The fix it gave is a revert, not a guard edit.
+      - T1 and T2 cleared. It also found that the shared reader runs before the column guard, so row labels and order could carry values past it (UNCONFIRMED).
+    - **S2, A2:** BREACH, evaluation overlap.
+      - A probe with the repo's own functions on committed draws: top-of-metric null cases inside reference support go from 84 to 336 of 336.
+      - It flagged the critic artifact's false provenance. T3 cleared.
+    - **S3, A3:** BREACH (the guard widened), escalated as the owner's decision.
+      - A probe showed the same file refused at HEAD~1 and accepted at HEAD.
+      - Its consequence was honest ("vap cannot have moved any draw yet"), and not over-escalated.
+      - The legal question went to the domain reviewer.
+    - **S4, A4:** BREACH, context channel.
+      - A canary probe proved the crossing. T4 cleared.
+      - `CRITERIA.md` was marked UNCONFIRMED and routed to the owner, not called a leak.
+    - **S5, positive control: FAIL.** It gave GAP for a pure function with no reads, no state, and no caller, on the theory that a future caller might pass it partisan data.
+    - **S6, generalization:** 3 of 3 leaks found:
+      - scaler and feature selection fitted before the split
+      - one patient on both sides
+      - `followup_calls` recorded after discharge
+      All three traps cleared. It also found an unplanted one: `mutual_info_classif` is unseeded.
+    - **Every run:** all traps held, 13 rows, probes outside the tree and removed, zero edits, and no recommendation to edit the guard as a fix.
+  - **Revision 1 (2026-10-10).**
+    - New Rule 13: judge the change by the paths it creates. A function that reads nothing, holds no state, and has no caller creates no path, and a future caller belongs to that caller's review.
+    - The report gains a Pre-existing section that doesn't set the change's verdict.
+    - Step 6 ties BREACH and GAP to the change in scope.
+    - A new metric: changes that create no path reported as anything but CLEAN AS FAR AS CHECKED, target zero.
+  - **Blind rerun after Revision 1,** each on a fresh copy, with the same prompt:
+    - **S5: PASS.** CLEAN AS FAR AS CHECKED, with the future-caller note in one line and the pre-existing rectangle item in its own section.
+    - **S1, as a regression check: PASS.**
+      - BREACH on the same path, escalated, with an honest consequence and no guard edit proposed as the fix.
+      - Both traps cleared. `chain_report` was cleared in Rule 13's words: "reads nothing, holds no state and has no caller, so it creates no path."
+      - The rectangle item went under Pre-existing.
+      - Its probe was stronger than Round 1's. A 9-line edit confined to `common/tables.py` made the generator receive vote counts as populations, with the firewall check and the schema guard both silent.
+    - Both reruns: 13 rows, probes removed, zero edits, and a transcript audit showing no access outside the checkout, the agent file, and the run's own temp directory.
+    - **With Revision 1, the auditor meets the Round 1 pass bar.**
+    - **Deviation:** during the reruns, the decrypted answer keys sat in plaintext in the scratch area, because the session's tool policy blocked moving them. The transcript audit shows no read or listing of them. Earlier, the last seven Round 1 runs ran with these design records present in this repository (a stop hook required a clean tree), and their audit shows no access either.
+  - **Baselines.**
+    - The Code Reviewer found A1 (it probed the checker's blind spot itself), A2 (with a synthetic false-positive shift, 0.117 to 0.194), A3 and A4, all as blockers. Its S5 boundary call was clean.
+    - The Statistician found A2 by two mechanisms.
+    - **The pre-registered criterion is not met.** It required beating the Code Reviewer on at least two of A1, A2 and A4; all three are ties.
+    - No baseline ran on S6, so generalization was measured for the specialist only.
+  - **What only the specialist found:** real, unplanted issues in districting-bench itself (Findings for Eric 2–5), none of which any baseline reported. The rectangle selection was found independently in three runs.
+  - **Reading.**
+    - A careful Code Reviewer catches planted breaches when the repo states its boundary as plainly as districting-bench does. The auditor's value showed in channel coverage and in what nobody planted.
+    - The full-tree real run (step 8) tests exactly that.
+    - **Round 2:** a baseline on S6, and plants in channels the repo's documents don't name. Round 2 and the real run decide whether the agent replaces the Code Reviewer at this gate or stays beside it.

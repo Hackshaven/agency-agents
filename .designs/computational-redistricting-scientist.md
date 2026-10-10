@@ -69,5 +69,47 @@ Attribution: Eric Hackathorn, built for districting-bench, an independent projec
   6. **Round 1:** scorecard, revisions, and a blind rerun of failures.
   7. **Real run (after Round 1):** a review of districting-bench's own `docs/progress.md` experiment sections, scored by Eric. Then, separately, the science reviewer named in the runbook reads the same sections, and the two reports are compared. That is the only test of whether the agent sees what an expert sees.
 - **Proposed frontmatter:** color `#134E4A` (unused); emoji 🎲 (unused; one draw from a distribution); vibe "The enacted map is one draw. The question is which distribution it's being compared to, and who chose it."; tools Read, Grep, Glob, Bash, WebFetch; description as in the agent file (651 characters).
-- **Revisions:** none yet.
 - **Round 1 ground truth, sealed 2026-10-10 before any run:** `GT-scientist.md`, SHA-256 `7e768e61e77d2ec50499266aba9b0db3df38577c23d8e43e729ee324f72f8929`. It covers three scenarios (C1–C3) on copies of districting-bench at `24c9d05`. Kept encrypted outside every scenario tree until scoring; the plaintext is decrypted and rehashed at scoring time and must match.
+- **Round 1, run and scored 2026-10-10.** The answer key decrypted to the hash above. Every run had its own copy, and the file manifests before and after are identical for all six runs (three specialist, three baseline). No transcript shows a read of the kit.
+  - **Result: PASS on the pass bar.** 8 of 8 plants found with the right mechanism:
+    - **R1:** vanilla ReCom with always-accept, a compact lean, and a stationary target nobody has characterized. Plans run up to a 316-person spread against the enacted plan's 94.
+    - **R2:** the 97% can't be traced, and the ensemble omits Colorado's constitutional criteria (`CRITERIA.md:129`). Checked against the published 2020 district results, the enacted plan sits near the 11th percentile, not above the ensemble.
+    - **R3:** both mechanisms. It adds a matched-tolerance count: 454 draws within 94 persons, two of them at 0 D.
+    - **R4:** the stated slope is arithmetically impossible for 8 seats, and the curve runs outside the tool's 0.30–0.70 default.
+    - **R5:** a toy 12×12 ReCom run shows the district-1 trace reaching R-hat 1.003–1.005 while sorted shares sit at 1.007–1.036. The label trace mixes first, so it hides slow mixing.
+    - **R6:** Warrington's reference code returns NaN. The value jumps to 0.0 at the sweep boundary, and `trusted_metrics` promotes the fake 0.0 on a Colorado 8–0 plan.
+    - **R7:** on the real 2022 Iowa House canvass, 48 of 100 districts were uncontested. The efficiency gap is +0.0056 as cast against +0.04 to +0.10 under imputation.
+    - **R8:** on real TIGER 2022 lower-house shapes, degree-based Polsby-Popper errs by −14.8% to +9.7%, and 77 of 100 ranks change.
+  - **Traps.**
+    - T1 held: it recomputed the R-hat paragraph and left it standing.
+    - T5 held: it called the test's comment overstated, not the test wrong.
+    - T6: the congressional half held. It called the house-plan note wrong under §42.4(2), which is a valid reading, so it isn't counted.
+  - **The C1 trap set was defective, and the answer key was amended at scoring.**
+    - T2, T3 (the positive control) and T4 were checked against the README. Other parts of the repo contradict them:
+      - the draft's plan counts are v1 sizes under a "v2 unless stated" banner
+      - the T2 figures come from the 1,820-draw ensemble
+      - fresh Colorado ensembles reached 7 D (`progress.md:625`, `:766`)
+      - two of Experiment 3's three plans fail the repo's own compactness standard
+    - The specialist and the Statistician baseline both flagged them, and they were right.
+    - Only T1 remained a clean trap, and the positive-control criterion couldn't be scored in C1.
+    - Round 2 must check every trap and control against every place the repo states the fact.
+  - **Behavior.**
+    - Zero edits.
+    - Zero invented citations: DeFord, Duchin and Solomon (2021), plus Wikipedia district pages, which it labeled as secondary and rounded.
+    - No legal conclusions; law went to the Election Law Analyst.
+    - Distribution language, an Ensemble Card, an Outlier Statement, and the partial-measure line in every report.
+    - On C2 and C3 it recomputed the metrics with `district_metrics.py` and matched the repo to four decimals.
+  - **Baselines.**
+    - The Statistician on C1 found R1–R4, and R3 by both mechanisms.
+    - The Code Reviewer found R5 and R6 on C2, and R7 and R8 on C3. It measured R8 on real shapes too (−15.3% to +10.3%).
+    - **The pre-registered criterion is not met.** It required the specialist to beat the Statistician on R1 and R2 and the Code Reviewer on R5 and R8. All four are ties on detection.
+    - Where the specialist went further: the Ensemble Card, the matched-tolerance and published-results checks, the label-trace demonstration, convergence measured on the claim's own statistic (seat-count R-hat 1.014), and handoffs.
+    - Where the Statistician went further: shares recomputed from the committed draws, with per-chain intervals.
+  - **Reading.**
+    - districting-bench documents its own pitfalls:
+      - `CRITERIA.md` §5.1 says declination is undefined on a sweep
+      - `compactness.py` refuses geographic coordinates
+      - `progress.md` says "not a finding yet"
+    - A careful generalist finds plants like these by reading the repo. Round 1 shows the agent does the job; it doesn't show the job needs it.
+    - **Round 2** plants defects the repo's documents don't name, so that only domain knowledge finds them. The real run (step 7) stays as planned.
+  - **Revisions:** none, since nothing failed.
