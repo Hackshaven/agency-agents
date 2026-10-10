@@ -100,8 +100,8 @@ def metrics(dem, rep):
         gamma = math.atan((2 * statistics.mean(d_won) - 1) * n / (n - k))
         dec = 2 * (gamma - theta) / math.pi
     swing = 0.5 - sum(dem) / sum(tot)           # uniform swing to a 50-50 statewide vote
-    bias = sum(1.0 if s + swing > 0.5 else 0.5 if abs(s + swing - 0.5) < 1e-12 else 0.0
-               for s in share) / n - 0.5
+    bias = sum(0.5 if abs(s + swing - 0.5) < 1e-12 else 1.0 if s + swing > 0.5 else 0.0
+               for s in share) / n - 0.5          # tie first: fractional votes land a ulp off
     return {"districts": n, "dem_seats": seats,
             "statewide_dem_share": round(sum(dem) / sum(tot), 4),
             "efficiency_gap (+ = D wasted more, favors R)": round((wd - wr) / sum(tot), 4),

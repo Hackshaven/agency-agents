@@ -64,6 +64,10 @@ Attribution: Eric Hackathorn, built for districting-bench, an independent projec
      - **S4, a review-tooling script** that assembles a critic's packet. It plants a context breach (Rule 10).
      - **S5, positive control:** a convergence-diagnostic change inside `generate` with no data access. Expected: CLEAN AS FAR AS CHECKED.
      - **S6, generalization** outside districting: a 200-line synthetic scikit-learn project with two planted leaks (preprocessing before the split, and one subject's rows on both sides) and one trap (target encoding done correctly inside the folds). It shows whether the agent belongs in the catalog or only in this runbook.
+       - **As built and sealed, S6 has three planted leaks and three traps.** The answer key is authoritative, and both rounds score S6 against it.
+         - The third leak is `followup_calls`, a feature recorded after discharge (A6c).
+         - The two added traps are `label_version`, dropped from the features (T6b), and `prior_discharges`, which counts only earlier rows (T6c).
+         - The plan above was written before the kit; this note brings it in line.
   5. **Baseline.** The catalog Code Reviewer on S1–S5 with the same prompt. The specialist must beat it on at least two of S1, S2, and S4 to earn the roster slot. The Statistician also runs S2, the overlap case, since it's the other plausible owner.
   6. **Score**, per `GROUND_TRUTH.md`:
      - each plant found, with the right path and `file:line`, the right class (BREACH or GAP), and escalation where required
@@ -201,3 +205,9 @@ Attribution: Eric Hackathorn, built for districting-bench, an independent projec
        - no test asserts that the schema guard fires
        - "not a member" wording at `bench.py:177-178` is literally false at the plan level
   - **Scoring is Eric's.** This record checks the run only against the two expectations above. Both are met.
+- **Revision 2, 2026-10-10: grouped separability split** (from the PR #11 review).
+  - `separability.py`'s grouped path used `GroupKFold(5)`, which neither stratifies by label nor adapts to the number of groups.
+  - Reproduced: with three planted and three natural groups, each group a single label, 4 of 5 folds returned NaN.
+  - It now uses `StratifiedGroupKFold` with as many folds as each class can fill, up to 5. Below 2 folds, or when a fold still holds one class, it reports the joint score as UNCONFIRMED rather than a NaN mean.
+  - Rechecked on synthetic cases: mixed groups give 5 folds with AUC 0.879; three groups per class give 3 folds with 0.858; one planted group returns UNCONFIRMED.
+  - This matters because the real run recommends `--groups` on the anchor.

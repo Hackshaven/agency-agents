@@ -49,7 +49,7 @@ Three agents on this roster were built for this team on 2026-10-10: the Blinding
 - **Why the generalists kept up:** this repo documents its own pitfalls so well that careful generalists found the same plants.
 - **What the specialists added:** depth, discipline on correct text, and real findings nobody planted.
 
-**Round 2 (blind, 2026-10-10)** placed its plants where the repo's documents don't point, with a generalist baseline on every scenario. All three agents met their pass bars again.
+**Round 2 (blind, 2026-10-10)** aimed its plants where the repo's documents don't point, with a generalist baseline on every scenario. Several turned out to be documented after all, in a decision record, `progress.md`, or the pinned GerryChain's docstrings. All three agents met their pass bars again, the Election Law Analyst on one reading of a rule its record shows was ambiguous.
 - **Election Law Analyst: won its pre-registered comparison.** It found as many legal errors as the Research Synthesist and the Legal Compliance Checker, and flagged fewer true statements. In two tests (a clerk asking for a yes on legality, and a request for filing instructions with "no hedging") it was the only reviewer that gave no legal direction.
 - **Blinding & Leakage Auditor and Computational Redistricting Scientist: tied their generalists on every plant**, for the second round running. The repo, and its pinned GerryChain, document their own pitfalls well enough that a careful Code Reviewer or Statistician finds the same defects.
 
@@ -58,7 +58,10 @@ So:
 - **Firewall and redistricting science:** the Code Reviewer and the Statistician remain the gates of record, and the Auditor and the Scientist run beside them as second readers. A disagreement between the two is a finding.
 - **Periodic full-tree audits:** the Auditor runs these. That is where its findings that nobody planted came from.
 
-Each record's real run, scored by a person, is the remaining test.
+What remains is scoring by people:
+- **Auditor:** its real run on `main` is recorded and waits for the owner's score.
+- **Scientist:** its real run needs an outside redistricting scientist.
+- **Election Law Analyst:** its real run needs an election-law attorney.
 
 One gap remains:
 
@@ -87,16 +90,16 @@ CI runs `tools/check_firewall.py` and the test suite on a runner with no data (`
 
 | If the change touches… | Run | Why |
 |------------------------|-----|-----|
-| `tools/firewall.yaml`, `tools/check_firewall.py` | Nobody edits them. The owner decides | The config's own header: a change makes every result produced after it suspect. An agent that finds a gap reports it. D-006's fixes are still open: `bvap`/`hvap`/`wvap` patterns, and word-boundary matching for the allowlist collision |
-| Any file under `src/generate/`, of any type; a new file or directory directly under `src/`; any new read of a file in `data/` | Blinding & Leakage Auditor, then the Code Reviewer | The static check never scans a file at the top of `src/` or a non-`.py` file, and can't see a file read that names no column. The schema allowlist in `units.py` is the only defence on those routes |
-| `src/generate/{ensemble,convergence,seeds}.py`, `tools/convergence_rectangle.py` | Computational Redistricting Scientist and the Blinding & Leakage Auditor | Convergence is diagnosed on the largest common-prefix rectangle (D-035). Chain failures are counted, never retried (`docs/ARCHITECTURE.md` §7). Seeds derive from one master seed |
-| `src/detect/**`, a gate, the flag rule | Statistician; the Blinding & Leakage Auditor too when the null pool, the reference ensemble, or the planted cases change | Four Phase 1 rounds had gates pass for reasons that weren't detection: flag-everything, an AUC of 0.25, an unwired function, n = 1. A gate a constant can tie isn't a measurement, and a gate no detector could meet is reported `unreachable`, not failed (D-013) |
-| `src/adversarial/**` | Computational Redistricting Scientist and the Blinding & Leakage Auditor | The planted gerrymanders are the ground truth. They must be realistic and indistinguishable from neutral maps on non-partisan metrics (D-010), and they aren't yet. The Auditor's separability score is the measure |
-| `src/evaluate/{partisan,compactness,administrative,plan,report,elections}.py` | Computational Redistricting Scientist, then the Code Reviewer, with `docs/CRITERIA.md` §3, §5, and §7 as the spec | Sign conventions differ by metric on purpose (`FAVOURS` in `partisan.py`). `report.py` reports every value and resolves nothing (D-032). `tests/test_experiment_3_plans.py` pins published values, so a drift in a metric fails the suite instead of rewriting the finding |
-| `tools/experiment_*.py`, `tools/check_metric_algebra.py`, `tools/phase_2_report.py`, anything under `docs/experiment-*/` or `docs/phase-2/` | Statistician and the Computational Redistricting Scientist | The experiments ran once and aren't re-run (`prompt.md`). Analysis is a pure function of committed draws (D-027). The multiplicity correction rewrites the verdict (D-025). A fixed cutoff assumes independent draws, and ReCom doesn't supply them (D-029) |
+| `tools/firewall.yaml`, `tools/check_firewall.py` | Nobody edits them. The owner decides | The config's header asks that a change come "with a note explaining why every result produced before it is now suspect"; the `src/*/README.md` files say a shared utility or a relaxed config "invalidates every result produced after it". The two point in opposite directions, and reconciling them is the owner's call. An agent that finds a gap reports it. D-006's fixes are still open: `bvap`/`hvap`/`wvap` patterns, and word-boundary matching for the allowlist collision |
+| Any file under `src/generate/`, of any type; a new file or directory directly under `src/`; any new read of a file in `data/` | Code Reviewer; Blinding & Leakage Auditor as second reader | The static check never scans a file at the top of `src/` or a non-`.py` file, and can't see a file read that names no column. The schema allowlist in `units.py` is the only defence on those routes |
+| `src/generate/{ensemble,convergence,seeds}.py`, `tools/convergence_rectangle.py` | Code Reviewer and the Statistician; Computational Redistricting Scientist and Blinding & Leakage Auditor as second readers | Convergence is diagnosed on the largest common-prefix rectangle (D-035). Chain failures are counted, never retried (`docs/ARCHITECTURE.md` §7). Seeds derive from one master seed |
+| `src/detect/**`, a gate, the flag rule | Statistician and the Code Reviewer; Blinding & Leakage Auditor as second reader when the null pool, the reference ensemble, or the planted cases change | Four Phase 1 rounds had gates pass for reasons that weren't detection: flag-everything, an AUC of 0.25, an unwired function, n = 1. A gate a constant can tie isn't a measurement, and a gate no detector could meet is reported `unreachable`, not failed (D-013) |
+| `src/adversarial/**` | Code Reviewer; Computational Redistricting Scientist and Blinding & Leakage Auditor as second readers | The planted gerrymanders are the ground truth. They must be realistic and indistinguishable from neutral maps on non-partisan metrics (D-010), and they aren't yet. The Auditor's separability score is the measure |
+| `src/evaluate/{partisan,compactness,administrative,plan,report,elections}.py` | Code Reviewer, with `docs/CRITERIA.md` §3, §5, and §7 as the spec; Computational Redistricting Scientist as second reader | Sign conventions differ by metric on purpose (`FAVOURS` in `partisan.py`). `report.py` reports every value and resolves nothing (D-032). `tests/test_experiment_3_plans.py` pins published values, so a drift in a metric fails the suite instead of rewriting the finding |
+| `tools/experiment_*.py`, `tools/check_metric_algebra.py`, `tools/phase_2_report.py`, anything under `docs/experiment-*/` or `docs/phase-2/` | Statistician, plus the Code Reviewer for code; Computational Redistricting Scientist as second reader | The experiments ran once and aren't re-run (`prompt.md`). Analysis is a pure function of committed draws (D-027). The multiplicity correction rewrites the verdict (D-025). A fixed cutoff assumes independent draws, and ReCom doesn't supply them (D-029) |
 | `tools/prepare_data.py`, `tools/prepare_data_co.py`, `tools/prepare_municipalities.py`, `tools/fetch_raw.sh`, `feasibility/*.py` | GIS QA Engineer | A join reported "unmatched units: 0" while dropping 215,617 votes at 60.0% D against 56.9% statewide (D-016). Check conservation, not match counts, plus rook adjacency (D-004), membership versus districting layers (D-033), and the Iowa totals assertion |
 | `tools/plot_*.py`, `docs/figures/**` | Scientific Visualization Reviewer | Figures recompute from committed artifacts and draw only what the repo can regenerate (D-036). The Experiment 3 figure inverts the alarm colour on purpose, and its legend says so |
-| `docs/progress.md`, the README's "First result" and "The three experiments", the `CITATION.cff` abstract, a version bump | Pre-Submission Peer Reviewer and the Computational Redistricting Scientist; on a version bump, then the Scientific Data Steward | CI doesn't check prose numbers, and each release archives them under a permanent DOI. Audit each claim against the committed results files |
+| `docs/progress.md`, the README's "First result" and "The three experiments", the `CITATION.cff` abstract, a version bump | Pre-Submission Peer Reviewer; Computational Redistricting Scientist as second reader; on a version bump, then the Scientific Data Steward | CI doesn't check prose numbers, and each release archives them under a permanent DOI. Audit each claim against the committed results files |
 | The README's "Legal context", `docs/CRITERIA.md` §1, §2, and §4, any sentence about a holding, a statute, or a remedy, and any report text that could read as a legal conclusion | Election Law Analyst, then the election-law reader | The Analyst checks each sentence against the primary text, dates it, and flags implied remedies. How the law applies is still a person's call, and the Analyst says where |
 | The README's "What this is not" and status line, any text the report shows a user | Science Communicator | Distributions, never verdicts. The status line travels with every citation and is never softened |
 | The README's Setup, Getting the data, and Reproducing; `tests/README.md`; `tests/dataguard.py`; `.github/workflows/tests.yml` | Technical Writer for prose, Code Reviewer for code | The suite must run on a machine that has never fetched the data, and the two pass counts are quoted together (D-037) |
@@ -106,14 +109,15 @@ CI runs `tools/check_firewall.py` and the test suite on a runner with no data (`
 | Any other section of `docs/CRITERIA.md` | The owner | Agents propose. Decision-log entries marked VALUE are the queue |
 | Any other code under `src/`, `tools/`, or `feasibility/` | Code Reviewer | No row above matches, and every code change gets a second reviewer |
 
-Every code change gets one catalog reviewer: a specialist when a row matches, otherwise the Code Reviewer. A change under `src/generate/` or `src/detect/` that also moves a published number needs two. Some rows above name two agents; on a small change, the first one named is enough.
+Every code change gets the Code Reviewer, and every change to a detection rule, a gate, or an experiment instrument gets the Statistician. These are the gates of record and are never skipped. A second reader named in a row runs beside its gate, and a disagreement between them is a finding. On a small change the second reader may be skipped, with two exceptions: under `src/generate/` the Auditor always runs (see Success Criteria), and under `src/detect/` a change that moves a published number always gets its second reader.
 
 ## Per-Change Sequence (NEXUS-Micro)
 
 ```
 Step 1: Route
 ├── List what changed: git diff origin/main...HEAD --stat
-├── Pick agents from the routing table. Code with no match goes to the Code Reviewer.
+├── Pick agents from the routing table. Every code change gets the Code Reviewer;
+│   detection rules, gates and experiment instruments also get the Statistician.
 └── If tools/firewall.yaml or tools/check_firewall.py is in the diff, stop. That's the owner's.
 
 Step 2: CI first

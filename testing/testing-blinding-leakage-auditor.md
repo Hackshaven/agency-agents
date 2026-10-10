@@ -187,16 +187,23 @@ for c in sorted(cols, key=lambda c: -max(auc(df[c], y), 1 - auc(df[c], y))):
     print(f"  {c:<28} {max(s, 1 - s):.3f}  {'planted higher' if s >= .5 else 'planted lower'}")
 try:
     from sklearn.linear_model import LogisticRegression
-    from sklearn.model_selection import GroupKFold, StratifiedKFold, cross_val_score
+    from sklearn.model_selection import StratifiedGroupKFold, StratifiedKFold, cross_val_score
     from sklearn.pipeline import make_pipeline
     from sklearn.preprocessing import StandardScaler
 except ImportError:
     sys.exit("joint: scikit-learn not installed; per-feature scores only (joint UNCONFIRMED)")
-cv = GroupKFold(5) if a.groups else StratifiedKFold(5, shuffle=True, random_state=0)
+g = df[a.groups] if a.groups else None   # folds: up to 5, never more than either class can fill
+units = (g[y == 1].nunique(), g[y == 0].nunique()) if a.groups else (int(y.sum()), int((1 - y).sum()))
+k = min(5, *units)
+if k < 2:
+    sys.exit(f"joint: {units[0]} planted and {units[1]} natural {'groups' if a.groups else 'cases'}; "
+             "too few for 2 folds (joint UNCONFIRMED)")
+cv = (StratifiedGroupKFold if a.groups else StratifiedKFold)(k, shuffle=True, random_state=0)
 s = cross_val_score(make_pipeline(StandardScaler(), LogisticRegression(max_iter=1000)),
-                    df[cols], y, cv=cv, groups=df[a.groups] if a.groups else None,
-                    scoring="roc_auc")
-print(f"joint: 5-fold logistic AUC {s.mean():.3f} (folds {np.round(s, 3).tolist()})")
+                    df[cols], y, cv=cv, groups=g, scoring="roc_auc", error_score=np.nan)
+if np.isnan(s).any():   # a fold that held one class has no AUC
+    sys.exit(f"joint: {int(np.isnan(s).sum())} of {k} folds held one class only (joint UNCONFIRMED)")
+print(f"joint: {k}-fold logistic AUC {s.mean():.3f} (folds {np.round(s, 3).tolist()})")
 ```
 Use `--groups` when several cases share a source (an anchor, a patient, a seed), so no group spans folds. A joint score well above the best single feature means the shortcut is a combination, which a screen on any one statistic won't catch. A score near 0.5 says these features can't tell the cases apart, not that nothing can.
 

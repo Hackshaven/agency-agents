@@ -74,7 +74,9 @@ Attribution: Eric Hackathorn, built for districting-bench, an independent projec
      - every citation in its report resolving to the cited work, checked by opening each
      - at least two plans recomputed independently, where the scenario supplies totals
 
-     **Pass bar:** at least 6 of 7 plants with the right mechanism; at most one trap flagged; the positive control unflagged; zero invented citations; zero edits.
+     **Pass bar:** at least 7 of 8 plants with the right mechanism; at most one trap flagged; the positive control unflagged; zero invented citations; zero edits.
+     - The scenarios above hold 8 plants: 4 in C1, 2 in C2 and 2 in C3.
+     - An earlier draft of this line said "6 of 7", a miscount. The sealed answer key set 7 of 8, and Round 1 was scored against it.
   6. **Round 1:** scorecard, revisions, and a blind rerun of failures.
   7. **Real run (after Round 1):** a review of districting-bench's own `docs/progress.md` experiment sections, scored by Eric. Then, separately, the science reviewer named in the runbook reads the same sections, and the two reports are compared. That is the only test of whether the agent sees what an expert sees.
 - **Proposed frontmatter:** color `#134E4A` (unused); emoji 🎲 (unused; one draw from a distribution); vibe "The enacted map is one draw. The question is which distribution it's being compared to, and who chose it."; tools Read, Grep, Glob, Bash, WebFetch; description as in the agent file (651 characters).
@@ -169,3 +171,9 @@ Attribution: Eric Hackathorn, built for districting-bench, an independent projec
     - Against the pre-registered test it has not earned a slot over the Statistician and the Code Reviewer.
     - What it would add is breadth in one reviewer where the team now needs two.
     - **The real run (step 7) is the remaining test:** a review of progress.md by the agent and by an outside redistricting scientist.
+- **Revision 1, 2026-10-10: partisan-bias ties** (from the PR #11 review).
+  - `district_metrics.py` checked `s + swing > 0.5` before its `1e-12` tie tolerance, so a tie that lands one ulp above 0.5 counted as a full seat while one below counted as half.
+  - Integer votes always tie exactly, because `0.5 - V` is exact for a statewide share of at least 0.25.
+  - Fractional votes, such as disaggregated returns, do not: in 100,000 synthetic ties, 5,599 landed above 0.5.
+  - The tolerance is now checked first.
+  - The documented check cases give the same results as before.
