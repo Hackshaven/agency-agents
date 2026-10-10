@@ -43,7 +43,7 @@ The repo already reviews itself hard. Critics read artifacts, never the builder'
 
 ## New Agents and the Remaining Gap
 
-Three agents on this roster were built for this team on 2026-10-10: the Blinding & Leakage Auditor, the Computational Redistricting Scientist, and the Election Law Analyst. Their design records, test plans, and Round 1 scorecards are in `.designs/`.
+Three agents on this roster were built for this team on 2026-10-10: the Blinding & Leakage Auditor, the Computational Redistricting Scientist, and the Election Law Analyst. Their design records, test plans, and the scorecards from both blind rounds are in `.designs/`, along with the Auditor's real run on `main`.
 
 **Round 1 (blind, 2026-10-10): all three meet their pass bars, the Auditor after one revision.** None beat its generalist baseline at detecting the planted defects. That was the pre-registered test for taking over from it.
 - **Why the generalists kept up:** this repo documents its own pitfalls so well that careful generalists found the same plants.
