@@ -341,6 +341,46 @@
       ]
     },
     {
+      "slug": "districting-bench",
+      "title": "districting-bench Maintainer Team",
+      "mode": "NEXUS-Micro",
+      "duration": "Standing team, per-change activations",
+      "summary": "Firewall, statistical, and source-integrity review gates for a redistricting research system whose neutral baseline must never see partisan data and whose releases carry DOIs, activated by the paths each change touches.",
+      "doc": "strategy/runbooks/scenario-districting-bench.md",
+      "roster": [
+        {
+          "group": "Review Gates",
+          "activation": "per change, by path",
+          "agents": [
+            "engineering-code-reviewer",
+            "academic-statistician",
+            "research-pre-submission-peer-reviewer",
+            "research-scientific-visualization-reviewer",
+            "gis-qa-engineer"
+          ]
+        },
+        {
+          "group": "Specialists",
+          "activation": "as needed",
+          "agents": [
+            "research-scientific-data-steward",
+            "research-synthesist",
+            "research-science-communicator",
+            "engineering-technical-writer"
+          ]
+        },
+        {
+          "group": "Periodic",
+          "activation": "when work stalls, quarterly, or for succession",
+          "agents": [
+            "research-mad-scientist",
+            "specialized-codebase-archaeologist",
+            "engineering-codebase-onboarding-engineer"
+          ]
+        }
+      ]
+    },
+    {
       "slug": "problem-scan",
       "title": "Standing Problem Scan",
       "mode": "NEXUS-Micro",
