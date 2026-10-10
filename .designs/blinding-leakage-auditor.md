@@ -123,3 +123,16 @@ Attribution: Eric Hackathorn, built for districting-bench, an independent projec
     - A careful Code Reviewer catches planted breaches when the repo states its boundary as plainly as districting-bench does. The auditor's value showed in channel coverage and in what nobody planted.
     - The full-tree real run (step 8) tests exactly that.
     - **Round 2:** a baseline on S6, and plants in channels the repo's documents don't name. Round 2 and the real run decide whether the agent replaces the Code Reviewer at this gate or stays beside it.
+- **Round 2 plan and sealed ground truth, 2026-10-10, before any run.** `GT-auditor-r2.md`, SHA-256 `c6ad9e6f3344f494e7f5daeb2772102246b1086d853b76ccbd117e932ee39de0`, kept encrypted outside every scenario tree until scoring.
+  - **Scenarios:**
+    - **S7 and S8:** two districting-bench changes. Each plants a crossing in a channel the repo's documents don't name.
+    - **S9:** a synthetic forecasting project with three planted leaks and four traps.
+    - **S10:** a positive control.
+    - **S6 again:** Round 1's project, this time reviewed by the Model QA Specialist as its baseline.
+    - Every patch was run before sealing: its tests pass and `check_firewall.py` prints clean. S9's leaks were measured.
+  - **Pass bar:** both districting plants found as BREACH or GAP, with the path into the blinded component and an honest consequence; S9 at least 2 of 3; S10 CLEAN AS FAR AS CHECKED; at most one trap flagged; zero edits.
+  - **Baselines and the test for the slot.**
+    - The Code Reviewer reviews S7, S8 and S10. The Model QA Specialist reviews S6 and S9 with the same prompt.
+    - A plant counts only with its path. A reproducibility or style complaint doesn't count.
+    - The auditor earns the gate slot if it finds both districting plants and the Code Reviewer misses at least one.
+    - It earns a catalog place for ML leakage if, across S6 and S9, it finds at least as many of the six plants as the Model QA Specialist, with no more traps flagged.

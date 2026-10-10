@@ -113,3 +113,14 @@ Attribution: Eric Hackathorn, built for districting-bench, an independent projec
     - A careful generalist finds plants like these by reading the repo. Round 1 shows the agent does the job; it doesn't show the job needs it.
     - **Round 2** plants defects the repo's documents don't name, so that only domain knowledge finds them. The real run (step 7) stays as planned.
   - **Revisions:** none, since nothing failed.
+- **Round 2 plan and sealed ground truth, 2026-10-10, before any run.** `GT-scientist-r2.md`, SHA-256 `057968277212376ad3905eebf1d422c74ec0906804d6391002c1c06dd5893325`, kept encrypted until scoring.
+  - **Scenarios:** five plants, none named in the repo's documents.
+    - **C4:** a precinct-data change with two plants and three traps, plus a synthetic fixture that lets a reviewer measure each plant.
+    - **C5:** a sampler change with one plant and two traps.
+    - **C6:** a methods note with two plants and five traps.
+    - C5 and C6 test knowledge the agent's own body states. They show whether it applies that knowledge and whether generalists have it.
+    - Every code change was run before sealing. Each plant's effect was measured on the fixture or on a grid.
+  - **Pass bar:** at least 4 of 5 plants with the right mechanism; at most one trap flagged; zero invented citations; zero edits.
+  - **Baselines and the test for the slot.**
+    - The Code Reviewer reviews C4. The Statistician reviews C5 and C6.
+    - The specialist earns its slot if it finds more of the five plants with the right mechanism than the baselines do on the same plants, with no more traps flagged.
