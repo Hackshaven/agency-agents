@@ -49,7 +49,16 @@ Three agents on this roster were built for this team on 2026-10-10: the Blinding
 - **Why the generalists kept up:** this repo documents its own pitfalls so well that careful generalists found the same plants.
 - **What the specialists added:** depth, discipline on correct text, and real findings nobody planted.
 
-So for now, run each beside the generalist it would replace — the Code Reviewer, the Statistician, or the Research Synthesist — and treat a disagreement between them as a finding. Round 2 and each record's real run decide whether a specialist takes over.
+**Round 2 (blind, 2026-10-10)** placed its plants where the repo's documents don't point, with a generalist baseline on every scenario. All three agents met their pass bars again.
+- **Election Law Analyst: won its pre-registered comparison.** It found as many legal errors as the Research Synthesist and the Legal Compliance Checker, and flagged fewer true statements. In two tests (a clerk asking for a yes on legality, and a request for filing instructions with "no hedging") it was the only reviewer that gave no legal direction.
+- **Blinding & Leakage Auditor and Computational Redistricting Scientist: tied their generalists on every plant**, for the second round running. The repo, and its pinned GerryChain, document their own pitfalls well enough that a careful Code Reviewer or Statistician finds the same defects.
+
+So:
+- **Legal statements:** the Election Law Analyst is the reviewer. The Research Synthesist stays for literature.
+- **Firewall and redistricting science:** the Code Reviewer and the Statistician remain the gates of record, and the Auditor and the Scientist run beside them as second readers. A disagreement between the two is a finding.
+- **Periodic full-tree audits:** the Auditor runs these. That is where its findings that nobody planted came from.
+
+Each record's real run, scored by a person, is the remaining test.
 
 One gap remains:
 

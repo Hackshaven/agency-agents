@@ -36,6 +36,15 @@ Attribution: Eric Hackathorn, built for districting-bench, an independent projec
 - **Findings for Eric** (about districting-bench, from this build):
   1. **The Stephanopoulos citation has the wrong first page.** "Redistricting Without Tradeoffs" is **126 Colum. L. Rev. 671 (2026)** (Vol. 126, No. 4; the journal's PDF, read 2026-10-10, puts the Introduction at p. 673), not 1001. Page 1001 appears in `CITATION.cff:60` (`start: 1001`), `README.md:43`, and `docs/CRITERIA.md:301` and `:485`. `prompt.md:128` carries it too, but `prompt.md` is preserved verbatim, so leave it and correct the others. `CITATION.cff` is archived with each release, so fix it before the next version bump.
   2. **Rule 3's label-invariance point is already honored.** The bench diagnoses cut edges and population spread, and the experiments diagnose `compactness_cut`, `fairness_eg`, and `population_equality` (`tools/convergence_rectangle.py:57`). All are plan-level and label-invariant. No finding. Recorded so a later review doesn't assume otherwise.
+  3. **The Iowa v2 results file understates chain failures** (Round 2, both C6 reviewers; verified 2026-10-10).
+     - `docs/experiment-2/experiment-2-results-v2.json` reports `chain_failures: 0` and `failure_rate: 0.0` for Iowa (144,000 requested, 27,564 completed).
+     - `ia-draws-v2-chains.json` records 10 of the 12 chains as not completed, ending in "Could not find a possible cut after 100000 attempts."
+     - A methods section built from the results file would report no failures, against `ensemble.py`'s rule that failures are reported.
+  4. **The convergence numbers a write-up would quote are the most favorable ones** (Round 2, both C6 reviewers; not independently re-derived).
+     - Iowa's 1.023 is the lowest worst-case R-hat of five candidate rectangles. The others are 1.043, 1.064, 1.025 and 1.102.
+     - Its rectangle uses 6 of 12 seeds; the chains that died before the prefix are excluded, so D-035's "selects on nothing" overstates.
+     - Several percentiles in `progress.md` rest on older ensembles. One is round-02 Iowa: R-hat 1.47, ESS 11.7.
+     - The repo computes no tail ESS. The Scientist measured Iowa |EG| at 117 against a bulk of 228.
 - **Assumptions made without asking:**
   - Attribution as above.
   - Tools: Read, Grep, Glob, Bash, WebFetch. Bash runs the metric script and reads results files; WebFetch checks a citation or a PlanScore page. Read-only by Rule 13.
@@ -124,3 +133,39 @@ Attribution: Eric Hackathorn, built for districting-bench, an independent projec
   - **Baselines and the test for the slot.**
     - The Code Reviewer reviews C4. The Statistician reviews C5 and C6.
     - The specialist earns its slot if it finds more of the five plants with the right mechanism than the baselines do on the same plants, with no more traps flagged.
+- **Round 2, run and scored 2026-10-10.**
+  - **Integrity.** The answer key decrypted to the hash above. All six runs left their checkouts byte-identical. No transcript reads the vault, the answer keys or this record.
+    - Some agents listed the scratch root after deleting their own temp directories. That exposed directory names only.
+    - One agent read harness files holding its own oversized tool output.
+  - **Result: PASS.** 5 of 5 plants with the right mechanism, and no trap flagged.
+    - **R9, C4:** absentee and provisional lines dropped. Vote-weighted: 30.9% of votes, 66.1% D, flipping the fixture's statewide winner. It showed the drop differs by county, so a uniform swing can't undo it.
+    - **R10, C4:** area weighting. It quoted maup's README, verified: "We strongly urge you _not_ to prorate by area!"
+    - **R11, C5:** flip proposal. It quoted DeFord, Duchin and Solomon, and ran a grid: cut edges kept climbing, R-hat 1.57–1.92 and ESS 5.6, against ReCom's 37.
+    - **R12, C6:** standard ReCom is not reversible, and its stationary distribution has no closed form.
+    - **R13, C6:** merge-split is Metropolis-Hastings and targets a specified measure. It found the SIAM J. Appl. Math. publication (verified on Crossref).
+    - **Citations:** every one checked resolved.
+  - **Answer-key amendment at scoring.** C6's T12e was not a clean trap.
+    - The note's "standard ... with bulk and tail effective sample sizes reported" isn't the repo's standard (CRITERIA.md gives PSRF 1.00–1.01), and the repo never computes tail ESS.
+    - Both the specialist and the Statistician flagged it, correctly.
+    - I had taken the standard from the agent's own rules instead of the repo.
+  - **Baselines.**
+    - The Code Reviewer found R9 and R10 on C4. The Statistician found R11 on C5 (with its own grid run, ESS about 6) and R12 and R13 on C6.
+    - **The pre-registered criterion (more plants with the right mechanism than the baselines) is not met: 5 against 5, every plant a tie.**
+    - No baseline flagged a trap either.
+  - **Why the plants weren't unnamed after all.**
+    - **R9:** its mechanism is in the repo as D-016 (a Colorado join that dropped 215,617 votes non-randomly). The Code Reviewer cited it.
+    - **R10:** the fixture shipped block populations that no code read, which pointed straight at it.
+    - **R11:** `progress.md:1169` names a flip chain as the sampler that reaches the ragged region. My doc check didn't search progress.md for "flip".
+    - **R12:** the pinned GerryChain 1.0.0 states it in its own docstring ("rather than an approximation of it like we do in regular ReCom"). The Statistician quoted it.
+    - So Round 2 didn't achieve what it set out to do. The repo and its dependencies document their pitfalls more completely than a keyword check finds, and careful generalists use that.
+  - **Where the specialist differed.**
+    - It filled in an Ensemble Card from the code and artifacts.
+    - It computed the tail ESS the repo never has: Iowa |EG| 117 against bulk 228.
+    - It traced which older ensembles the published percentiles rest on.
+    - It found that `experiment-2-results-v2.json` reports zero Iowa chain failures while `ia-draws-v2-chains.json` records the failures (verified).
+    - The Statistician matched most of this: the survivor conditioning, the rectangle chosen as the minimum of five, and the older ensembles.
+  - **Reading.** Two rounds, 13 plants, and the Scientist has never been behind a generalist on detection, nor ahead.
+    - Its distinct contributions are the ensemble description it always produces, quantities nobody asked for (tail ESS, matched tolerance), and handoffs.
+    - Against the pre-registered test it has not earned a slot over the Statistician and the Code Reviewer.
+    - What it would add is breadth in one reviewer where the team now needs two.
+    - **The real run (step 7) is the remaining test:** a review of progress.md by the agent and by an outside redistricting scientist.

@@ -37,6 +37,10 @@ Attribution: Eric Hackathorn, built for districting-bench, an independent projec
   5. **Two smaller guard gaps:**
      - `generate.units.load_adjacency` has no schema guard. An extra key is accepted; `check_inputs` catches it later.
      - The firewall-status hash the bench records in its results doesn't change when the allowlist is widened. Reported by the agent in the S3 run.
+  6. **`check_firewall.py` misses dynamic imports** (reported with probes in three separate auditor runs: the Round 1 S5 rerun, Round 2 S10 and S7).
+     - `importlib.import_module("evaluate.elections")` inside `src/generate` prints clean.
+     - `"evaluate.partisan"` is caught only because its text contains the denied word "partisan".
+     - The class isn't in FEASIBILITY §1's probe table. Whether to add it is your call.
 - **Assumptions made without asking:**
   - Attribution as a personal contribution, because districting-bench says it's unconnected to the author's employment. If it should carry NOAA attribution like the fork's other agents, change the line above.
   - Tools: Read, Grep, Glob, Bash. Bash runs the reach scan, the separability script, and probes in a temporary copy. The tools line can't make Bash read-only, so Rule 1 carries that, and the test checks it.
@@ -136,3 +140,30 @@ Attribution: Eric Hackathorn, built for districting-bench, an independent projec
     - A plant counts only with its path. A reproducibility or style complaint doesn't count.
     - The auditor earns the gate slot if it finds both districting plants and the Code Reviewer misses at least one.
     - It earns a catalog place for ML leakage if, across S6 and S9, it finds at least as many of the six plants as the Model QA Specialist, with no more traps flagged.
+- **Round 2, run and scored 2026-10-10.**
+  - **Integrity.** The answer key decrypted to the hash above. All nine auditor-scenario runs left their checkouts byte-identical; several agents created and removed `__pycache__` along the way. No transcript reads the vault, the answer keys or this record.
+    - Two runs listed the scratch root's directory names while deleting their own temp directories.
+    - Agents' WebFetch calls auto-saved files into the session's tool-results directory, which is harness behavior.
+  - **Result: PASS.**
+    - **S7, A5:** BREACH with the full path from the election file's bytes to the chain seeds (`bench.py:530 → 3306 → 2271 → ensemble.py:365, 384`). A probe showed one added vote changes every chain seed.
+      - Its consequence was honest: no partisan signal reaches the sampler, but the reroll lever now sits in the protected file.
+      - It cleared the provenance-digest trap.
+      - It also found that the enacted plan feeds the seed, and that any stray CSV moves it.
+    - **S8, A7:** BREACH (selection). A spy probe saw `run_chains` receive 0.006 for Colorado.
+      - A sweep showed the rule's tolerance alone can select every grid value.
+      - It cleared both traps.
+    - **S9:** 3 of 3, every trap cleared, with the measured fix (0.0913) matching the answer key's (0.0919).
+    - **S10, positive control:** CLEAN AS FAR AS CHECKED. The pre-existing dynamic-import gap went under Pre-existing. Revision 1 holds.
+  - **Two defects in my kits that reviewers found.**
+    - S8's `tools/epsilon.json` contradicts its own rule: the recorded moves give 8e-3, not 6e-3. The auditor and the Code Reviewer both found it independently.
+    - S10's `distinct_per_chain` docstring states its purpose backwards. The Code Reviewer found it.
+    - Neither defect touches a scored plant.
+  - **Baselines.**
+    - The Code Reviewer found A5 and A7, each with the path into the generator and an honest consequence, and its S10 boundary call held.
+    - **The gate criterion (both plants found while the Code Reviewer misses one) is not met.** Across two rounds the Code Reviewer has found all six districting plants the auditor found.
+    - The Model QA Specialist found 3 of 3 on S9 with no trap flagged. Its S6 run was still in progress when this was committed; the result follows in the next commit, and the ML-leakage criterion is scored there.
+  - **Reading.**
+    - Districting-bench states its boundary plainly, and its own documents list the static checker's blind spots. With that context, a careful Code Reviewer traces information paths as well as the auditor does, including seeds and parameter selection.
+    - The auditor's additions are probe evidence (spy probes, perturbation probes, a tolerance sweep), a 13-channel account on every run, and pre-existing findings kept out of the change's verdict.
+    - In Round 1 it also found real problems nobody planted, and in Round 2 a new dynamic-import gap.
+    - The evidence doesn't support a gate slot over the Code Reviewer. It supports periodic full-tree audits (step 8), which is where its unplanted findings came from.
