@@ -211,3 +211,7 @@ Attribution: Eric Hackathorn, built for districting-bench, an independent projec
   - It now uses `StratifiedGroupKFold` with as many folds as each class can fill, up to 5. Below 2 folds, or when a fold still holds one class, it reports the joint score as UNCONFIRMED rather than a NaN mean.
   - Rechecked on synthetic cases: mixed groups give 5 folds with AUC 0.879; three groups per class give 3 folds with 0.858; one planted group returns UNCONFIRMED.
   - This matters because the real run recommends `--groups` on the anchor.
+- **Revision 3, 2026-10-10: no feature columns left** (from the districting-bench PR #5 review).
+  - When every candidate column was non-numeric or had missing values, `separability.py` passed an empty feature matrix to scikit-learn and died with `ValueError: at least one array or dtype is required` instead of reporting.
+  - Reproduced with an all-text table and an all-missing table. Both now print the per-feature section, name the columns not scored, and exit with the joint score UNCONFIRMED.
+  - A table with usable columns is unchanged: it still reaches the cross-validated joint score.
