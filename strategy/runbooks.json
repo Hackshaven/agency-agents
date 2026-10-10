@@ -345,13 +345,16 @@
       "title": "districting-bench Maintainer Team",
       "mode": "NEXUS-Micro",
       "duration": "Standing team, per-change activations",
-      "summary": "Firewall, statistical, and source-integrity review gates for a redistricting research system whose neutral baseline must never see partisan data and whose releases carry DOIs, activated by the paths each change touches.",
+      "summary": "Firewall, redistricting-science, election-law, and statistical review gates for a research system whose neutral baseline must never see partisan data and whose releases carry DOIs, activated by the paths each change touches.",
       "doc": "strategy/runbooks/scenario-districting-bench.md",
       "roster": [
         {
           "group": "Review Gates",
           "activation": "per change, by path",
           "agents": [
+            "testing-blinding-leakage-auditor",
+            "research-computational-redistricting-scientist",
+            "specialized-election-law-analyst",
             "engineering-code-reviewer",
             "academic-statistician",
             "research-pre-submission-peer-reviewer",
