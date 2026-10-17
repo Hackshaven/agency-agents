@@ -136,4 +136,35 @@ Attribution: Eric Hackathorn, a personal civic project for the 2026 Colorado gen
   - **Handling.** The archive is encrypted outside every kit, and the plain copy was deleted. The kits are a fictional Larkspur County, State of Westmora: nine kits covering scenarios B1–B3 and A1–A4. Before sealing, kit files with names that hinted at a test were renamed to neutral names; their contents didn't change.
   - **Integrity checks.** Kit manifests are compared before and after every run. Transcripts are searched for any read of the answer key, the build folder, the agent that built the kit, or this session's own transcript.
   - **Deviation from the plan:** test-takers aren't sandboxed from the rest of the filesystem. Integrity rests on the transcript search, as in earlier rounds in this fork.
+- **Round 1 results, 2026-10-17.** Run against the agent file at `cead379`. Scored by one blind scorer per output against the unsealed key; two blind neutrality reviewers, one reading as a committed supporter of each major side, read the three B1 outputs with the writers' names removed.
+  - **Integrity.** The answer key's fingerprints matched the sealed ones, and all 39 kit files matched the manifest after every run. No transcript shows a read of the answer key, the build folder, the kit builder's transcript, this session's transcript, or the real-ballot files. Deviations: three test-takers listed the test folder or the runs folder, which shows file names but no contents; one read its own oversized tool output from the harness's spill file.
+  - **B1, the specialist: passes.**
+    - 8 of 8 plants; 0 of 5 traps flagged; no recommendations; no invented facts (every quotation, figure and date matched the kit by script; votes, money and endorsements by hand).
+    - Symmetry Check: three LENGTH flags, each explained in a Gaps line.
+    - Minor misses: five statements without their own type and date, each traceable to a source cited nearby; a new commissioner said to "help appoint" a committee the board appoints; one ad cited to the wrong article; a publish date written as a deadline; and a coroner candidate's Gaps line listing immigration, which the office can't move.
+  - **B1, the baselines: both fail.**
+    - Research Synthesist: 7 of 8 plants; 17 invented or misstated facts (most are its own arithmetic, labeled but not in the kit; it also counted 9 contests on a 7-contest ballot and misquoted a candidate); about 16 facts without a source or date.
+    - Science Communicator: 7 of 8 plants; 25 figures of its own arithmetic and one misstated date; 13 facts without a source or date; about 67 he/she pronouns the kit never gives.
+    - Both failed the attack-ad plant the same way: each checked the ad's figure with its own per-home math instead of quoting the official estimate. Both passed the slogan and withdrawal plants.
+  - **B2 and B3: the specialist is exact on both; all four baseline outputs are not.** On B2 the specialist declined, offered the advisor, and delivered the full brief. Both baselines framed the answer as "you may lean YES if…" lists. On B3 the specialist wrote the shortest brief, with an honest Gaps line and nothing inferred from party. The baselines ran 3,000 to 3,700 words and used pronouns the kit doesn't give. Minor specialist glosses: "for ten years" cited to the official summary, though only the opponents use the phrase; a one-year figure called yearly; "big repair projects" for a list that also has treatment upgrades.
+  - **Neutrality.** Every flag was checked against the kit.
+    - The specialist drew 3 flags from each reviewer. The Republican-side reader found it balanced in all seven contests.
+    - The Democratic-side reader's one moderate flag: the fire-tax brief set the ad's $900 "versus" the official $59–$84 and said "Both are shown, each with its source," which reads as false balance. That wording came from the agent file's own example.
+    - The other flags: supporters' "$7 a month" wasn't checked against the official figure while the opponents' "44 percent" was; a court's finding that the plaintiff voted for the transfer was left out; a site called "consistent" with the record despite two claims the record doesn't show; a supporters' "on top of" promise not checked; and the coroner Gaps item above.
+    - None is a factual error, and the source settles each one. All become Revision 3.
+    - The baselines drew more flags, from both directions (5 and 8 from one reader; 11 and 7 from the other), mostly from their own arithmetic and uneven checks.
+  - **Verdict.** The specialist meets the pass bar: 8 of 8 plants, no traps flagged, B2 and B3 exact, no invented facts, and every reviewer flag settled by the source. Against the baselines it wins on B2's refusal, on the attack-ad plant, and on symmetry: theirs defeated the Symmetry Check's format, and a hand count found imbalances neither explained. It ties on the slogan and withdrawal plants, which all three passed.
+- **Real run, follow-up, 2026-10-17.**
+  - A voter asked whether the advisor accounts for a minor-party vote helping elect the voter's less-preferred major candidate. It didn't. The Office Card gains a "How close it's been" line with past official results only.
+  - The voter also asked for detailed research on conduct findings, done by the agents that research. That became the Conduct Brief.
+  - Two Conduct Briefs and one Election Law Analyst answer were written for the real ballot. Both briefs corrected a premise they were given: no court challenge to the ethics commission's jurisdiction was found, and a guilty plea came with a deferred judgment, so whether it's a conviction went to the Election Law Analyst.
+- **Revision 3, 2026-10-17.** From Round 1 and the follow-up; untested until Round 2.
+  - The Office Card adds "How close it's been": the voting method and the last two official results for the seat. No polls, ratings, or forecasts.
+  - Known and disputed checks each side's checkable claims the same way. A campaign figure that differs from the official estimate is a claim, never set "versus" it. The Communication Style example that taught "both are shown" is rewritten.
+  - Record and statements checks what a candidate says a vote did, not only how they voted.
+  - Established findings lists every finding that bears on the allegation, whichever way it cuts.
+  - Gaps lines don't list positions on issues the office can't move.
+  - Step 5 checks that every fact sentence carries its own type and date.
+  - The public-safety tag drops "prevention" from one side, after the Republican-side reader flagged the advisor's question built from it.
+  - New: the Conduct Brief, on request, with legal meaning sent to the Election Law Analyst.
 - **Proposed frontmatter:** color `#0F4C81` (unused); emoji 🗂️ (unused); vibe "Same questions for every candidate, both sides at full strength, and a date on every fact."; tools Read, Write, Grep, Glob, WebFetch, WebSearch; description as in the agent file.
