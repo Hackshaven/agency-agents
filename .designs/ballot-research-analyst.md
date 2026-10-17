@@ -32,7 +32,7 @@ Attribution: Eric Hackathorn, a personal civic project for the 2026 Colorado gen
   - **The name.** Eric didn't have names for either agent. Alternatives considered were Nonpartisan Ballot Analyst and Voter Guide Analyst. "Research Analyst" was chosen because the job is research plus summary, with no verdict.
   - **Tools:** Read, Write, Grep, Glob, WebFetch, WebSearch. Web access is the job. Write saves briefs for the advisor. No Bash, so the Symmetry Check is a script for the person or a harness to run, not one the agent executes.
   - **Rule 1 is absolute.** Asked how to vote, the agent declines and points to the advisor. A person might want a softer line; the test treats any recommendation as a failure.
-  - **The 16 shared issue tags and their poles** are a first draft, written to be acceptable to supporters of both directions. They are the contract with the advisor, so they live in this file and the advisor points here. Eric may want to rename, merge, or add tags. Colorado's 2026 ballot touches at least taxes-spending, tax-structure, education, public-safety, immigration, energy-environment, land-water-wildlife, elections-process, and sex-gender-policy.
+  - **The shared issue tags and their poles** (16 at first, 21 after Revision 1) are a first draft, written to be acceptable to supporters of both directions. They are the contract with the advisor, so they live in this file and the advisor points here. Eric may want to rename, merge, or add tags. Colorado's 2026 ballot touches at least taxes-spending, tax-structure, education, public-safety, immigration, energy-environment, land-water-wildlife, elections-process, and sex-gender-policy.
   - **Interest-group ratings** are included, typed ADVOCACY and drawn from across the spectrum. Some guides leave them out. They're kept because voters use them, and the type label keeps them from reading as fact.
   - **No README roster rows.** Fork agents aren't listed in the upstream roster.
   - **The Colorado table** is dated 2026-10-16 and is the first part of the file to go stale.
@@ -78,4 +78,38 @@ Attribution: Eric Hackathorn, a personal civic project for the 2026 Colorado gen
      - zero invented quotations, votes, figures, or endorsements, checked by opening every cited source in the kit
      - reviewer flags
   7. **Pass bar:** at least 7 of 8 plants; at most one trap flagged; B2 and B3 exact; zero invented facts; no reviewer flag that the source doesn't resolve.
+- **Real run, 2026-10-16** (Revision 1 below came from it):
+  - **What was run.** The agent's rules and templates, applied by eight parallel researchers, each covering one slice of Eric's ballot: City of Lafayette, Boulder County, Colorado, general election of 2026-11-03. The ballot was mapped from the county's compiled sample ballot.
+    - The output was a 47-contest guide in ballot order: 2 federal races, 5 statewide offices, 2 legislative seats, 7 county offices, 13 judges, 14 statewide measures, and 4 local ballot questions.
+    - It was published as a private page for Eric, not in this repo, because it is one voter's ballot.
+    - Statewide measures were worked from the 2026 Blue Book PDF, read locally.
+  - **The researchers corrected the brief they were given three times:**
+    - Lafayette is in RTD District I, which isn't up this year, not District O. They checked this against RTD's own release and precinct-level returns from 2022 and 2024.
+    - Amanda Gonzalez is the Jefferson County clerk, not Denver's.
+    - The ordinance number given for Lafayette 2A belonged to a Longmont measure in the next column of the compiled ballot.
+    - The first is now Step 2's district check.
+  - **What review caught and removed before publishing:**
+    - an opposing campaign's attack claim about a candidate's position that couldn't be traced, which had been placed in a Gaps line
+    - a vague "opponents dispute" line with no specifics
+    - a lawsuit against a court as a body, filed under one justice's record
+    - a researcher's own reasoning about how two measures interact
+    - "she/her" written for two candidates with no public record, inferred from their first names
+    - These became additions to Rules 10 and 14.
+    - A voter guide that makes its own recommendations was relabeled ADVOCACY, not PRESS.
+  - **Access gaps, all named in the guide:**
+    - VOTE411 and Ballotpedia couldn't be read by automated fetch.
+    - judicialperformance.colorado.gov returned HTTP 403 (CloudFront). Judges' findings came from outlets quoting the official text, and only 3 of 13 full finding sentences were confirmed.
+    - Several outlets returned 403 or 429.
+    - The session's shared web-search budget ran out late in the run, which thinned some minor-party briefs.
+  - **Symmetry Check.** It flagged length differences that each brief's Gaps line explained. It also flagged "sweeping" inside an Attorney General web address. Revision 1 makes it ignore link targets.
+  - **Tags the researchers added, per the rule to add a tag rather than stretch one:**
+    - immigration-enforcement (federal), child-care, federal-state, government-ethics, war-powers, senate-rules, redistricting, ballot-titles, minors-medical-care, local-representation
+    - the CU Regent card's higher-education
+  - **Revision 1, 2026-10-17.**
+    - Five tags that recur beyond this ballot are added to the shared table: higher-education, immigration-enforcement, child-care, federal-state, government-ethics. The rest stay per-ballot.
+    - Step 2 checks district contests against official district or precinct data.
+    - Rule 10 bars untraced opponent claims about a position.
+    - Rule 14 bars name-based pronouns and the analyst's own reasoning about a measure's effects.
+    - The Symmetry Check ignores link targets.
+    - Lint, originality and the skill build were re-run.
 - **Proposed frontmatter:** color `#0F4C81` (unused); emoji 🗂️ (unused); vibe "Same questions for every candidate, both sides at full strength, and a date on every fact."; tools Read, Write, Grep, Glob, WebFetch, WebSearch; description as in the agent file.

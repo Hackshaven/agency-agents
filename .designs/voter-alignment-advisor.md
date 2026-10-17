@@ -34,7 +34,7 @@ Attribution: Eric Hackathorn, a personal civic project for the 2026 Colorado gen
     - the coverage floor of 30% for any suggestion, and 50% for "Clear"
     - margins of 10 points for "Lean" and 20 for "Clear"
     - rounding to the nearest 10
-  - **Dealbreakers.** A dealbreaker on an issue applies whenever the office can affect that issue at all, even a little. It's the voter's rule, and the card says when it decided a contest. Eric may prefer that a dealbreaker apply only where the office's relevance is MED or HIGH.
+  - **Dealbreakers.** A dealbreaker on an issue applies whenever the office can affect that issue at all, even a little, and (after Revision 1) only when the placement isn't a judgment call. It's the voter's rule, and the card says when it decided a contest. Eric may prefer that a dealbreaker apply only where the office's relevance is MED or HIGH.
   - **Measures** are matched in prose (pull toward YES or NO by tagged effect), not in code. Their effects are too varied for one formula. A formula can be added once real briefs show what the analyst's issue tags look like in practice.
   - **The profile is a local YAML file** the voter owns, with no address and no registration data. The agent doesn't persist anything else.
   - **No README roster rows** (fork convention).
@@ -84,4 +84,26 @@ Attribution: Eric Hackathorn, a personal civic project for the 2026 Colorado gen
      - A2: at least 5 of 6 plants, and zero facts from outside the briefs
      - A3: exact
      - A4: all three behaviors exact
+- **Real run, 2026-10-16** (Revision 1 below came from it). Eric's own ballot, from the analyst's 47 briefs. No profile answers or suggestions are recorded here; they're Eric's.
+  - **Interview.** 24 issue questions, drawn from the tags the briefs used, then 5 style questions with party last. Plus one "what does it depend on" follow-up and one follow-up asking which party the tiebreaker should favor. That's about 31 turns at one issue per turn. Batching was offered and not taken.
+    - Each "C" answer drew the follow-up, and the voter's own words were recorded.
+    - The read-back was confirmed before any matching.
+  - **Placement was blind.** Four separate readers placed every candidate and measure on the issue scales from the briefs alone, without the profile. Each quoted the brief word for word and flagged judgment calls. A script checked every quote against the brief.
+  - **Results.** 28 of 47 contests got a suggestion. 19 went back to the voter as close calls or open questions.
+    - 7 of those 19 were county races with one candidate.
+    - Most of the rest were races where one candidate's brief was too thin to compare, under the 30% coverage floor.
+  - **Two defects found and fixed:**
+    1. **Dealbreakers fired on judgment-call placements.** In the first pass, five candidates were ruled out on placements the readers themselves marked as uncertain. One of them rested on a single indirect quote. That broke the read-back's promise that a dealbreaker applies when a brief *clearly* places a candidate on the other side. All five became "possible dealbreakers" shown to the voter. None of them was the suggestion in its race, so no suggestion changed.
+    2. **Mixed effects on one issue were treated as a conflict.** A measure that adds both penalties and treatment registered as a conflict between two of the voter's values.
+  - **Open questions for Eric, not changed:**
+    - **The proximity model.** A voter who *leans* scores a candidate placed at "lean" above one placed at the strong end of the same side. In two races, a 10-point "Lean" came from exactly that, and in one of them the lean placement was a judgment call. Should a narrow lean that rests on one judgment call drop to "No clear match"?
+    - **The coverage floor.** Thinly documented candidates send many races to the tiebreaker. That's honest, but it puts a lot of weight on the tiebreaker.
+    - **The `education` tag** mixes funding level with school choice. Measures that only add funding fit it awkwardly.
+    - **The CU Regent race** turned on higher education, which the profile never covered, because the shared tag table lacked it. The analyst's Revision 1 adds the tag. The advisor now asks about any Office Card issue the profile lacks before suggesting.
+  - **Revision 1, 2026-10-17.**
+    - Rule 8 and `align()`: only a clear placement rules an option out; a judgment-call placement is shown as a possible dealbreaker.
+    - The measures paragraph nets same-issue effects instead of calling them a conflict.
+    - Step 2 offers batching on long ballots.
+    - Step 4 places options without the profile and asks about uncovered Office Card issues.
+    - The arithmetic was re-run on test placements: a judgment-call placement gives a possible dealbreaker, a clear one gives a dealbreaker. Lint, originality and the skill build were re-run.
 - **Proposed frontmatter:** color `#5B21B6` (unused); emoji 🧮 (unused); vibe "Your values, its arithmetic, your vote, and the work shown."; tools Read, Write; description as in the agent file.
