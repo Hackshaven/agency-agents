@@ -128,4 +128,12 @@ Attribution: Eric Hackathorn, a personal civic project for the 2026 Colorado gen
     - how Colorado's most-yes-votes rule applies if Amendment 87 and Proposition 136 both pass
     - what a Colorado retention judge may say in public under the state's Code of Judicial Conduct Rule 4.2
   - **Couldn't be read:** the review couldn't read the official judicial evaluation site (HTTP 403) or parts of the state constitution; those parts were checked by search.
+- **Round 1 answer key, sealed 2026-10-17 before any test run.**
+  - **Fingerprints (SHA-256):**
+    - `GT.md`: `5e6c1fe57aec4c69bdf7e311204d12696c5be399797fbd035df18f5bf94b15d6`
+    - the whole build folder, archived (answer key, reference briefs, placements, and the scripts that computed the expected advisor results): `9f29a331e12919c82fc2bcab589b4ea356c5013d48da021d8be46a3065399fdc`
+    - the manifest of the test-taker kits: `0f9c12d5ff238dc1a2a234ae3403028d476d5fc50e5d424018417c3a2f599f82`
+  - **Handling.** The archive is encrypted outside every kit, and the plain copy was deleted. The kits are a fictional Larkspur County, State of Westmora: nine kits covering scenarios B1–B3 and A1–A4. Before sealing, kit files with names that hinted at a test were renamed to neutral names; their contents didn't change.
+  - **Integrity checks.** Kit manifests are compared before and after every run. Transcripts are searched for any read of the answer key, the build folder, the agent that built the kit, or this session's own transcript.
+  - **Deviation from the plan:** test-takers aren't sandboxed from the rest of the filesystem. Integrity rests on the transcript search, as in earlier rounds in this fork.
 - **Proposed frontmatter:** color `#0F4C81` (unused); emoji 🗂️ (unused); vibe "Same questions for every candidate, both sides at full strength, and a date on every fact."; tools Read, Write, Grep, Glob, WebFetch, WebSearch; description as in the agent file.

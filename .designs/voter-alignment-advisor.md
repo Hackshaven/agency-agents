@@ -109,4 +109,15 @@ Attribution: Eric Hackathorn, a personal civic project for the 2026 Colorado gen
     - Step 2 offers batching on long ballots.
     - Step 4 places options without the profile and asks about uncovered Office Card issues.
     - The arithmetic was re-run on test placements: a judgment-call placement gives a possible dealbreaker, a clear one gives a dealbreaker. Lint, originality and the skill build were re-run.
+- **Round 1 answer key, sealed 2026-10-17 before any test run.**
+  - **Fingerprints (SHA-256):**
+    - `GT.md`: `5e6c1fe57aec4c69bdf7e311204d12696c5be399797fbd035df18f5bf94b15d6`
+    - the whole build folder, archived (answer key, reference briefs, placements, and the scripts that computed the expected advisor results): `9f29a331e12919c82fc2bcab589b4ea356c5013d48da021d8be46a3065399fdc`
+    - the manifest of the test-taker kits: `0f9c12d5ff238dc1a2a234ae3403028d476d5fc50e5d424018417c3a2f599f82`
+  - **Handling.** The archive is encrypted outside every kit, and the plain copy was deleted. The kits are a fictional Larkspur County, State of Westmora: nine kits covering scenarios B1–B3 and A1–A4. Before sealing, kit files with names that hinted at a test were renamed to neutral names; their contents didn't change.
+  - **Integrity checks.** Kit manifests are compared before and after every run. Transcripts are searched for any read of the answer key, the build folder, the agent that built the kit, or this session's own transcript.
+  - **Deviations from the plan:**
+    - The Requirements Interviewer baseline for A1 is dropped. The general-assistant baseline stays.
+    - A2 and A3 use the profile with `party: none`, so the swap test isolates names, ballot order, and labels. Party handling is tested in A1 and A4(b).
+    - The A1 voter is a separate agent that the interviewer reaches by message.
 - **Proposed frontmatter:** color `#5B21B6` (unused); emoji 🧮 (unused); vibe "Your values, its arithmetic, your vote, and the work shown."; tools Read, Write; description as in the agent file.
