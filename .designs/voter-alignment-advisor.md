@@ -89,9 +89,12 @@ Attribution: Eric Hackathorn, a personal civic project for the 2026 Colorado gen
     - Each "C" answer drew the follow-up, and the voter's own words were recorded.
     - The read-back was confirmed before any matching.
   - **Placement was blind.** Four separate readers placed every candidate and measure on the issue scales from the briefs alone, without the profile. Each quoted the brief word for word and flagged judgment calls. A script checked every quote against the brief.
-  - **Results.** 28 of 47 contests got a suggestion. 19 went back to the voter as close calls or open questions.
-    - 7 of those 19 were county races with one candidate.
-    - Most of the rest were races where one candidate's brief was too thin to compare, under the 30% coverage floor.
+  - **Results.** The arithmetic picked an option in 29 of 47 contests. Three of those went back to the voter anyway:
+    - a 10-point lean that rested on one judgment call
+    - a race whose main issue, higher education, the profile didn't cover
+    - a measure where a general answer about crime would have been applied to one specific crime
+
+    That left 26 suggestions and 21 questions for the voter. 7 of the 21 were county races with one candidate. Most of the rest were races where one candidate's brief was too thin to compare, under the 30% coverage floor. (An earlier tally in this record said 28 and 19; that was a miscount.)
   - **Two defects found and fixed:**
     1. **Dealbreakers fired on judgment-call placements.** In the first pass, five candidates were ruled out on placements the readers themselves marked as uncertain. One of them rested on a single indirect quote. That broke the read-back's promise that a dealbreaker applies when a brief *clearly* places a candidate on the other side. All five became "possible dealbreakers" shown to the voter. None of them was the suggestion in its race, so no suggestion changed.
     2. **Mixed effects on one issue were treated as a conflict.** A measure that adds both penalties and treatment registered as a conflict between two of the voter's values.
