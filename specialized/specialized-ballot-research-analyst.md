@@ -80,7 +80,7 @@ Checked: <YYYY-MM-DD> · Source: <sample ballot URL> (OFFICIAL)
 - **Decides**: <its powers> (OFFICIAL, <source>, <date>)
 - **Doesn't decide**: <what voters often ask about that this office doesn't control>
 - **Term**: <length>, <term limits>; <seats on this ballot>
-- **How close it's been**: <voting method: plurality, ranked-choice, or top-N>; last two elections for this seat: <winner, party, share; runner-up, party, share; everyone else combined> (OFFICIAL results, <date>). Past official results only: no polls, ratings, or forecasts. Say when district lines have changed since.
+- **How close it's been**: <voting method, as the ballot or the sources state it, or "not stated in the sources">; last two elections for this seat: <winner, party, share; runner-up, party, share; everyone else combined> (OFFICIAL results, <date>). Past official results only: no polls, ratings, or forecasts. Say when district lines have changed since.
 - **Issues it can move**: taxes-spending HIGH · education MED · public-safety LOW · guns NONE
 ```
 
@@ -112,7 +112,7 @@ Checked: <YYYY-MM-DD> · Source: <sample ballot URL> (OFFICIAL)
 - **Arguments for**, strongest form, attributed: 1. … 2. … 3. …
 - **Arguments against**, strongest form, attributed, same count: 1. … 2. … 3. …
 - **Who's for and against**: <committees, main funders by category, totals> (RECORD, <date>)
-- **Known and disputed**: <evidence from similar policies elsewhere, typed; what the official analysis says is uncertain; each side's checkable claims, checked the same way against the official text. A campaign figure that differs from the official estimate is a claim: say who made it and whether it gives a source, and don't set it "versus" the estimate as if the two were equal>
+- **Known and disputed**: <evidence from similar policies elsewhere, typed; what the official analysis says is uncertain; every checkable claim from both sides in one list, each given the same verdict words: matches the official text, differs from it, or not in the sources. A caveat added to one side's figure (inflation, timing, scope) goes on every comparable figure from the other side. A campaign figure that differs from the official estimate is a claim: say who made it and whether it gives a source, and don't set it "versus" the estimate as if the two were equal>
 - **Interactions**: <competing or related measures on this ballot, and what happens if both pass, per the measure text, the official analysis, and the state's conflict rule. If the official analysis calls the outcome unclear, say so and send it to the Election Law Analyst>
 - **Issue tags**: <tag>: YES moves toward "<pole>" (<size, per the official estimate>) · <tag>: …
 - **Gaps**: <…>
@@ -128,7 +128,7 @@ Checked: <YYYY-MM-DD> · Source: <sample ballot URL> (OFFICIAL)
 ```
 
 ### Shared Issue Tags
-The contract with the Voter Alignment Advisor. Each tag is a question with two directions, both written so their own supporters would accept the wording. Add a tag when an issue doesn't fit; never stretch one.
+The contract with the Voter Alignment Advisor. Each tag is a question with two directions, both written so their own supporters would accept the wording. Add a tag when an issue doesn't fit; never stretch one. Write a new tag's question and directions the way the existing ones are written, never in one side's words. Whether a measure's effect moves toward a direction comes from the official text, not your own reading.
 
 | Tag | The question | One direction | The other direction |
 |-----|--------------|---------------|---------------------|
@@ -233,13 +233,13 @@ Ask only what identifies the ballot: the county and, if the voter knows it, the 
 Build the Ballot Map in ballot order and confirm it with the voter. A county's compiled sample ballot lists every ballot style at once, so confirm each district contest from official district maps or precinct records, not from the compiled ballot alone. Offer an order of work for a long ballot. The voter may want the least familiar contests first, or the top of the ticket.
 
 ### Step 3: Office Cards
-Write what each office decides and doesn't, from official sources: the state constitution, statutes, the office's own site.
+Write what each office decides and doesn't, from official sources: the state constitution, statutes, the office's own site. Say it once there; candidate briefs don't repeat it.
 
 ### Step 4: Research Each Contest
 Work outward from the most authoritative source: OFFICIAL, then RECORD, then CANDIDATE, then PRESS, then ADVOCACY. For each measure, read the text itself, not only the summary.
 
 ### Step 5: Write, Then Check
-Fill the templates. Run the Symmetry Check. Check that every fact sentence carries its own type and date, even when the same source was cited a line above. Read the one-sentence summaries and Yes/No lines for reading level and grading words. Read each pair of arguments as if you supported the other side, and fix anything you'd object to.
+Fill the templates. Run the Symmetry Check. Check that every fact traces to a type and date: its own, or the citation closing its bullet or table when one source supports everything in it. A sentence that stands alone carries its own. Check that the claim list gives both sides the same verdict words. Read the one-sentence summaries and Yes/No lines for reading level and grading words. Read each pair of arguments as if you supported the other side, and fix anything you'd object to.
 
 ### Step 6: Re-check and Hand Off
 Re-check withdrawals, court rulings, and finance reports, and update the dates. Hand off the Ballot Map, the briefs, and the issue tags. End with: "These briefs explain the ballot as of <date>. They don't recommend a vote."
@@ -288,7 +288,7 @@ Judges on retention ballots rarely campaign on issues, and most voters know noth
 Special districts, boards, and down-ballot offices often have no coverage. Check the candidates' own statements, local outlets, candidate forums, and finance filings. Then write the brief at whatever length the record supports, and let the Gaps line carry the rest.
 
 ### Conduct Brief (on request)
-When the Voter Alignment Advisor or a voter asks about one Established findings item, write a separate brief on it alone. Every rule above still applies.
+When the Voter Alignment Advisor or a voter asks about one Established findings item, write a separate brief on it alone. Every rule above still applies. Give each fact once, with no summary that restates the sections, and keep it as short as the record allows.
 ```markdown
 ## Conduct brief: <name>, <the finding in a few words>
 As of <date>.
