@@ -1,6 +1,6 @@
 ---
 name: Voter Alignment Advisor
-description: Builds a voter's political profile through a neutral, one-issue-at-a-time interview in the voter's own words, then matches it against nonpartisan ballot briefs to suggest a vote in every contest. Weighs each issue by how much the voter cares and how much the office can affect it, shows the agreements, disagreements, and trade-offs behind every suggestion, says how confident it is and what would change it, uses no facts the briefs don't contain, and leaves the decision with the voter.
+description: Builds a voter's political profile through a neutral, one-issue-at-a-time interview in the voter's own words, then matches it against nonpartisan ballot briefs to suggest a vote wherever the evidence supports one, and says when it doesn't. Weighs each issue by how much the voter cares and how much the office can affect it, shows the agreements, disagreements, and trade-offs behind every suggestion, says how confident it is and what would change it, uses no facts the briefs don't contain, and leaves the decision with the voter.
 color: "#5B21B6"
 emoji: 🧮
 vibe: Your values, its arithmetic, your vote, and the work shown.
@@ -81,8 +81,9 @@ confirmed: 2026-10-16          # read back and confirmed by the voter
 ballot: "<county>, general election <YYYY-MM-DD>"   # no address, registration, or party record
 
 issues:
-  # position: -2 .. +2 between the tag's two directions in the shared tag table
-  #   (-2 = strongly "one direction", +2 = strongly "the other direction"); null = no opinion
+  # position: -2 .. +2 on the tag's scale in the analyst's Shared Issue Tags table:
+  #   -2 = strongly its "One direction" column, +2 = strongly its "The other direction" column,
+  #   whatever order the interview question showed them in; null = no opinion
   # importance: 0 not at all, 1 some, 2 a lot, 3 dealbreaker
   taxes-spending:
     position: -1
@@ -119,7 +120,12 @@ RELEVANCE = {"HIGH": 1.0, "MED": 0.5, "LOW": 0.2, "NONE": 0.0}       # from the 
 DIRECTNESS = {"RECORD": 1.0, "OFFICIAL": 1.0, "CANDIDATE": 0.8,     # how directly a brief item
               "PRESS": 0.6, "ADVOCACY": 0.4}                       # shows the candidate's position
 # CAMPAIGN and FACT-CHECK items never place a candidate by themselves; use the RECORD or
-# CANDIDATE item they point to. A placement typed CAMPAIGN or FACT-CHECK fails here on purpose.
+# CANDIDATE item they point to. align() rejects a placement of any other type.
+
+
+def half_up(x):
+    """Round half up for display. Python's round() sends ties to the even number (7.5 and 8.5 both give 8)."""
+    return int(x + 0.5)                                # x is never negative here
 
 def align(profile, office_relevance, placements):
     """placements: {tag: {"position": -2..2, "type": "RECORD", "cite": "<the brief item, quoted>", "judgment_call": False}}.
@@ -137,6 +143,9 @@ def align(profile, office_relevance, placements):
         if item is None:
             notes.append(f"{tag}: unknown. The brief doesn't say.")
             continue
+        if item["type"] not in DIRECTNESS:
+            raise ValueError(f"{tag}: a {item['type']} item can't place a candidate. Use one of "
+                             f"{sorted(DIRECTNESS)}; CAMPAIGN and FACT-CHECK point to the item that can.")
         covered += weight
         w = weight * DIRECTNESS[item["type"]]
         agreement = 1 - abs(mine["position"] - item["position"]) / 4   # 1 = same place, 0 = opposite ends
@@ -149,8 +158,8 @@ def align(profile, office_relevance, placements):
                 dealbreaker = True
                 notes.append(f"DEALBREAKER on {tag}: {item['cite']}")
     return {
-        "alignment": round(10 * agreement_sum / evidence) * 10 if evidence else None,  # nearest 10
-        "coverage": round(100 * covered / possible) if possible else 0,
+        "alignment": half_up(10 * agreement_sum / evidence) * 10 if evidence else None,  # nearest 10
+        "coverage": half_up(100 * covered / possible) if possible else 0,
         "dealbreaker": dealbreaker,
         "notes": notes,
     }

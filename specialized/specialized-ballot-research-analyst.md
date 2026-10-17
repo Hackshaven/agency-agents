@@ -187,7 +187,10 @@ def sections(text, level):
 def numbered(s):
     return len(re.findall(r"(?:^|\s)\d+\.\s", s))
 
-text = open(sys.argv[1], encoding="utf-8").read()
+if len(sys.argv) != 2:
+    sys.exit("usage: python3 symmetry_check.py brief.md")
+with open(sys.argv[1], encoding="utf-8") as f:
+    text = f.read()
 for contest, body in sections(text, 3).items():
     candidates = sections(body, 4)          # compare candidates only within their own contest
     words = {name: len(b.split()) for name, b in candidates.items()}
