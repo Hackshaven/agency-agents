@@ -23,9 +23,9 @@ Attribution: Eric Hackathorn, a personal civic project for the 2026 Colorado gen
   - **Facts verified 2026-10-16** for the Colorado table:
     - **Blue Book.** C.R.S. 1-40-124.5(1)(a) was read via colorado.public.law: the Legislative Council's director of research prepares the booklet "in accordance with section 1 (7.5) of article V of the state constitution." The summary, major arguments, and fiscal assessment come from Legislative Council's ballot-analysis-process page, by search. The 2026 Blue Book's publication page says it covers "the fourteen statewide measures on the November 3, 2026 ballot and … judges considered for retention."
     - **The 2026 measures.** Ballotpedia News, 2026-09-14: 14 measures, 13 initiatives and 1 referral (Proposition NN). Proposition 136 and Amendment 87 are flagged as competing. Numbers for initiatives and letters for referrals match the list.
-    - **Amendment 71.** A 55% threshold for amendments, with a majority for repeal-only amendments, from SB17-152 and press coverage. A federal district court struck part of Amendment 71 (the signature-distribution rule), and the supermajority piece survived. That history wasn't checked to the end, because the table states only the threshold.
+    - **Amendment 71.** A 55% threshold for amendments, with a majority for repeal-only amendments, from SB17-152 and press coverage. A federal district court held its signature-distribution rule unconstitutional. The Tenth Circuit reversed on 2019-08-20 (*Semple v. Griswold*, 934 F.3d 1134), so both rules are in force. (Corrected 2026-10-17 by the Election Law Analyst's review; the first version said the district court's ruling stood.)
     - **TRACER.** Its homepage was confirmed. Coverage from June 2025 reports a temporary shutdown for address redaction. Whether it is fully restored wasn't checked.
-    - **Ballot return.** Receipt by 7 p.m. on Election Day, with postmarks not counting, from the Secretary of State's mail-ballot FAQ and El Paso County's 2026 calendar.
+    - **Ballot return.** Receipt by 7 p.m. on Election Day, with postmarks not counting, from the Secretary of State's mail-ballot FAQ and El Paso County's 2026 calendar. In-person voting and the later receipt rules for military and overseas voters were added after the Election Law Analyst's review (C.R.S. 1-7.5-107, 1-8.3-111, -113).
     - **Judges.** The finding wording ("meets performance standards" / "does not meet") comes from Colorado Politics' 2026-08-04 coverage of the 2026 cycle (123 judges, 3 not meeting standards). **judicialperformance.colorado.gov refused the fetch (HTTP 403)**, so the wording wasn't read on the official site. Re-check it there.
     - **TABOR notices.** The notice goes to addresses with an active registered voter whose ballot carries a TABOR issue, with summaries of the comments for and against, from Boulder County's 2019 and 2021 notices.
 - **Assumptions made without asking:**
@@ -112,4 +112,20 @@ Attribution: Eric Hackathorn, a personal civic project for the 2026 Colorado gen
     - Rule 14 bars name-based pronouns and the analyst's own reasoning about a measure's effects.
     - The Symmetry Check ignores link targets.
     - Lint, originality and the skill build were re-run.
+- **Election Law Analyst review, 2026-10-17 (Revision 2).** The Election Law Analyst reviewed every legal statement in PR #14 against primary sources, checking later history by search, not by a citator.
+  - **Verdict: NEEDS CHANGES.** 34 statements. 21 SUPPORTED, 12 OVERSTATED, 1 STALE; none WRONG or UNSOURCED. All were fixed in this revision:
+    - **STALE:** this record said a district court's ruling against Amendment 71's signature rule stood. The Tenth Circuit reversed it in 2019.
+    - **Ballot return:** the table now adds in-person voting and the later receipt rules for military and overseas voters.
+    - **Money:** municipal candidates and municipal ballot-issue committees file with the city clerk, not TRACER (C.R.S. 1-45-109). This bears on the real run's Lafayette 2A.
+    - **Constitutional and statutory measures:** the generic statement no longer implies statutes are always easy to undo.
+    - **Competing measures:** the generic guidance and the Interactions line now include the state's conflict rule. When the official analysis calls an outcome unclear, the brief says so and sends it to the Election Law Analyst.
+    - **Retention:** the template no longer assumes a simple majority or appointment.
+    - **Judges' speech:** the rule now says judges *rarely* campaign on issues; "can't" was dropped (*Republican Party of Minnesota v. White*, 2002). The same change was made in the advisor.
+    - **TABOR notice:** wording now follows C.R.S. 1-7-906 and 1-7-901.
+    - **Measure kinds:** referendum petitions and local referrals were added.
+    - **Advisor's privacy rule:** it now says to *treat* political opinions as sensitive. Colorado's privacy act doesn't list them; the EU's GDPR does.
+  - **For an attorney** (left open):
+    - how Colorado's most-yes-votes rule applies if Amendment 87 and Proposition 136 both pass
+    - what a Colorado retention judge may say in public under the state's Code of Judicial Conduct Rule 4.2
+  - **Couldn't be read:** the review couldn't read the official judicial evaluation site (HTTP 403) or parts of the state constitution; those parts were checked by search.
 - **Proposed frontmatter:** color `#0F4C81` (unused); emoji 🗂️ (unused); vibe "Same questions for every candidate, both sides at full strength, and a date on every fact."; tools Read, Write, Grep, Glob, WebFetch, WebSearch; description as in the agent file.

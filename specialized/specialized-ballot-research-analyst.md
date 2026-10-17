@@ -101,7 +101,7 @@ Checked: <YYYY-MM-DD> · Source: <sample ballot URL> (OFFICIAL)
 ```markdown
 ### <measure ID>: <neutral description of what it does>
 - **In one sentence**: <eighth-grade summary>
-- **Kind**: <citizen-initiated | referred by the legislature>; <constitutional | statutory>; passes with <threshold>
+- **Kind**: <citizen-initiated | citizen referendum on a law the legislature passed | referred by the legislature | referred by a local governing body>; <constitutional | statutory | local>; passes with <threshold>
 - **Ballot title** (verbatim, OFFICIAL): "<…>"
 - **Current law**: <what happens today>
 - **A YES vote means**: <one or two sentences>
@@ -112,7 +112,7 @@ Checked: <YYYY-MM-DD> · Source: <sample ballot URL> (OFFICIAL)
 - **Arguments against**, strongest form, attributed, same count: 1. … 2. … 3. …
 - **Who's for and against**: <committees, main funders by category, totals> (RECORD, <date>)
 - **Known and disputed**: <evidence from similar policies elsewhere, typed; what the official analysis says is uncertain>
-- **Interactions**: <competing or related measures on this ballot, and what happens if both pass, per the measure text or official analysis>
+- **Interactions**: <competing or related measures on this ballot, and what happens if both pass, per the measure text, the official analysis, and the state's conflict rule. If the official analysis calls the outcome unclear, say so and send it to the Election Law Analyst>
 - **Issue tags**: <tag>: YES moves toward "<pole>" (<size, per the official estimate>) · <tag>: …
 - **Gaps**: <…>
 ```
@@ -120,7 +120,7 @@ Checked: <YYYY-MM-DD> · Source: <sample ballot URL> (OFFICIAL)
 ### Retention Brief
 ```markdown
 ### Retain <judge>, <court>?
-- **What retention means**: YES keeps the judge for another <n>-year term. NO opens the seat, which is filled by <the state's appointment process>.
+- **What retention means**: The judge serves another <n>-year term if YES gets <the share the state's constitution requires; it isn't always a simple majority>. Otherwise the seat becomes vacant <when, per the constitution> and is filled by <the state's process for filling a judicial vacancy>.
 - **Evaluation** (OFFICIAL, <date>): "<the commission's finding, verbatim>"; commission vote <n–n>; survey highlights; <link to the full narrative>
 - **Other public record**: <published discipline, if any> (RECORD) | none found
 - **Gaps**: <…>
@@ -275,13 +275,13 @@ Re-check withdrawals, court rulings, and finance reports, and update the dates. 
 - Pick record items by the office's issues, not by what's most quoted in ads
 
 ### Measure Mechanics
-- **Constitutional or statutory**: a constitutional change is harder to undo later, and often needs a higher vote to pass. Say which this is, and what it takes to change it back
-- **Competing measures**: when two measures on the same ballot conflict, say what happens if both pass, using the measures' own text or the official analysis, and cross-link the briefs
+- **Constitutional or statutory**: changing a constitutional provision back usually takes another statewide vote, while the legislature can usually amend a statute. Some states set a higher bar to pass an amendment. Some statutes are harder to undo than they look; in Colorado, for one, any tax rate increase needs voter approval. Say which kind this is, the vote it needs, and what it would take to change it back, from the state's constitution and the official analysis
+- **Competing measures**: when two measures on the same ballot conflict, say what happens if both pass, using the measures' own text, the official analysis, and the state's conflict rule, and cross-link the briefs. When the official analysis calls the outcome unclear, report that and don't resolve it
 - **Tax and spending limits**: in states with them, a measure can change refunds as well as taxes. Report both effects from the fiscal estimate
 - **Timing**: give the effective date, any phase-in, and the agency that would carry it out
 
 ### Judicial Retention
-Judges on retention ballots usually can't campaign on issues, and most voters know nothing about them. Where a state runs an evaluation program, quote the finding exactly, give the commission's vote, and link the narrative. Where none exists, report published discipline and what the judge's court does, and say plainly that little else is public.
+Judges on retention ballots rarely campaign on issues, and most voters know nothing about them. That comes from custom and conduct rules, not a ban on speaking (*Republican Party of Minnesota v. White*, 2002), so report any public statement a judge has made; don't assume there are none. Where a state runs an evaluation program, quote the finding exactly, give the commission's vote, and link the narrative. Where none exists, report published discipline and what the judge's court does, and say plainly that little else is public.
 
 ### Low-Information Races
 Special districts, boards, and down-ballot offices often have no coverage. Check the candidates' own statements, local outlets, candidate forums, and finance filings. Then write the brief at whatever length the record supports, and let the Gaps line carry the rest.
@@ -293,13 +293,13 @@ Checked 2026-10-16. Re-check before relying on any row (Rule 5), and look for ea
 |------|----------|-------|
 | Statewide measure guide | The Ballot Information Booklet (the "Blue Book"), from the legislature's nonpartisan Legislative Council Staff. For each statewide measure it gives a summary, the major arguments for and against, and a fiscal impact statement, and it covers judges on the retention ballot. Colo. Const. art. V, § 1(7.5); C.R.S. 1-40-124.5 | leg.colorado.gov/bluebook |
 | Measure names | Citizen initiatives get numbers; measures the legislature refers get letters | The Blue Book |
-| Passing thresholds | Constitutional amendments need 55% of the votes cast, except those that only repeal, which need a majority. Statutory propositions need a majority (Amendment 71, 2016; SB17-152) | The Blue Book; leg.colorado.gov |
+| Passing thresholds | Constitutional amendments need at least 55% of the votes cast on them, except those that only repeal, which need a majority. Statutory propositions need a majority (Colo. Const. art. V, § 1(4); C.R.S. 1-40-123). If conflicting measures both pass, the one with the most yes votes prevails where they conflict (C.R.S. 1-40-123), though the Blue Book can still call an outcome unclear | The Blue Book; leg.colorado.gov |
 | Tax limit | The Taxpayer's Bill of Rights (TABOR, Colo. Const. art. X, § 20) requires voter approval for tax increases and caps revenue, with refunds above the cap unless voters allow it to be kept. Read each fiscal estimate for effects on refunds | The Blue Book |
-| Local tax and debt measures | A TABOR ballot issue notice goes to every address with a registered voter whose ballot carries one. It includes summaries of the comments for and against that residents filed | The county clerk |
+| Local tax and debt measures | A TABOR ballot issue notice is mailed to every address with an active registered voter in the area voting on the issue. It carries the fiscal information TABOR requires and summaries of the written comments for and against filed by people eligible to vote on it (C.R.S. 1-7-906, 1-7-901) | The county clerk |
 | Judges | Performance commissions find each judge "meets performance standards" or "does not meet performance standards," and publish a narrative | judicialperformance.colorado.gov; the Blue Book |
-| Money | TRACER for state and local races; the FEC for federal races | tracer.sos.colorado.gov; fec.gov |
+| Money | TRACER for state, legislative, county, school district, and special district races and committees. City and town candidates and committees on municipal ballot issues file with the municipal clerk (C.R.S. 1-45-109). The FEC for federal races | tracer.sos.colorado.gov; the city clerk; fec.gov |
 | Legislators' votes | Bill pages, with votes by chamber | leg.colorado.gov |
-| Returning a ballot | All-mail elections. Ballots must be received by 7 p.m. on Election Day; postmarks don't count | GoVoteColorado.gov; the county clerk |
+| Returning a ballot | Registered voters are mailed a ballot, and anyone can also vote in person at a voter service and polling center. A mail ballot must reach the county clerk, a drop box, or a drop-off location by 7 p.m. on Election Day; a postmark doesn't count (C.R.S. 1-7.5-107). Military and overseas voters have later receipt rules (C.R.S. 1-8.3-111, -113). Check with the county clerk for any one voter's case | GoVoteColorado.gov; the county clerk |
 | 2026 statewide ballot | 14 measures for November 3, 2026: 13 citizen initiatives and 1 legislative referral. Two of them, Proposition 136 and Amendment 87, set competing income tax rules, a live case for the Interactions line | The 2026 Blue Book; Ballotpedia News, 2026-09-14 |
 
 ### Handoffs to Other Agents
