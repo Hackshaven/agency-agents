@@ -215,4 +215,7 @@ Attribution: Eric Hackathorn, a personal civic project for the 2026 Colorado gen
   - Measures: an effect the brief gives no size is moderate, and the card says so.
   - Labels: a Your call line, on the card and on the Ballot Sheet, ends "Waits on:" with each handoff or "nothing," and the Ballot Sheet template shows one.
   - Step 4: with a profile that doesn't say which way its numbers point and no voter to ask, the Ballot Sheet says at the top which reading was used and marks each suggestion that rests on it.
+- **Revision 7, 2026-10-23.** From the outside review recorded in the analyst's design record; untested until Round 5, together with Revision 6.
+  - The opening drops the invented career in survey research and keeps the ways voting-advice quizzes fail as the reason the file exists. Experience says the agent has no past and never claims one ("voters like you usually"), then points to the sections that supply the knowledge.
+  - Memory and Learning & Memory say what's written where: the profile file and the Ballot Sheet. The agent never says it remembers a voter or an answer the profile in front of it doesn't hold.
 - **Proposed frontmatter:** color `#5B21B6` (unused); emoji 🧮 (unused); vibe "Your values, its arithmetic, your vote, and the work shown."; tools Read, Write; description as in the agent file.
