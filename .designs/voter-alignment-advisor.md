@@ -324,4 +324,21 @@ Attribution: Eric Hackathorn, a personal civic project for the 2026 Colorado gen
     2. **A skipped question.** The profile can say "no opinion" (null) but not "not answered yet." The skipped issue was listed apart from the issues, kept out of the arithmetic, and named on each card it could change, with whether it could.
     3. **Rule 2's count after the interview.** Add-on questions arrive a few at a time, and one of these had no clear side. No order passes every count, and asking the unclear one last doesn't help when another issue turns up after matching.
     4. **Measure effects beyond the brief's tag line.** The file says measures use the brief's issue tags directly. As in the first run, the readers were told to check the tag line against the measure's text. They added three effects the tag line leaves out: a revenue cap on taxes-spending, a treatment path on a penalty measure, and traditional use on the hunting amendment. Each is noted in its placement. Which rule should win is open.
+- **Author's decisions, 2026-10-25.** As in the analyst's record: from an interview with the author on the PR's three open questions and the second real run's five gaps. Design calls only; no ballot answers.
+  1. **Narrow leads:** a style question in the interview, with the answers "ask me," "call it No clear match" and "let the score stand." It covers a Lean that rests on one judgment call or on a candidate placed further along the voter's own side. With no answer, ask. Scoring is unchanged.
+  2. **Thin records:** keep the 30% floor. Before a tiebreaker settles a race where one of the two closest options is too thin, that option's unknowns go to the analyst. The tiebreaker applies only after an answer or "nothing found," and the card says which.
+  3. **The `education` tag:** split it into K-12 funding and school choice.
+  4. **Open or press-only matters:** a new Candidate Brief field, "Open or reported, no finding," for every candidate in the contest.
+  5. **Tags a brief adds:** one tag list per ballot, reused word for word by every brief, every later pass and the voter's profile.
+  6. **Earlier choices when only the briefs change:** keep a choice when the same rule sends the contest back for the same reason, and say so. Ask again when the reason changes, when the numbers point clearly elsewhere, or when something new touches the chosen option.
+  7. **A skipped question:** record it as skipped, with the date, apart from "no opinion." It stays out of the arithmetic, each card it could change says whether it could, and the question is offered again once after matching.
+  8. **Measure effects:** the brief's Issue tags line is the only source. A reader who finds a missing effect sends it to the analyst, who adds it with its source or says why not.
+- **Revision 15, 2026-10-25.** From the author's decisions 1, 2, 5, 6, 7 and 8; untested until Round 13.
+  - Code: `lean_rests_on()` returns what a Lean rests on. For each single judgment call, it tries the call's other value (the placement's `other`, which can be None to leave the item out, or one step toward 0). It also reads every placement past the voter's position, on the voter's own side, as the voter's position. Each change that undoes the Lean is listed. Checked on hand-worked cases: a 10-point Lean, 80 to 70, becomes a tie at 80 under own-side distance.
+  - Profile: `narrow_leads` (ask | no clear match | score stands) and `skipped`, with dates. Step 2 asks the narrow-leads style question and records "not right now" as skipped.
+  - Step 4 applies `narrow_leads` to every Lean `lean_rests_on()` flags. With no answer, the contest is Your call.
+  - Step 5: when one of the two closest options is too thin, its unknowns go in Waits on before the close-call rule decides. A skipped issue is handled like an unknown and offered again once.
+  - Measures use the Issue tags line only, and send a missing effect to the analyst.
+  - Changing Your Mind: when only the briefs change, a choice stands if the same rule sends the contest back for the same reason, and is asked again otherwise.
+  - Interview questions may use the Ballot Map's Added tags.
 - **Proposed frontmatter:** color `#5B21B6` (unused); emoji 🧮 (unused); vibe "Your values, its arithmetic, your vote, and the work shown."; tools Read, Write; description as in the agent file.

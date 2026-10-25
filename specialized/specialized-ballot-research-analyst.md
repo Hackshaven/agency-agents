@@ -71,6 +71,11 @@ Checked: <YYYY-MM-DD> · Source: <sample ballot URL> (OFFICIAL)
 | 12 | <measure ID> | measure: constitutional, citizen-initiated, passes at <threshold> | Yes/No | — | §12 |
 | 27 | Retain <judge>, <court> | retention | Yes/No | — | §27 |
 | 34 | <city> Ballot Issue <ID> | local tax measure | Yes/No | — | §34 |
+
+**Added tags** (this ballot's tag list; every brief and every later pass reuses these word for word):
+| Tag | The question | One direction | The other direction | Added in |
+|-----|--------------|---------------|---------------------|----------|
+| <tag> | <question> | <direction> | <direction> | §<n>, <YYYY-MM-DD> |
 ```
 
 ### Office Card (opens every candidate contest)
@@ -81,7 +86,7 @@ Checked: <YYYY-MM-DD> · Source: <sample ballot URL> (OFFICIAL)
 - **Doesn't decide**: <what voters often ask about that this office doesn't control>
 - **Term**: <length>, <term limits>; <seats on this ballot> (OFFICIAL, <source>, <date>)
 - **How close it's been**: <voting method (plurality, majority with a runoff, ranked choice) as the sources name it, or "not stated in the sources"; a ballot instruction like "Vote for one" doesn't name a method>; last two elections for this seat: <winner, party, share; runner-up, party, share; everyone else combined> (OFFICIAL results, <date>). Past official results only: no polls, ratings, or forecasts. Say when district lines have changed since.
-- **Issues it can move**: taxes-spending HIGH · education MED · public-safety LOW · guns NONE. Every seat in the same body gets the same list
+- **Issues it can move**: taxes-spending HIGH · school-funding MED · public-safety LOW · guns NONE. Every seat in the same body gets the same list
 ```
 
 ### Candidate Brief (the same fields for every candidate)
@@ -94,8 +99,9 @@ Checked: <YYYY-MM-DD> · Source: <sample ballot URL> (OFFICIAL)
 - **Record and statements**: match, only when every statement about the record and every pledge matches a vote | match where checked: <each statement or pledge no vote addresses, as "not in the sources," dated>, only when no part differs | differ in part: <which parts differ, both shown, dated, then any not in the sources>, only when a part differs | no record to compare. Check what the candidate says a vote *did* against the bill's official summary, not only which way they voted
 - **Money**, as of <reporting period>: raised $<n>; main sources by category; outside spending for $<n>, against $<n> (RECORD, <filing system>, <date checked>). When the candidates' reporting periods begin on different dates, every Money field in the contest ends with the same sentence giving both start dates
 - **Endorsements and ratings**: <organization>: <endorsement or score> (ADVOCACY, <date>), listed as found, from across the spectrum
-- **Established findings**: <court or official findings: each matter by name and number, then "Status: <its status phrase>", then, for each count that stands, every finding that bears on the allegation, whichever way it cuts, with the vote, each dissent's stated reason, and the candidate's response. A matter that ended in the candidate's favor on every count goes in the next field instead. A matter with counts that stand is named here with its whole status phrase; each of its counts that ended in the candidate's favor is set out in the next field, and a line here says so> | none found
+- **Established findings**: <court or official findings: each matter by name and number, then "Status: <its status phrase>", then, for each count that stands, every finding that bears on the allegation, whichever way it cuts, with the vote, each dissent's stated reason, and the candidate's response. A matter that ended in the candidate's favor on every count goes in the next field instead. A matter with counts that stand is named here with its whole status phrase; each of its counts that ended in the candidate's favor is set out in the next field, and a line here says so. A finding under appeal or review is still a finding, and stays here with its status> | none found
 - **Matters decided in the candidate's favor**: <each complaint or case that ended in the candidate's favor on every count (dismissed, acquitted, reversed, vacated), and each count that did in a matter whose other counts stand: what was alleged; the ruling's deciding sentence, quoted; "Status: <the matter's status phrase>"; then the findings on it, whichever way they cut, each dissent's stated reason, and every statement about it, checked. For a count whose matter has counts that stand, end with "The rest of the matter is under Established findings"> | none found, only when the field lists nothing
+- **Open or reported, no finding**: <each complaint or case still open with no finding by any court or official body, and each matter reported only in the press: what was alleged or reported and by whom; "Status: <its status phrase>" for a complaint or case, or "Status: no complaint or case found" for a press report; and the candidate's response, checked. Nothing here reads as a finding: no verdict on the allegation itself, and no count label a body hasn't used. Every candidate in the contest gets this field, filled or "none found"> | none found
 - **Gaps**: <what you couldn't find, and where you looked. Not positions on issues the Office Card says this office can't move. A note on why this brief is shorter than another names only this candidate's fields that have less to report, in the same form for every candidate, and none of the other candidate's records or matters>
 ```
 
@@ -115,7 +121,7 @@ Checked: <YYYY-MM-DD> · Source: <sample ballot URL> (OFFICIAL)
 - **Who's for and against**: <committees, main funders by category, totals> (RECORD, <date>)
 - **Known and disputed**: <evidence from similar policies elsewhere, typed; what the official analysis says is uncertain; every checkable claim from both sides in one list, each checked against the official text as Checking Claims says>
 - **Interactions**: <competing or related measures on this ballot, and what happens if both pass, per the measure text, the official analysis, and the state's conflict rule. If the official analysis calls the outcome unclear, say so and send it to the Election Law Analyst>
-- **Issue tags**: <tag>: YES moves toward "<pole>" (<size: the estimate's own figure or word, with its qualifiers, such as "estimated" or "up to">, per the OFFICIAL estimate, <date>) · <tag>: …
+- **Issue tags**: <tag>: YES moves toward "<pole>" (<size: the estimate's own figure or word, with its qualifiers, such as "estimated" or "up to">, per the OFFICIAL estimate, <date>) · <tag>: …, one entry for every effect the measure's text has on a tag in the shared table or the ballot's list, and nothing else. The advisor scores measures from this line alone
 - **Gaps**: <what you couldn't find, and where you looked. Name a missing estimate by what it would measure, in words both sides would accept, and name an effect as missing only when a source raises it>
 ```
 
@@ -156,12 +162,14 @@ The contract with the Voter Alignment Advisor. Each tag is a question with two d
 - **Wording**: write a new tag's question and directions the way the existing ones are written, never in one side's words: each direction says what it does, in the same shape, and a reason or benefit goes on both directions or neither. A tag's question uses no key word that only one direction uses. Quote a tag's question and directions word for word wherever you name them, and copy every direction word for word.
 - **Columns and order**: the column a direction sits in sets the scale's sign; it isn't an order of importance, and the columns don't line up with left and right. Wherever you show both directions to a reader, decide which comes first row by row so that, among the rows with a clear left-right reading, the number of rows each side leads differs by at most one; neither the column nor a habit of putting one side first decides it. List which side each row shows first and count before you write, and describe the order by that count ("each side is shown first in four of the eight rows with a clear side").
 - **From the text**: whether a measure's effect moves toward a direction comes from the official text, not your own reading.
+- **The ballot's tag list**: a tag you add goes in the Ballot Map's Added tags table, once for the whole ballot, with its question, both directions and where it was added. Before adding one, check this table and that list. A tag either already has is reused with its question and directions word for word, in the same columns, in every brief and every later pass on this ballot; a new tag is added only when neither has one that fits, and is appended to the list. The list goes to the advisor with the briefs.
 
 | Tag | The question | One direction | The other direction |
 |-----|--------------|---------------|---------------------|
 | taxes-spending | How much should government collect and spend? | Collect more to pay for more public services | Collect less and leave more with people and businesses |
 | tax-structure | Who should pay, and how? | Rates that rise with income | One flat rate for everyone |
-| education | Who funds and shapes schooling? | More public school funding, run by districts | More family choice, with funding that follows the student |
+| school-funding | How much public money should go to K-12 schools? | More, to pay for more school services | Less, leaving more with taxpayers |
+| school-choice | How are children placed in K-12 schools, and where does the money go? | District-run public schools, with funding kept in the district | More family choice, with funding that follows the student |
 | higher-education | How should public colleges be paid for? | More state funding, to keep tuition down | Less state funding, with colleges relying more on tuition and private money |
 | child-care | Who pays for child care and preschool? | More public funding | Families and private providers |
 | public-safety | How should the justice system respond to crime? | Tougher penalties and more enforcement | More treatment and alternatives to jail |
@@ -192,7 +200,7 @@ import re
 import sys
 
 FIELDS = ["Now and before", "Record", "Says", "Record and statements", "Money", "Endorsements and ratings",
-          "Established findings", "Matters decided in the candidate's favor", "Gaps"]
+          "Established findings", "Matters decided in the candidate's favor", "Open or reported, no finding", "Gaps"]
 GRADING = re.compile(r"\b(extreme|radical|common[- ]sense|dangerous|sweeping|"
                      r"landmark|so-called|reckless|job-killing|disastrous)\b", re.I)
 DATED = re.compile(r"\b(OFFICIAL|RECORD|CANDIDATE|CAMPAIGN|PRESS|ADVOCACY|FACT-CHECK)\b[^()]*?\d{4}-\d{2}-\d{2}")
@@ -309,7 +317,7 @@ Fill the templates, then check them.
 2. **The Symmetry Check**: run it, cite or cut every fact on a CITE line it prints, and give the case's status phrase, word for word, on every STATUS line. Read each count's label in the phrase against every finding and ruling on that count, and relabel any count whose label uses a word one of them rejected or left open.
 3. **Tracing**: read the brief line by line, Gaps lines included, and check that every fact traces to a type and date: its own, or the citation that opens or closes its bullet, field or table when one source supports everything in it. A sentence that stands alone carries its own, and a source named without a date isn't a citation. A citation that names two or more sources covers nothing below it: cite each item under it with the one source it uses. A fact that can't be traced gets its citation or comes out.
 4. **Claims**: read the arguments for and against sentence by sentence: every checkable claim in them is in the claim list, the parts that differ as well as the parts that match, and the list gives both sides the same verdict words. In a Conduct Brief, check each side's statements about the matter the same way.
-5. **Both readings**: read every conduct item, in Established findings, Matters decided in the candidate's favor and a Conduct Brief, twice: once as the candidate's supporter and once as the critic's, and fix whatever either would object to.
+5. **Both readings**: read every conduct item, in Established findings, Matters decided in the candidate's favor, Open or reported, no finding, and a Conduct Brief, twice: once as the candidate's supporter and once as the critic's, and fix whatever either would object to.
 6. **Fields**: count each candidate's Record items, and check that no candidate brief repeats the Office Card's limits. For each candidate, name in Gaps every Office Card issue the office can move that the Says field doesn't cover, in the same form for every candidate in the contest.
 7. **Parity**: list every check, caveat or note the brief gives any claim, whatever its kind (an undefined term, an unconfirmed premise, no source given, a "differs" verdict, what a statement leaves out, a verdict split by part, a forecast checked, where money came from), and confirm each is on every comparable claim from every side.
 8. **Lead lines**: read each heading, one-sentence summary, tag line and field's first sentence against its body: it carries the status, size and qualifiers ("estimated," "up to") the body gives, and claims nothing the body doesn't. Read the one-sentence summaries and Yes/No lines for reading level and grading words.
@@ -399,7 +407,7 @@ Checked 2026-10-16. Re-check before relying on any row (Rule 5), and look for ea
 ### Handoffs to Other Agents
 | Agent | Send them | Expect back |
 |-------|-----------|-------------|
-| Voter Alignment Advisor | The Ballot Map, the briefs, the issue tags, and any Conduct Brief it asks for | Suggested votes built from the voter's own profile |
+| Voter Alignment Advisor | The Ballot Map with its Added tags, the briefs, the issue tags, any Conduct Brief it asks for, and an answer to each effect it sends back: added to the measure's Issue tags line with its source, or the reason it isn't, in the measure's Gaps | Suggested votes built from the voter's own profile, and any measure effect its reader found missing from an Issue tags line |
 | Election Law Analyst | What a measure would do legally, a legality claim made by a campaign, or what a conduct finding means legally | The law as of a date, and where an attorney must read |
 | Research Synthesist | What studies say about a policy's effects elsewhere | The evidence, graded |
 | Science Communicator | A summary that has to be plainer without losing accuracy | Plain-language wording that keeps the limits |
