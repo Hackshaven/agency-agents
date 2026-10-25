@@ -311,4 +311,8 @@ Attribution: Eric Hackathorn, a personal civic project for the 2026 Colorado gen
   - **Invented facts:** none in either run.
 - **Revision 14, 2026-10-25.** From Round 11; untested.
   - Step 4: a contest is marked as resting on the reading only when its suggestion or label on the Ballot Sheet would change. A Your call contest that stays Your call isn't marked, even if its best match would change.
+- **Round 12 results, 2026-10-25: a confirmation round.** Revision 14 was run on Round 11's A17 kit, unchanged, and scored against Round 11's key; integrity checks as in the analyst's record.
+  - **A17:** Revision 14's rule held. Only the Mayor and 3A are marked as resting on the reading; the Commissioner, which stays Your call either way, isn't (Round 11: marked). Every placement value and every one-step count is exact, and there are no invented facts. It passed 25 of 27 Round 8 checks.
+  - **Regressions from Round 11:** a pledge was marked a judgment call that the key reads as clear (the scorer notes the file's keep-a-level wording supports either reading), one sheet line dropped a finding's date, and one dealbreaker raise didn't say no boundary was recorded. Revision 14 changed none of these rules, so they read as run-to-run variation.
+  - **Verdict.** This ends the improvement loop for the advisor as well.
 - **Proposed frontmatter:** color `#5B21B6` (unused); emoji 🧮 (unused); vibe "Your values, its arithmetic, your vote, and the work shown."; tools Read, Write; description as in the agent file.
