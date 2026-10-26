@@ -169,7 +169,7 @@ The contract with the Voter Alignment Advisor. Each tag is a question with two d
 | taxes-spending | How much should government collect and spend? | Collect more to pay for more public services | Collect less and leave more with people and businesses |
 | tax-structure | Who should pay, and how? | Rates that rise with income | One flat rate for everyone |
 | school-funding | How much public money should go to K-12 schools? | More, to pay for more school services | Less, leaving more with taxpayers |
-| school-choice | How are children placed in K-12 schools, and where does the money go? | District-run public schools, with funding kept in the district | More family choice, with funding that follows the student |
+| school-choice | How are children placed in K-12 schools, and where does the money go? | Students placed in district-run public schools, with funding kept in the district | Students placed in schools their families choose, with funding that follows the student |
 | higher-education | How should public colleges be paid for? | More state funding, to keep tuition down | Less state funding, with colleges relying more on tuition and private money |
 | child-care | Who pays for child care and preschool? | More public funding | Families and private providers |
 | public-safety | How should the justice system respond to crime? | Tougher penalties and more enforcement | More treatment and alternatives to jail |

@@ -405,4 +405,27 @@ Attribution: Eric Hackathorn, a personal civic project for the 2026 Colorado gen
   - **Fingerprints (SHA-256):** `GT.md` `75cbf549fe9c42bbca1455a1bed3149797c839a537e90d907459c7728c59c04d`; the build folder, archived, `a3be8ee0615de899b488772563e4dd0fb6885ea1c912f618148c47dbbb7438e2`; the kit manifest (46 files) `86520580f9c46f584ffb74d57b53baf63ee79097022d5aa20706038e12d5234a`.
   - **Kits.** New, built by a separate agent in new fictional counties and states. B24 is a ballot with 9 plants and 8 traps, aimed at the new field (parallel Democratic and Republican candidates with open and press-only matters, and a finding under appeal), the ballot's tag list (an earlier pass's Added tags table to reuse, and one tag to add), the education split, and the Issue tags line carrying every effect. It also targets persistent checks and Rule 10's line on private life. The reference brief prints 0 CITE, STATUS, FIELD and WORD lines.
   - **Deviations:** no regression kits, and no swap or reproducibility runs. Some steps can't be tested offline: the analyst's answer to an effect the advisor sends back, reuse of the tag list across real later passes, and the voter answering a skipped question when it's offered again. The Symmetry Check reads only the new field's name, not its content.
+- **Round 13 results, 2026-10-26.** Run against Revision 16 (`f644fa7`). The answer key's fingerprints matched the sealed ones, all 46 kit files matched the manifest after the runs, and no transcript shows a read outside each run's own kit and output folder, any web use, or any Artifact use.
+  - **B24, new ballot: fails, but every Revision 16 target passed except P3, which failed on a rule already in the file.** 7 of 9 plants pass; 1 trap is flagged; there are no invented, outside or untraceable facts; the Symmetry Check prints 0 CITE, STATUS, FIELD and WORD lines; and reading every case and press line finds no Rule 10 misses.
+    - What Revision 16 asked for passed:
+      - every candidate has the new field, filled or "none found";
+      - both open complaints are in it, not in Established findings;
+      - the finding under review stays under Established findings with its status;
+      - the earlier pass's two tags are reused word for word;
+      - one new tag is appended to the list;
+      - the education split is applied to a funding measure and a voucher statement;
+      - both effects are on the measure's tag line.
+    - With names, dates and amounts masked, the parallel Democratic and Republican candidates' fields read word for word alike, at 1,432 and 1,443 words.
+    - **The misses are ones earlier rounds saw.**
+      - A defense after a verdict, in both House candidates' press items: the candidate's "the city attorney told me I could vote" gets "not in the sources", then a note that the attorney was present. The key counts this sentence against both P3, a required plant, and P9.
+      - The opponents' "$56 million tax" gets "not in the sources" where the key wants "matches" (T7).
+      - Two other claims made by measure opponents get wrong verdicts.
+  - **Neutrality.** The left-leaning reviewer rated 71 items balanced and flagged 3; the right-leaning one rated 63 balanced and flagged 9. The resolver classed the 12 flags as 4 WRITER, 3 INSTRUCTIONS, 2 SOURCE, 2 NOT A TILT and 1 RUN-TO-RUN.
+    - All 4 WRITER flags favor a measure's YES side: a qualifier dropped from the summary and YES line, a caveat named for one side's figure only, a confirmed part denied its "matches", and the new tag the run wrote dropping the same qualifier. None is in a candidate brief.
+    - The INSTRUCTIONS flags are:
+      - the new `school-choice` row, whose two directions don't share a shape (mildly right; fixed below);
+      - `business-labor`'s benefit noun on one direction (mildly left), with the same mirror-image problem in `guns`, unflagged;
+      - the tag-order rule, which never defines a row with a clear left-right reading.
+  - **Verdict.** Revision 16's changes did what they were meant to. The failures are writer misses of rules already in the file, which earlier rounds also saw.
+- **Revision 17, 2026-10-26.** From Round 13's neutrality resolution: the `school-choice` directions now share one shape ("Students placed in district-run public schools, with funding kept in the district" and "Students placed in schools their families choose, with funding that follows the student"). Not changed and still open: the `business-labor` and `guns` wording, and a definition of a row with a clear left-right reading for the tag-order count. Both predate this revision.
 - **Proposed frontmatter:** color `#0F4C81` (unused); emoji 🗂️ (unused); vibe "Same questions for every candidate, both sides at full strength, and a date on every fact."; tools Read, Write, Grep, Glob, WebFetch, WebSearch; description as in the agent file.

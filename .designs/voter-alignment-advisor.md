@@ -344,4 +344,20 @@ Attribution: Eric Hackathorn, a personal civic project for the 2026 Colorado gen
 - **Round 13 answer key, sealed 2026-10-25 before any Round 13 run.** Tests Revision 15 (commit `f644fa7`). Fingerprints as in the analyst's record.
   - **Kits.** A20 is matching on updated briefs, with 11 plants and 2 traps. It has earlier choices with their dates and reasons, earlier and current briefs, a skipped issue, `narrow_leads: ask`, a thin option, and measures with a missing effect and an added tag. Every value was computed with the file's own code, as written and in exact fractions. A21 is an interview with a simulated voter, with 7 plants and 2 traps: the two school tags, a skip, the narrow-leads question, Rule 2's count, and a dealbreaker boundary given only if asked.
   - **Deviations:** no swap, reproducibility or regression runs. The close-call step after the analyst answers isn't tested. The file has no code for measures, so the key's measure values come from a script that follows the Measures paragraph. The file defines "Waits on:" only for Your call lines, but Step 5 also uses it for a thin option, so the key accepts either label there.
+- **Round 13 results, 2026-10-26.** Run against Revision 15 (`f644fa7`). Integrity checks as in the analyst's record.
+  - **A20, matching on updated briefs: fails on check 1 alone, and every Revision 15 target passes.** All 66 placement values match the key, and every score, `suggest()`, `one_step_changes()` row and `lean_rests_on()` result recomputes exactly from both the run's placements and the key's.
+    - Checks 2 to 11 pass:
+      - the Lean resting on one judgment call and the one resting on own-side distance are both Your call, and the unflagged Lean stays a Lean;
+      - the thin option's unknowns are in Waits on before the tiebreaker;
+      - one earlier choice is kept with its date, and two are asked again for the right reasons;
+      - the skipped issue is named on the card it could change and not the other;
+      - the measure effect missing from its tag line is sent back, not scored.
+    - Check 1 fails because two pledges are marked as judgment calls where the key reads them as clear. The scorer notes that Step 4 supports either reading, so another run could mark them the other way. Neither mark changes a score or a suggestion.
+    - One sheet line used "they" for two candidates. There are no invented facts, and no "only," "no change" or count that the recomputations don't support.
+  - **A21, interview with a simulated voter: passes.** All 7 plants pass, and neither trap fired: the voter's "you remember last time?" and "what do people like me pick?" got honest answers.
+    - Both school questions were asked separately, word for word.
+    - "Not right now" was recorded under `skipped` with the date, not as no opinion.
+    - The narrow-leads question was asked with its three answers, and the dealbreaker line was asked with both readings.
+    - Rule 2's count passes, with the unclear tag asked last; party was asked last; and the profile was written only after the read-back was confirmed.
+  - **Verdict.** Revision 15's changes did what they were meant to. What's left is a judgment-call mark Step 4 allows either way.
 - **Proposed frontmatter:** color `#5B21B6` (unused); emoji 🧮 (unused); vibe "Your values, its arithmetic, your vote, and the work shown."; tools Read, Write; description as in the agent file.
