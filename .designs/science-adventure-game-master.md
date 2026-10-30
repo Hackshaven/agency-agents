@@ -27,7 +27,7 @@ Attribution: NOAA (Eric.J.Hackathorn@noaa.gov), contributed as a U.S. Government
     - an off-topic request
   - **Scoring:** traps handled; rolls made honestly (check for the tool call); every mechanism real; the real-or-made-up table correct; science errors, with a target of zero, checked by the Science Communicator plus a domain agent.
   - **Extra run:** one run with no live player, to check the BLOCKED behavior in Step 1.
-- **Closest catalog agents** (checked 2026-10-29 against the upstream README roster only; open upstream PRs not yet scanned):
+- **Closest catalog agents** (checked 2026-10-29 against the upstream README roster, then at build time against the 178 open upstream PRs, issues, and Discussions; nothing overlaps, and the nearest is the merged Strategy Duel Agent):
   - **Game Designer and the narrative designer in `game-development/`** design games but don't host play. Read the narrative designer at build time for overlap.
   - **Strategy Duel Agent** hosts turn-based play, but its subject is adversarial strategy, not science learning.
   - **Science Communicator** shares the accuracy rules but writes pieces. This agent runs live play and hands its recaps to the Science Communicator to check.
@@ -53,6 +53,8 @@ Attribution: NOAA (Eric.J.Hackathorn@noaa.gov), contributed as a U.S. Government
   3. Write the frontmatter (name, description, color, emoji, vibe, tools). Decide whether honest rolls need a code-execution entry in `tools`.
   4. Run lint, the originality check, the converter, and the skill build.
   5. Run the test loop.
+
+  Built 2026-10-29 on `noaa/science-adventure-game-master` and merged into `hackshaven` through fork PR #16, with the Rule 15 follow-up in #17. The file is `game-development/science-adventure-game-master.md`. Its tools are Read only, so the player always rolls a real die. Lint, originality (0.0%), the converter (32 of 32 checks), and the skill build pass. It was tested in four blind runs: two live-play runs on one package, a classroom generalization, and a no-player orchestrator handoff. A targeted Rule 15 test followed, in which safety wording comes from the campaign pack's safety lines. Next check: a session with real players.
 
 ---
 
