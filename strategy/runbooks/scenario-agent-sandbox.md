@@ -1,12 +1,12 @@
 # 🔒 Runbook: agent-sandbox Maintainer Team
 
-> **Mode**: NEXUS-Micro, per change | **Duration**: Standing team | **Agents**: 10 on the roster, 1–3 per change
+> **Mode**: NEXUS-Micro, per change | **Duration**: Standing team | **Agents**: 10 on the roster, 1–4 per change
 
 ---
 
 ## Scenario
 
-[agent-sandbox](https://github.com/Hackshaven/agent-sandbox) is a contained lab for running Claude Code on defensive security work, built to Anthropic's agent containment guidance for Cyber Verification Program participants, on a Windows 11 laptop with Hyper-V. A sandbox VM runs the agent and the target with no route out. A gateway VM holds the Claude token, forwards model calls and nothing else, and keeps every log. The whole lab is about 2,300 lines: a PowerShell script that builds and operates the VMs, two Bash setup scripts, the run launcher and the isolation checks, a live monitor and a pattern scan in Python, and tests that run the firewall in network namespaces and the credential proxy against a mock upstream. It has one maintainer.
+[agent-sandbox](https://github.com/Hackshaven/agent-sandbox) is a contained lab for running Claude Code on defensive security work, built to Anthropic's agent containment guidance for Cyber Verification Program participants, on a Windows 11 laptop with Hyper-V. A sandbox VM runs the agent and the target with no route out. A gateway VM holds the Claude token, forwards model calls and nothing else, and keeps the logs. The scripts and tests come to about 2,200 lines: a PowerShell script that builds and operates the VMs, two Bash setup scripts, the run launcher and the isolation checks, a live monitor and a pattern scan in Python, and tests that run the firewall in network namespaces and the credential proxy against a mock upstream. It has one maintainer.
 
 The scripts are the boundary. `CLAUDE.md` names six things that hold it up, and treats every change to them as a security change: made only when asked, with a plain statement of what it widens, and `docs/design.md` updated in the same commit.
 
@@ -35,7 +35,7 @@ The team reads code and configuration. It can't verify a machine. Only the isola
 ### Specialists (as needed)
 | Agent | Role on agent-sandbox |
 |-------|-----------------------|
-| Network Engineer | The packet path: the nftables ruleset, netplan, sysctl, and the network lines of both SSH drop-ins. Written for Cisco, Juniper, and Palo Alto, so it reads nftables by analogy. Its rules on proving the data plane separately from the config, naming sources, destinations, and ports tightly, and keeping a management path (here, the VM console) apply as written. `tests/test_firewall.sh` is the proof, not its reading |
+| Network Engineer | The packet path: the nftables ruleset, netplan, sysctl, and the network lines of both SSH drop-ins. Written for Cisco, Juniper, and Palo Alto, so it reads nftables by analogy. Its rules on proving the data plane separately from the config, naming sources, destinations, and ports tightly, and keeping a management path (here, the VM console) apply as written. A namespace test case that fails without the rule counts for more than its reading |
 | Penetration Tester | Adversarial second reader on firewall, proxy, and isolation changes: how would an agent inside the VM get past this? Also the attempt list in `templates/escape-test.md`. It reviews and proposes attempts. It never runs them from a host session (see [Where the Agents Work](#where-the-agents-work)), and its internet reconnaissance tooling has no target here |
 | Prompt Engineer | The prose a model reads: auto mode's `environment` and `soft_deny` entries, the No-network rule `finalize` adds, and the two task templates. Auto mode's classifier and the sandboxed agent act on that wording, so ambiguity there is a security defect. Its rule that every prompt ships with test cases maps to commands that must pass, must be denied, and sit on the line. Its injection-resistance advice doesn't: the lab's answer to a hostile target is containment, not wording |
 | Incident Responder | What happens after a hit: evidence collection in `agentlab-run`, log permissions and retention, and the README's "A hit during a run". `agentlab.ps1 run` reverts the sandbox in its `finally` block unless `-KeepRunning` is given, so the gateway's run folder is usually the only evidence that survives. It knows that, and asks what else needs keeping before the revert |
@@ -43,7 +43,7 @@ The team reads code and configuration. It can't verify a machine. Only the isola
 ### Periodic
 | Agent | Role on agent-sandbox |
 |-------|-----------------------|
-| Codebase Archaeologist | Quarterly, and after a Claude Code update: the README's "Known limits" and `CLAUDE.md`'s "Still unverified" list against what has since been confirmed, the "Where" column of `docs/design.md`'s guidance table against the scripts, constants repeated across scripts against each other, and `docs/sources.md` against guidance pages marked private beta |
+| Codebase Archaeologist | Quarterly, and after a Claude Code update: the README's "Known limits" and `CLAUDE.md`'s "Still unverified" list against what has since been confirmed, the "Where" column of `docs/design.md`'s guidance table against the scripts, values repeated across scripts against each other (see [Periodic Work](#periodic-work)), and `docs/sources.md` against guidance pages marked private beta |
 
 ## The Remaining Gap
 
@@ -57,15 +57,15 @@ Until it exists, the Security Architect is the gate of record for the boundary a
 
 ## Already in the Repo (not installed by this preset)
 
-agent-sandbox had no `.claude/` directory before this team. Its rules live in these documents. **Where a catalog agent and one of them disagree, the document wins.**
+agent-sandbox had no `.claude/` directory before this team. Its rules live in these documents. **Where a catalog agent and one of them disagree, the document wins.** Where a document describes the code and the code disagrees, the reviewer reports the mismatch and the owner decides which is right. Nobody rewrites a statement of the boundary to match a weaker config.
 
 | Document | What it rules |
 |----------|---------------|
 | `CLAUDE.md` | The six boundary items, where security work runs, the pre-commit checks, conventions (LF endings, the execute bit, "Written by <script>" headers, re-runnable setup scripts, PowerShell 5.1 and 7 with only the Hyper-V module), and the "Still unverified" list |
 | `docs/design.md` | Why each control exists, how the build meets the guidance it follows, and where it falls short. A boundary change updates it in the same commit |
 | `README.md` | The operator's procedure: build, cut over, finalize, baseline, the supervised escape test, runs, maintenance, what to do after a hit, and "Known limits", which is the source of truth for what is unverified |
-| `docs/sources.md` | The Anthropic guidance the design follows, with the date it was read. Some pages are marked private beta and may change |
-| `tests/` | `run-all.sh` runs lint, the transcript tools, the proxy against a mock upstream, and (as root) the firewall in two network namespaces, with controls showing the firewall, not the setup, does the blocking. CI runs the same on every push, plus a parse and PSScriptAnalyzer pass on `agentlab.ps1` |
+| `docs/sources.md` | The Anthropic guidance the design follows, with the month it was read. Some pages are marked private beta and may change |
+| `tests/` | `run-all.sh` runs lint, the transcript tools, the proxy against a mock upstream, and (as root) the firewall in two network namespaces. Two controls show that, without the rules, the gateway's SSH port and its other address are reachable. CI runs the same on every push, plus a parse and PSScriptAnalyzer pass on `agentlab.ps1` |
 | `templates/` | The task template whose `## Scope` section `agentlab-run` requires, and the escape test |
 
 ## Where the Agents Work
@@ -74,32 +74,38 @@ agent-sandbox had no `.claude/` directory before this team. Its rules live in th
 
 So a reviewer on this team reads the diff and the documents. Any probe it wants runs where the tests already run: a rendered ruleset in a network namespace, or the rendered proxy against a mock upstream. A new escape attempt becomes a line in `templates/escape-test.md`, and runs in the supervised escape test. No agent opens a connection to the lab's VMs or to anything on 10.77.0.0/24 from a host session.
 
+That rule is an instruction, and nothing else enforces it. The catalog files carry no `tools:` restriction, so each reviewer inherits every tool the session has. The Windows host holds an SSH key into the gateway, and the gateway holds the run key into the sandbox. The activation prompt below repeats the rule for that reason. A repo that wants it enforced adds deny rules to its own Claude Code settings; that's the owner's choice.
+
 ## Routing: Which Agent for Which Change
 
 `linux/gateway-setup.sh` holds the firewall, the proxy, the token, and the logging in one file, so its rows route by section.
 
 | If the change touches… | Run | Why |
 |------------------------|-----|-----|
-| The nftables heredoc, sysctl, and netplan in `linux/gateway-setup.sh`; `phase_cutover` in `linux/sandbox-setup.sh` (netplan, sysctl, the SSH drop-in); `tests/test_firewall.sh` | Security Architect and the Code Reviewer; Network Engineer; Penetration Tester as second reader | Boundary item 1. The namespace test proves only the rules it renders, and only while its controls pass. A rule that reads right and drops nothing is the failure to look for |
-| The nginx site and upstream heredocs in `linux/gateway-setup.sh`; `tests/test_proxy.sh` | Security Architect and the Code Reviewer; Penetration Tester as second reader | Boundary item 2. The test refuses `..`, encoded slashes, and case variants of the allowed paths. A new path needs a `credproxy.log` 403 showing Claude Code asked for it, and has to be a model call |
-| The token section of `linux/gateway-setup.sh`, the `Authorization` and header-stripping lines, the proxy's `log_format`; the placeholder and `ANTHROPIC_API_KEY` removal in `phase_install`; token checks in `linux/agentlab-check.sh` and the `agentlab-run` preflight; `.gitignore`; any token-shaped test value; the README's rotation step | Secrets & Credential Hygiene Engineer and the Code Reviewer | Boundary item 3. Tests use obviously fake values, the proxy logs no headers or bodies, and `nginx -T` prints the token, which the script's last line warns about |
-| `write_managed_settings` and `phase_finalize` in `linux/sandbox-setup.sh`; the managed-settings checks in `linux/agentlab-check.sh`; the `permissionMode` check in `linux/agentlab-monitor.py`; `--permission-mode` in `linux/agentlab-run` | Security Architect and the Code Reviewer; Prompt Engineer for any rule text | Boundary item 4. Auto mode's rules are security configuration written in prose, and a classifier reads them |
-| `agentlab.ps1` `build`, `cutover`, `reopen`, and `check`; `phase_install` and `install_rootless_docker` in `linux/sandbox-setup.sh` (agent account and groups, the root-owned `claude` binary, the `hv_sock` block, Hyper-V daemons, `/etc/environment`, the restricted run key, the rootlesskit AppArmor profile); the sandbox half of `linux/agentlab-check.sh` | Security Architect and the Code Reviewer; Penetration Tester as second reader | Boundary item 5. Hyper-V is the only layer between the sandbox and an everyday laptop (`docs/design.md`, "Where this falls short") |
-| Validation, preflight, and launch in `linux/agentlab-run`; `agentlab.ps1 run` (its validation attributes, the revert in `finally`); the `## Scope` check in either; `templates/task-template.md` | Code Reviewer and the Security Architect; Prompt Engineer for the template's wording | Boundary item 6. A refusal relaxed so a run will start is a boundary change |
+| The nftables heredoc, sysctl, netplan, and interface detection in `linux/gateway-setup.sh`; `phase_cutover` in `linux/sandbox-setup.sh` (netplan, sysctl, the SSH drop-in); the network checks in both halves of `linux/agentlab-check.sh`; `tests/test_firewall.sh` | Security Architect and the Code Reviewer; Network Engineer; Penetration Tester as second reader | Boundary item 1. Interface detection picks the interface every rule binds to. The namespace test covers TCP over IPv4, and its "won't route" case is stopped in prerouting, so the forward chain and the IPv6 drop have no test of their own. A rule that reads right and drops nothing is the failure to look for |
+| The nginx site and upstream heredocs in `linux/gateway-setup.sh`; `tests/test_proxy.sh` | Security Architect and the Code Reviewer; Penetration Tester as second reader | Boundary item 2. A new path goes in the heredoc, not only in the live `/etc/nginx/sites-available/agentlab` the README names: the next run of `gateway-setup.sh` rewrites that file, and only a commit gets a review and a `docs/design.md` update. The test's refusal list has one case each of `..`, an encoded slash, and a case variant, so a new path brings its lookalikes with it |
+| The token section of `linux/gateway-setup.sh`, the `Authorization` and header-stripping lines, the proxy's `log_format`; the placeholder and `ANTHROPIC_API_KEY` removal in `phase_install`; token checks in `linux/agentlab-check.sh` and the `agentlab-run` preflight; the token, header, and log assertions in `tests/test_proxy.sh`; `.gitignore`; any token-shaped test value; the README's rotation step | Secrets & Credential Hygiene Engineer, the Security Architect, and the Code Reviewer | Boundary item 3. Tests use obviously fake values, the proxy logs no headers or bodies, and `nginx -T` prints the token, which the script's last line warns about |
+| The SSH section of `linux/gateway-setup.sh` (key-only logins, the run key); `SSH_OPTS` in `linux/agentlab-run`; the restricted `authorized_keys` line in `phase_install` | Secrets & Credential Hygiene Engineer and the Security Architect | The run key is the only credential into the sandbox |
+| `write_managed_settings` and `phase_finalize` in `linux/sandbox-setup.sh`; the managed-settings checks in `linux/agentlab-check.sh`; the `permissionMode` handling in `linux/agentlab-monitor.py`; `--permission-mode` in `linux/agentlab-run` | Security Architect and the Code Reviewer; Prompt Engineer for any rule text | Boundary item 4. Auto mode's rules are security configuration written in prose, and a classifier reads them. The monitor stops a headless run whose init message reports another mode. It only warns when the field is missing, and an interactive run doesn't pass through it |
+| `agentlab.ps1` `build`, `cutover`, `reopen`, and `check`; `phase_install` (including the `--claude-version` check on a value that reaches the installer), `install_rootless_docker`, and `phase_reopen` in `linux/sandbox-setup.sh` (agent account and groups, the root-owned `claude` binary, the `hv_sock` block, Hyper-V daemons, `/etc/environment`, the rootlesskit AppArmor profile); the rest of the sandbox half of `linux/agentlab-check.sh` | Security Architect and the Code Reviewer; Penetration Tester as second reader | Boundary item 5. Hyper-V is the only layer between the sandbox and an everyday laptop (`docs/design.md`, "Where this falls short"). `reopen` gives the sandbox internet, so both halves of it route here |
+| Validation, preflight, input delivery, launch, `stop_remote`, and the interrupt trap in `linux/agentlab-run`; `agentlab.ps1` `run`, `stop`, `revert`, and `baseline` (the validation attributes, `Stop-Sandbox`, `Reset-Sandbox`, the revert in `finally`); the `## Scope` check in either; `templates/task-template.md` | Code Reviewer and the Security Architect; Prompt Engineer for the template's wording | Boundary item 6. The limits are validated by pattern, so a value that passes the pattern and means "no limit" is the failure to look for. The launch preflight and `agentlab-check` test some of the same properties at different strictness, and a difference between them is a finding. A refusal relaxed so a run will start is a boundary change. `Stop-Sandbox` is the hard off-switch |
 | `linux/agentlab-scan.py`, `linux/agentlab-monitor.py`'s denial patterns and budgets, `tests/test_transcripts.py` | Threat Detection Engineer, plus the Code Reviewer for code | Rules catch only what someone anticipated. The denial text is a guess until a real denial is seen (README, "Known limits"). An exception matched against text the agent writes is an evasion path |
-| Anything on the gateway that prints, parses, or unpacks what the sandbox produced: the monitor's terminal view, `scan.txt` echoed by `agentlab-run`, the `claude-projects.tgz` pulled by `collect()` | Security Architect | Agent output is untrusted input on the trusted side, and the operator's terminal is part of that side |
-| `collect()` and the review block in `linux/agentlab-run`; the logging section of `linux/gateway-setup.sh` (rsyslog, logrotate, the daily prune, log ownership and modes); the README's "A hit during a run" | Incident Responder, plus the Code Reviewer for code | 45-day retention and the run folder are the evidence. `agentlab.ps1 run` reverts the sandbox afterward |
+| Anything on the gateway that prints, parses, or unpacks what the sandbox produced: the monitor's terminal view, `scan.txt` and the review block's refusal and deny lines echoed by `agentlab-run`, its echo of preflight problems, the interactive session's terminal, the "Logs" output of `agentlab-check gateway`, the `claude-projects.tgz` pulled by `collect()` | Security Architect | Agent output is untrusted input on the trusted side, and the operator's terminal is part of that side |
+| `collect()`, the run folder and `meta.txt`, and the review block in `linux/agentlab-run`; the transcript `agentlab-monitor.py` writes; the logging section of `linux/gateway-setup.sh` (rsyslog, logrotate, the daily prune, log ownership and modes); the README's "A hit during a run" | Incident Responder, plus the Code Reviewer for code | 45-day retention and the run folder are the evidence. `agentlab.ps1 run` reverts the sandbox afterward |
 | `templates/escape-test.md` | Penetration Tester; Prompt Engineer for the wording | A channel missing from the attempt list is never tried in the supervised test |
 | Any other part of `linux/agentlab-check.sh` | Code Reviewer, plus the reviewer for the area the check covers | A check that passes when its control is gone verifies nothing. A check edited in the same change as the code it checks is a finding |
+| `tests/lib.sh`, `tests/run-all.sh` | Code Reviewer, plus the Security Architect when a change alters what the boundary tests render | `render_heredoc` decides which config the firewall and proxy tests run, so a change there can make both pass against something other than what ships |
+| The boundary and "Still unverified" sections of `CLAUDE.md`; the README's "Known limits" and "Testing" | Security Architect, then the owner | These state the boundary and what is verified. Loosening a rule in prose is a boundary change, and so is calling something verified without evidence |
 | The README's build, run, and maintenance steps | Technical Writer | They have to match the scripts, step for step (`CLAUDE.md`, "Before committing") |
-| `docs/design.md` | Security Architect | Its claims about the guidance have to hold for the scripts as they are |
-| `.github/workflows/test.yml` | Code Reviewer | CI runs the same suite as `tests/run-all.sh`, with read-only permissions. Its actions are pinned by tag, not SHA |
+| `docs/design.md`, `docs/lab-layout.svg`, `docs/sources.md` | Security Architect | The design's claims about the guidance have to hold for the scripts as they are. The diagram makes the same claims in a picture |
+| `.github/workflows/test.yml` | Code Reviewer | CI runs the same suite as `tests/run-all.sh`, with read-only permissions. `actions/checkout` is pinned by tag, not SHA. PSScriptAnalyzer is installed unpinned at run time, and only an Error fails the job |
+| `.gitattributes` | Code Reviewer | It keeps `linux/**` LF, which the VMs need, and the installed agent files byte-identical to the catalog |
 | Any other code in `linux/`, `windows/`, or `tests/` | Code Reviewer | No row above matches, and every code change gets a second reader |
 | `.claude/agents/**` | Nobody edits them | Each file must match the catalog byte for byte. Change it in the catalog |
 
 **High-scrutiny paths get two.** A change to any of the six boundary items gets its specialist plus the Code Reviewer, updates `docs/design.md` in the same commit, and says plainly what it widens. The PR also says whether the escape test needs to run again before the next real run. The README requires that after any sandbox or model change. For a firewall or proxy change the owner decides, and the PR records the decision.
 
-Every code change gets at least one catalog reviewer. Rows overlap: `linux/agentlab-check.sh` and `linux/agentlab-run` sit in several. A change that matches several rows runs every one of them; few need more than three.
+Every code change gets at least one catalog reviewer. Rows overlap: `linux/agentlab-check.sh` and `linux/agentlab-run` sit in several. A change that matches several rows runs every one of them; few need more than four.
 
 ## Per-Change Sequence (NEXUS-Micro)
 
@@ -121,8 +127,12 @@ Step 3: Catalog reviewers, in parallel
 
 Step 4: Owner decides
 ├── Fix, accept, or record why not
-└── After merge, a sandbox change goes through the README's "When something changes":
-    reopen, install, cutover, checks, finalize, baseline, escape test
+├── After merge, a sandbox change goes through the README's "When something changes":
+│   copy linux/ to the sandbox again, reopen, install, cutover, checks, finalize,
+│   baseline, escape test
+└── A gateway change (the firewall, the proxy, or any agentlab-* command) takes
+    effect only after linux/ is copied to the gateway again and gateway-setup.sh is
+    rerun, because it installs copies. Then: sudo agentlab-check gateway
 ```
 
 ### Activation prompt
@@ -143,7 +153,16 @@ describes the code and the code disagrees, report the mismatch.
 
 ## Periodic Work
 
-**Codebase Archaeologist, quarterly and after a Claude Code update.** Walk the README's "Known limits" and the "Still unverified" list in `CLAUDE.md` against the repo and the latest run folders the owner shares, and report which items now have evidence either way. `CLAUDE.md` says the list is updated when an item is confirmed or fixed. Check the "Where" column of `docs/design.md`'s guidance table against the scripts. Check that constants repeated across scripts still agree: the lab addresses, the proxy port, and `MIN_CLAUDE` (in both `sandbox-setup.sh` and `agentlab-check.sh`). Tell it the repetition is deliberate (see the pitfalls), so it reports drift, not duplication. Note any page in `docs/sources.md` whose "accessed" date is more than two quarters old, since the private-beta pages may have moved.
+**Codebase Archaeologist, quarterly and after a Claude Code update.** Walk the README's "Known limits" and the "Still unverified" list in `CLAUDE.md` against the repo and the latest run folders the owner shares, and report which items now have evidence either way. `CLAUDE.md` says the list is updated when an item is confirmed or fixed. Check the "Where" column of `docs/design.md`'s guidance table against the scripts. Check that values repeated across scripts still agree:
+- the lab addresses, the proxy port, and the proxy URL
+- `MIN_CLAUDE`, in `sandbox-setup.sh` and `agentlab-check.sh`
+- the managed-settings path and the placeholder token's prefix
+- the privileged groups and how strictly "a route out" is tested, in `sandbox-setup.sh`, `agentlab-check.sh`, and the `agentlab-run` preflight
+- the denial and classifier-unavailable patterns, in `agentlab-monitor.py` and `agentlab-scan.py`
+- the 45-day retention, in `gateway-setup.sh` and `agentlab-check.sh`
+- the default model and the limit validation, in `agentlab-run`, `agentlab-check.sh`, and `agentlab.ps1`
+
+Report drift, not repetition (see the pitfalls). If the "accessed" month in `docs/sources.md` is more than two quarters old, say so, since the private-beta pages may have moved.
 
 ## Upstream Dependencies
 
@@ -211,7 +230,7 @@ Record each boundary decision where the repo already records them: in the commit
 | Threat Intelligence Analyst | Tracks adversary groups. The adversary here is the agent under test |
 | DevOps Automator, SRE, Infrastructure Maintainer | Two VMs on a laptop and one CI workflow |
 | Identity & Access Engineer, Agentic Identity & Trust Architect | One token and one run key, with no identity system to design |
-| Codebase Onboarding Engineer | About 2,300 lines written to be read: "Read the scripts before you run them. They are short." (README) |
+| Codebase Onboarding Engineer | About 2,200 lines of scripts and tests, written to be read: "Read the scripts before you run them. They are short, and they draw the boundary." (README) |
 | Minimal Change Engineer, Git Workflow Master | Builders and process. `CLAUDE.md` already sets the rules |
 | Reality Checker, Evidence Collector | Built for web-product readiness from screenshots. The isolation checks and the escape test are this project's evidence |
 | Privacy Engineer, Data Privacy Officer | No personal data. Target code and findings leaving in request bodies is an engagement-approval question for the ITSO |
@@ -234,13 +253,15 @@ Record each boundary decision where the repo already records them: in the commit
 |---------|-----------|
 | An agent's pass treated as proof the lab is contained | Agents read code. The isolation checks and the watched escape test verify a build |
 | A reviewer suggests a prefix location such as `location /v1/` to clear a 403 | Decline it. Exact paths only (`CLAUDE.md`) |
-| A reviewer suggests bypass mode or `--dangerously-skip-permissions` to get a run going | Decline it. Managed settings disable bypass, and the monitor stops a run that isn't in auto mode |
+| A reviewer suggests bypass mode or `--dangerously-skip-permissions` to get a run going | Decline it. Managed settings disable bypass, and the monitor stops a headless run whose init message reports another mode |
+| A proxy path added only to the live nginx config | The next `gateway-setup.sh` run deletes it, and it skipped review. Put it in the heredoc, with `docs/design.md` updated in the same commit |
+| A merged gateway change assumed to be live | `gateway-setup.sh` installs copies. Copy `linux/` to the gateway again, rerun it, and run `agentlab-check gateway` |
 | A check or test edited so it passes | A check changed in the same commit as the code it checks is a finding. A check must fail with its control removed, as `tests/test_firewall.sh`'s controls show |
 | A scan rule quieted with an exception the agent can type | Match exceptions on what the agent can't control, and add the lookalike to the test as a case that must hit |
-| A reviewer probes the real lab from a host session | Not allowed. Probes run in `tests/` or as an escape test attempt |
-| The Code Reviewer asks to share the constants repeated across scripts | Each script is installed on its own (`/usr/local/bin` on the gateway, `/usr/local/sbin` on the sandbox), so a shared file would have to be installed beside every copy. Drift between the copies is the finding, not the repetition |
+| A reviewer probes the real lab from a host session | Not allowed, and only the instruction stops it (see [Where the Agents Work](#where-the-agents-work)). Probes run in `tests/` or as an escape test attempt |
+| The Code Reviewer asks to share the values repeated across scripts | The installed commands are copied one by one into `/usr/local/bin` on the gateway (and `agentlab-check` into `/usr/local/sbin` on the sandbox), so none of them can source a sibling file there. A proposal for a shared file has to say how it gets installed. Drift between the copies is a finding either way |
 | The Secrets Engineer asks for a vault or short-lived credentials | The token sits in one root-only file on a VM the agent can't reach. Rotation after a hit is `claude setup-token`, then rerun `gateway-setup.sh` |
-| The Network Engineer answers in Cisco syntax | Ask for the packet path and the nftables change. The namespace test is the proof |
+| The Network Engineer answers in Cisco syntax | Ask for the packet path, the nftables change, and a namespace test case that fails without it |
 | The model API treated as a closed channel | It isn't: request bodies leave unlogged by design (`docs/design.md`). That's an accepted residual, and the reason NOAA approval covers it |
 | The Code Reviewer's pass treated as independent | It shares the authoring model's blind spots. The escape test and the owner's transcript reading count for more |
 | Treating the team as the second maintainer | It reviews. It can't hold the off-switch |
