@@ -384,6 +384,44 @@
       ]
     },
     {
+      "slug": "agent-sandbox",
+      "title": "agent-sandbox Maintainer Team",
+      "mode": "NEXUS-Micro",
+      "duration": "Standing team, per-change activations",
+      "summary": "Boundary, credential, detection, and evidence review gates for a two-VM Hyper-V lab where Claude Code does defensive security work with no route out, activated by the paths each change touches.",
+      "doc": "strategy/runbooks/scenario-agent-sandbox.md",
+      "roster": [
+        {
+          "group": "Review Gates",
+          "activation": "per change, by path",
+          "agents": [
+            "security-architect",
+            "engineering-code-reviewer",
+            "security-threat-detection-engineer",
+            "security-secrets-credential-engineer",
+            "engineering-technical-writer"
+          ]
+        },
+        {
+          "group": "Specialists",
+          "activation": "as needed",
+          "agents": [
+            "engineering-network-engineer",
+            "security-penetration-tester",
+            "engineering-prompt-engineer",
+            "security-incident-responder"
+          ]
+        },
+        {
+          "group": "Periodic",
+          "activation": "quarterly, and after a Claude Code update",
+          "agents": [
+            "specialized-codebase-archaeologist"
+          ]
+        }
+      ]
+    },
+    {
       "slug": "problem-scan",
       "title": "Standing Problem Scan",
       "mode": "NEXUS-Micro",

@@ -142,6 +142,7 @@ Evidence Collector verifies improvements.
 | **Zyra Runbook** | Standing review team for Zyra (and the dormant zyra-editor) | `strategy/runbooks/scenario-zyra.md` |
 | **sphere-sim Runbook** | Standing scientific-integrity review team for sphere-sim | `strategy/runbooks/scenario-sphere-sim.md` |
 | **districting-bench Runbook** | Standing firewall, redistricting-science, election-law, and statistics review team for districting-bench | `strategy/runbooks/scenario-districting-bench.md` |
+| **agent-sandbox Runbook** | Standing boundary, credential, detection, and evidence review team for the agent-sandbox containment lab | `strategy/runbooks/scenario-agent-sandbox.md` |
 | **Standing Problem Scan** | Monthly scan for fixable problems matched to one person, pared down by critics, with a one-page report | `strategy/runbooks/scenario-problem-scan.md` |
 
 ---
