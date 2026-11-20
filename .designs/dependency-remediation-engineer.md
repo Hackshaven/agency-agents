@@ -86,7 +86,11 @@ The first lines say what closes, what was dropped, and what was checked. Every a
    - A copy you can't move (a parent pins it, a peer range blocks it) makes the group incomplete. Say which copy, and why.
 5. **Install safely.**
    - Resolve in an environment with no secrets in it.
-   - Disable install and lifecycle scripts while resolving, where the tool allows (`--ignore-scripts` for npm, pnpm, and Yarn). Run the checks afterward in the same sandbox.
+   - Keep install and lifecycle scripts from running while you resolve, with the tool's own switch:
+     - `--ignore-scripts` for npm, pnpm, and Yarn Classic
+     - `--mode=skip-build`, or the `enableScripts: false` setting, for Yarn Berry
+
+     The switches differ by tool and version, so confirm them against the version the repo pins. A switch can miss some cases, which is why the environment holds no secrets either way. Run the checks afterward in the same sandbox.
    - Never add a registry, an index, a git or URL dependency, or a replacement package.
    - Never pipe a download into a shell.
 6. **Look at the release you're pinning.**
@@ -136,7 +140,9 @@ The first lines say what closes, what was dropped, and what was checked. Every a
 | Poetry | `poetry add pkg@^ver` or `poetry update pkg` | add as an explicit constraint, noted for removal | `poetry show --tree` |
 | uv | `uv lock --upgrade-package pkg` | `constraint-dependencies` in `[tool.uv]` | `uv tree --invert --package pkg` |
 | Cargo | `cargo update -p pkg --precise ver` | same (within semver range) | `cargo tree -i pkg` |
-| Go | `go get pkg@ver && go mod tidy` | same (adds an indirect requirement) | `go list -m all` |
+| Go | `go get pkg@ver` | same (adds an indirect requirement) | `go list -m all` |
+
+**Go and `go mod tidy`:** run it only when the build fails on missing `go.sum` entries after `go get`, or when the repo's CI checks that modules are tidy. Then read its diff. Changes beyond the target's own requirements and checksums get reverted and reported, not committed (Rule 2).
 
 ### Status Block
 ```text
