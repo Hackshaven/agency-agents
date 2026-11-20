@@ -64,8 +64,11 @@ The first lines say what closes, what was dropped, and what was checked. Every a
    - Note each target's publish date. A target younger than 7 days (or the card's window) gets flagged in the PR. Security fixes are often fresh, so this is a flag, not a block.
    - Stop the group and return it to the lead if the target:
      - adds an install script the previous version didn't have,
-     - shows a different publisher from the previous release where the registry exposes one, or
+     - is published by an account that isn't among the package's listed maintainers,
+     - lacks provenance or trusted publishing that the previous release had, or
      - has no matching tag in a source repo that normally tags releases.
+   - A different publisher who is a listed maintainer is a flag in the PR, not a stop. Maintainers often take turns, and a coordinated security release across several lines often comes from whoever is on hand.
+   - Resolve the packages that move along with a target using a minimum release age, when the tool has one (pnpm: `--config.minimum-release-age=10080`, which is 7 days in minutes). That keeps a dependency released hours ago out of the lockfile.
 7. **Run the repo's checks as the card lists them.**
    - First on the base SHA (the baseline), then on the branch.
    - Install from the lockfile in frozen mode, then build, type-check, and test.
@@ -108,6 +111,13 @@ The first lines say what closes, what was dropped, and what was checked. Every a
 | uv | `uv lock --upgrade-package pkg==ver` | `constraint-dependencies` in `[tool.uv]` | `uv tree --invert --package pkg` |
 | Cargo | `cargo update -p pkg --precise ver` | same (within semver range) | `cargo tree -i pkg` |
 | Go | `go get pkg@ver` | same (adds an indirect requirement) | `go list -m all` |
+
+**pnpm and exact transitive versions:** pnpm has no `--precise`, and `pnpm update -r pkg@ver` can re-resolve hundreds of unrelated packages. To pin a transitive target exactly:
+1. Add a temporary scoped override, such as `"pkg@>=7.0.0 <7.3.7": 7.3.7`.
+2. Run `pnpm install --ignore-scripts --no-frozen-lockfile`.
+3. Remove the override and install again.
+
+The lockfile keeps the target as long as the parent's range allows it. Commit no override, and confirm that `pnpm-workspace.yaml` is unchanged.
 
 **Go and `go mod tidy`:** run it only when the build fails on missing `go.sum` entries after `go get`, or when the repo's CI checks that modules are tidy. Then read its diff. Changes beyond the target's own requirements and checksums get reverted and reported, not committed (Rule 2).
 
