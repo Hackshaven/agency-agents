@@ -2,7 +2,7 @@
 
 Attribution: NOAA (Eric.J.Hackathorn@noaa.gov), contributed as a U.S. Government work; agents on `noaa/dependency-alert-triager` and `noaa/dependency-remediation-engineer`, runbook on `hackshaven`.
 
-A standing team that takes a repository's dependency vulnerability alerts and turns them into one pull request per repo. It also writes a reason for every alert it proposes to close without a fix. The team has two new agents (see `dependency-alert-triager.md` and `dependency-remediation-engineer.md`) and draws on five catalog agents. Two small scripts with no model handle the parts that need no judgment: noticing new alerts, and applying the dismissals the owner approved.
+A standing team that takes a repository's dependency vulnerability alerts and turns them into one pull request per repo. It also writes a reason for every alert it proposes to close without a fix. The team has two new agents (see `dependency-alert-triager.md` and `dependency-remediation-engineer.md`) and draws on seven existing catalog agents: the Code Reviewer and the Application Security Engineer on most runs, four specialists when an alert calls for them, and the DevOps Automator for setup. Two small scripts with no model handle the parts that need no judgment: noticing new alerts, and applying the dismissals the owner approved.
 
 ## The design in five lines
 
