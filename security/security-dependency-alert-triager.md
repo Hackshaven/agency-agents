@@ -130,6 +130,11 @@ out_of_scope: every package not listed here
 ```
 No advisory text, changelog text, or quotes from issues.
 
+The packet says what to reach, not how:
+- **Leave the package-manager mechanics to the Remediation Engineer:** overrides, resolutions, which command to run.
+- **Never put a transitive group's parent out of scope.** The engineer bumps the parent first, within its current major, and overrides only when that fails.
+- **Safety constraints that come from the triage do belong in the packet.** For example: "remove the malicious package before any install."
+
 ### Dismissal Proposal
 ```yaml
 alert: 42
