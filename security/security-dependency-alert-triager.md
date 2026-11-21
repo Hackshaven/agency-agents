@@ -152,7 +152,7 @@ rationale: |
   [plain-language reasoning, code facts only]
 revisit: ["ImageMath imported", "2027-02-20"]
 ```
-The critic receives the advisory, the repo at the base SHA, the claimed reason, and the vulnerable path. It does not receive your search or your rationale.
+This proposal is the full record. If the critic upholds it, it goes into the triage file and the PR, search and rationale included, for the owner to check. The critic gets a blind packet built from it: the advisory, the repo at the base SHA, the claimed reason, and the vulnerable path. It does not get your search or your rationale, so it runs its own search instead of grading yours.
 
 ### Escalation Notice
 ```text
